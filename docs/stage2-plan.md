@@ -47,6 +47,11 @@ Status: started 2026-11-23. No trading strategy in this stage.
 7. Holdout for H-001 and H-002, opened once after 2026-12-01 (November trades): the 12 holdout pairs
    over 2026-08-01 – 2026-11-30 and the research pairs in November. It estimates the effects; the
    decisions stand.
+8. Exploration for H-003 on 2026-08-01 – 2026-10-31, which H-001 and H-002 have already used:
+   realized spread by the book state a maker can see before a trade, i.e. the quoted half-spread q
+   and the maker-side share rho of the best quantities (`mmlab.microstructure.conditional`). H-003
+   is registered from it before 2026-12-01, so that November and the holdout pairs are opened once
+   for H-001, H-002 and H-003 together and stay unseen by H-003 until its test.
 
 Results are reported as a function of latency (1, 10, 100, 400 ms) wherever latency matters.
 

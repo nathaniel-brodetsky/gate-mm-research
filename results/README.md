@@ -13,6 +13,8 @@ Evaluation code (`mmlab.evaluation`, `mmlab.microstructure`) is the same at 3544
 | `h001_h002/validation.json` | `python -m mmlab.evaluation.h001_h002 data/processed/U001 --period validation` | b0881fb |
 | `h001_h002/validation_no_spyx.json` | the same with `--exclude SPYX_USDT` | b0881fb |
 
+`h003_explore/explore.csv` is the output of `python -m mmlab.microstructure.conditional data/processed/U001` (exploration for H-003, periods before 2026-11-01 only).
+
 `ws_probe/probe-20261123T220212Z.txt` is the output of `python -m mmlab.data_ingestion.gate_ws_probe
 summarize` on the 10-minute recording of 2026-11-23 (code at 58e6296); the raw recording stays in
 `data/raw/ws_probe/`.
