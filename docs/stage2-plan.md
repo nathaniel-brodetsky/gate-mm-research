@@ -12,3 +12,8 @@ Status: started 2026-11-23. No trading strategy in this stage.
 6. Plan for a WebSocket recorder; where it runs depends on H-002.
 
 Results are reported as a function of latency (1, 10, 100, 400 ms) wherever latency matters.
+
+Implementation of the tests (step 5): `mmlab.microstructure.markouts` (as-of joins on availability
+time, validity enforced) and `mmlab.evaluation.h001_h002` (block bootstrap over days, BH across pairs).
+H-002's ratio S is computed on trades usable at both 1 s and 300 s, so that both horizons describe the
+same trades.
