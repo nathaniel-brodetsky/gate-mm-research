@@ -1,0 +1,13 @@
+recorded 599 s; connections 1, disconnects 0, ping timeouts 0; subscriptions ok 5, failed 0; other messages 0
+ws ping rtt ms: min 257.7 p50 264.3 max 533.6 (n 113)
+delay = local receive time - exchange time (includes the local clock offset); gap = exchange-time step between consecutive messages
+channel           pair            msgs  gap p10  gap p50  delay p5     p50     p95  notes
+spot.book_ticker  BTC_USDT        2860      6.0     55.0     144.1   149.3   184.0  u decreasing 0
+spot.book_ticker  LUNC_USDT        485     11.0    201.0     144.1   147.9   191.9  u decreasing 0
+spot.book_ticker  RAIN_USDT        176      8.0    846.0     144.5   148.4   227.3  u decreasing 0
+spot.obu          BTC_USDT       24352     20.0     24.0     142.8   144.1   175.8  full 1, seq breaks 0, before full 0; levels/update p50 2
+spot.obu          LUNC_USDT       2105      9.0     39.0     144.3   158.9   201.2  full 1, seq breaks 0, before full 0; levels/update p50 2
+spot.obu          RAIN_USDT       1669     11.0     64.0     144.8   155.1   190.3  full 1, seq breaks 0, before full 0; levels/update p50 2
+spot.trades       BTC_USDT        1244      0.0      2.1     143.2   151.4   193.1  sub-ms timestamps 1244/1244
+spot.trades       LUNC_USDT          1      n/a      n/a     146.5   146.5   146.5  sub-ms timestamps 1/1
+spot.trades       RAIN_USDT         10  21339.8  43986.0     142.6   143.4   145.9  sub-ms timestamps 10/10
