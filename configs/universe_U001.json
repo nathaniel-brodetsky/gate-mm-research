@@ -1,0 +1,172 @@
+{
+  "eligible_per_stratum": {
+    "0": 179,
+    "1": 255,
+    "2": 299,
+    "3": 205
+  },
+  "excluded": {
+    "inactive": 40,
+    "leveraged": 432,
+    "listed_late": 130,
+    "quote": 149,
+    "stable_or_pegged": 16,
+    "volume_out_of_range": 439
+  },
+  "holdout": {
+    "0": [
+      "BTGOON_USDT",
+      "KSM_USDT",
+      "FARM_USDT"
+    ],
+    "1": [
+      "PGX_USDT",
+      "HELLO_USDT",
+      "QKC_USDT"
+    ],
+    "2": [
+      "MINA_USDT",
+      "TEA_USDT",
+      "LQTY_USDT"
+    ],
+    "3": [
+      "POR_USDT",
+      "QUBIC_USDT",
+      "HOME_USDT"
+    ]
+  },
+  "input": {
+    "file": "global_daily_bars.csv",
+    "sha256": "d46dfe569f132b4642bf315817a3a38ae583a3bdcae1f01fff969fc7e49f8283"
+  },
+  "research": {
+    "0": [
+      "SUKU_USDT",
+      "BAND_USDT",
+      "NAVX_USDT",
+      "TEVA_USDT",
+      "PEOPLEFB_USDT",
+      "ZIX_USDT"
+    ],
+    "1": [
+      "GMX_USDT",
+      "AIDOGE_USDT",
+      "SUPER_USDT",
+      "BOS_USDT",
+      "IMU_USDT",
+      "MLN_USDT"
+    ],
+    "2": [
+      "ORCA_USDT",
+      "PINGO_USDT",
+      "CREO_USDT",
+      "FIS_USDT",
+      "ANON_USDT",
+      "CKB_USDT"
+    ],
+    "3": [
+      "DEEP_USDT",
+      "XT_USDT",
+      "FLOCK_USDT",
+      "TITN_USDT",
+      "SAITO_USDT",
+      "SPYX_USDT"
+    ]
+  },
+  "rule": {
+    "excluded_bases": [
+      "BUSD",
+      "CUSD",
+      "DAI",
+      "EURC",
+      "EURT",
+      "FDUSD",
+      "FRAX",
+      "GUSD",
+      "KAG",
+      "KAU",
+      "LUSD",
+      "PAXG",
+      "PYUSD",
+      "RLUSD",
+      "SUSD",
+      "TUSD",
+      "USD1",
+      "USDC",
+      "USDD",
+      "USDE",
+      "USDG",
+      "USDP",
+      "USDQ",
+      "USDR",
+      "USDS",
+      "USDT",
+      "XAUT"
+    ],
+    "holdout_per_stratum": 3,
+    "id": "U-001",
+    "listed_before": "2026-07-01",
+    "min_active_days": 28,
+    "quote": "USDT",
+    "research_per_stratum": 6,
+    "salt": "mmlab-U001-2026-11-23",
+    "strata": [
+      [
+        1000,
+        3162
+      ],
+      [
+        3162,
+        10000
+      ],
+      [
+        10000,
+        31623
+      ],
+      [
+        31623,
+        100000
+      ]
+    ],
+    "window_end": "2026-07-31",
+    "window_start": "2026-07-01"
+  },
+  "window_median": {
+    "AIDOGE_USDT": "4590.78777365",
+    "ANON_USDT": "10898.88308000",
+    "BAND_USDT": "1410.34249500",
+    "BOS_USDT": "3460.44071791",
+    "BTGOON_USDT": "1953.51725000",
+    "CKB_USDT": "12993.99160670",
+    "CREO_USDT": "16096.61902940",
+    "DEEP_USDT": "82602.92647600",
+    "FARM_USDT": "3158.46154000",
+    "FIS_USDT": "16797.48030900",
+    "FLOCK_USDT": "39461.52550850",
+    "GMX_USDT": "3482.50560200",
+    "HELLO_USDT": "3342.26996060",
+    "HOME_USDT": "37458.80161720",
+    "IMU_USDT": "5629.95615200",
+    "KSM_USDT": "3149.16407000",
+    "LQTY_USDT": "11272.11337000",
+    "MINA_USDT": "22840.43924000",
+    "MLN_USDT": "5093.28738000",
+    "NAVX_USDT": "1336.64868300",
+    "ORCA_USDT": "15147.11293200",
+    "PEOPLEFB_USDT": "1302.46969430",
+    "PGX_USDT": "5632.90845000",
+    "PINGO_USDT": "16917.90883700",
+    "POR_USDT": "51538.01287000",
+    "QKC_USDT": "8703.90955680",
+    "QUBIC_USDT": "96376.25663459",
+    "SAITO_USDT": "56364.55089240",
+    "SPYX_USDT": "47785.19336000",
+    "SUKU_USDT": "2756.55004500",
+    "SUPER_USDT": "5156.23440000",
+    "TEA_USDT": "17107.89756830",
+    "TEVA_USDT": "1966.86216700",
+    "TITN_USDT": "47842.36193200",
+    "XT_USDT": "42057.34610000",
+    "ZIX_USDT": "1242.23583318"
+  }
+}
