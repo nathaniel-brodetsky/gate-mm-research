@@ -40,7 +40,10 @@ Evidence labels used below:
     strategy may be run by parties with co-located infrastructure. [measured]
 11. **Public REST trades are limited to the last 30 days** on both venues ("for public trades older than
     30 days, download from historical data instead"). [measured]
-12. **Open blocker:** which venue a Romanian resident may use. Per primary sources Romania is not named
+12. **The global spot universe is large.** Over the last 30 days 643 pairs had a median daily volume of
+    1k–10k and 722 pairs 10k–100k (quote currency, mostly USDT), versus 10 and 2 on Gate EU.
+    Exchange-reported volume, not audited. [measured]
+13. **Open blocker:** which venue a Romanian resident may use. Per primary sources Romania is not named
     in the global platform's restricted list, but that list is non-exhaustive, and MiCA allows only
     authorised providers to serve EU residents (Gate's EU entity is Gate EU). Not legal advice; the
     account onboarding decides. [docs] [secondary]
@@ -119,6 +122,42 @@ USDT pairs before July 2026) are missing, so early months are understated. [meas
   earn about USD 10–20 per day, and that net edge is itself unproven.
 - No Gate EU archive: BTC_EUR, ETH_EUR, USDC_EUR return 404 for `deals` and `orderbooks` (2026-09 – 11);
   BTC_USDC, listed on both venues, is present but is the global book. [measured]
+
+### 2.3 Global spot trading history — daily candles, measured 2026-11-23
+
+Same tool with `--venue global`: 2,157 tradable pairs, 704,133 closed daily candles, 12 pairs failed
+(network). Volumes are as reported by the exchange; wash trading or fee programmes are not excluded,
+so they are an upper bound for capacity work. [measured]
+
+| Month | USDT volume (median day) | USDC volume (median day) |
+|---|---|---|
+| 2025-11 (8 d) | 18.4 bn (2.38 bn) | 270 m (35.1 m) |
+| 2025-12 | 69.3 bn (2.29 bn) | 1,623 m (56.2 m) |
+| 2026-01 | 77.0 bn (2.55 bn) | 1,089 m (35.2 m) |
+| 2026-02 | 68.6 bn (2.21 bn) | 975 m (15.4 m) |
+| 2026-03 | 60.3 bn (1.89 bn) | 372 m (11.3 m) |
+| 2026-04 | 41.4 bn (1.38 bn) | 265 m (8.3 m) |
+| 2026-05 | 46.5 bn (1.53 bn) | 211 m (7.0 m) |
+| 2026-06 | 70.6 bn (2.28 bn) | 203 m (6.0 m) |
+| 2026-07 | 38.7 bn (1.31 bn) | 139 m (4.2 m) |
+| 2026-08 | 44.3 bn (1.03 bn) | 151 m (2.3 m) |
+| 2026-09 | 53.3 bn (1.84 bn) | 235 m (7.5 m) |
+| 2026-10 | 53.4 bn (1.70 bn) | 189 m (5.6 m) |
+| 2026-11 (22 d) | 47.0 bn (2.05 bn) | 144 m (5.8 m) |
+
+Pairs by median daily quote volume, last 30 days:
+
+| Bucket | Global | Gate EU |
+|---|---|---|
+| 0 | 7 | 399 |
+| < 100 | 125 | 7 |
+| 100 – 1k | 189 | 9 |
+| 1k – 10k | 643 | 10 |
+| 10k – 100k | 722 | 2 |
+| ≥ 100k | 458 | 0 |
+
+Most active global pairs (median day, last 30 days): BTC_USDT 892 m, ETH_USDT 327 m, SOL_USDT 90 m,
+USDC_USDT 60 m, XRP_USDT 50 m. [measured]
 
 ## 3. Data sources
 
@@ -286,8 +325,8 @@ the hour.
 
 1. Venue and product availability for the account (global vs Gate EU; spot vs perpetuals).
 2. Gate EU: fee schedule, WebSocket endpoint and limits, who provides the tight quotes.
-3. Global spot: distribution of pairs by median daily volume (capacity of the illiquid universe); run
-   in progress at the time of writing.
+3. Global spot capacity: how much of the volume in the 1k–100k buckets is organic, and how much a
+   maker could capture net of fees and adverse selection (stage 2 onwards).
 4. Account-level fees (`GET /spot/fee`, read-only key).
 5. Time-of-day pattern of the November futures outages.
 6. Spot completeness across more pairs and months before any historical study; cause of the
