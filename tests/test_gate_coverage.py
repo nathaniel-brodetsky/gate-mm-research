@@ -142,3 +142,21 @@ def test_parse_hour() -> None:
     assert gc.parse_hour("2026-10-15T13") == datetime(2026, 10, 15, 13, tzinfo=UTC)
     with pytest.raises(ValueError, match="bad hour"):
         gc.parse_hour("2026/10/15")
+
+
+def test_scan_reports_every_issue_counter(
+    base: str, opener: urllib.request.OpenerDirector, tmp_path: Path
+) -> None:
+    t = datetime.fromtimestamp(T0, UTC)
+    rows = [
+        f"{T0},2,set,1,5,10,0",
+        f"{T0}.2,2,make,1,1,11,1",
+        f"{T0}.1,2,make,1,1,12,1",
+        f"{T0}.05,2,make,1,1,13,1",
+        f"{T0}.3,2,set,2,1,14,1",
+    ]
+    FILES[_key("spot", "ISS_USDT", t)] = _gz(rows)
+    (r,) = gc.scan("spot", "ISS_USDT", t, datetime.fromtimestamp(T0 + 3600, UTC), tmp_path, base, opener)
+    assert r.status == "issues"
+    counters = (r.non_monotonic_ts, r.late_set_rows, r.id_breaks, r.crossed_batches, r.negative_levels)
+    assert counters == (2, 1, 0, 0, 0)

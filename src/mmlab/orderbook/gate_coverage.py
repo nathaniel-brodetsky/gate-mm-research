@@ -37,6 +37,8 @@ class HourCoverage:
     id_breaks: int
     crossed_batches: int
     negative_levels: int
+    non_monotonic_ts: int
+    late_set_rows: int
     chain: str  # n/a | ok | broken  (relative to the previous hour)
     id_gap: int  # this snapshot id - previous last covered id; 0 when chained
     level_mismatches: int
@@ -84,7 +86,7 @@ def scan(
         path = fetch(ref, root, opener)
         label = t.strftime("%Y-%m-%dT%H")
         if path is None:
-            out.append(HourCoverage(label, "missing", 0, 0, -1.0, 0, 0, 0, "n/a", 0, 0))
+            out.append(HourCoverage(label, "missing", 0, 0, -1.0, 0, 0, 0, 0, 0, "n/a", 0, 0))
             prev = None
             continue
         snaps.clear()
@@ -104,6 +106,8 @@ def scan(
                 rep.id_breaks,
                 rep.crossed_batches,
                 rep.negative_levels,
+                rep.non_monotonic_ts,
+                rep.late_set_rows,
                 chain,
                 gap,
                 mism,
@@ -132,6 +136,12 @@ def main(argv: Sequence[str] | None = None, opener: urllib.request.OpenerDirecto
         print(
             f"{r.hour}  {r.status:7} levels {r.snapshot_levels:6} updates {r.updates:7} "
             f"last {r.last_row_s:7.1f}s  chain {r.chain:6} id_gap {r.id_gap:7} mism {r.level_mismatches}"
+            + (
+                f"  [id_breaks {r.id_breaks} crossed {r.crossed_batches} negative {r.negative_levels} "
+                f"non_monotonic {r.non_monotonic_ts} late_set {r.late_set_rows}]"
+                if r.status == "issues"
+                else ""
+            )
         )
     if a.out:
         with open(a.out, "w", newline="") as fh:

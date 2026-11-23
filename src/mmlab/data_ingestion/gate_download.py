@@ -1,7 +1,8 @@
 """Local cache of Gate public archive files (download.gatedata.org). Read-only, no credentials.
 
 Layout: {root}/{biz}/{type}/{YYYYMM}/{file name as on the server}
-Writes are atomic (.part + rename) and gzip integrity is checked before a file enters the cache.
+Writes are atomic (unique .part file + rename, safe with concurrent processes) and gzip integrity is
+checked before a file enters the cache.
 """
 
 from __future__ import annotations
@@ -9,6 +10,7 @@ from __future__ import annotations
 import gzip
 import os
 import shutil
+import tempfile
 import urllib.error
 import urllib.request
 import zlib
@@ -45,7 +47,9 @@ def fetch(
     if dest.exists():
         return dest
     dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_name(dest.name + ".part")
+    fd, tmp_name = tempfile.mkstemp(dir=dest.parent, prefix=dest.name + ".", suffix=".part")
+    os.close(fd)
+    tmp = Path(tmp_name)
     opener = opener or urllib.request.build_opener()
     req = urllib.request.Request(ref.url, headers={"User-Agent": USER_AGENT})
     try:
