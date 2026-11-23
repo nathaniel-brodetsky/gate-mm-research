@@ -73,6 +73,8 @@ Otherwise rejected. The holdout is then opened once to estimate the effect, not 
 |---|---|---|---|---|
 | 1 | 2026-11-23 | Development, 24 research pairs, as registered | 2 of 24 reject after BH (12 required); median θ −9.63 bp; criterion not met | 35449bd |
 | 2 | 2026-11-23 | Development, 23 pairs without SPYX_USDT (D-001 amendment 2) | 2 of 23 reject after BH; median θ −9.38 bp; criterion not met | 35449bd |
+| 3 | 2026-11-23 | Validation, 24 research pairs, as registered (reported; cannot change the decision) | 0 of 24 reject after BH; median θ −11.09 bp; criterion not met | b0881fb |
+| 4 | 2026-11-23 | Validation, 23 pairs without SPYX_USDT | 0 of 23 reject after BH; median θ −11.51 bp; criterion not met | b0881fb |
 
 ## Results
 
@@ -97,3 +99,29 @@ Scope: the liquidity that traded on these pairs, volume-weighted as a whole, did
 maker fee at 60 s. This does not test selective quoting (conditioning on book state or order flow),
 lower fee tiers, or the two pairs that passed. Each of these needs its own hypothesis, registered
 before it is tested on data not used here.
+
+### Validation period, 2026-10-01 – 2026-10-31
+
+Full tables: [docs/results/h001-h002-validation.md](../docs/results/h001-h002-validation.md), generated
+from `results/h001_h002/validation.json` and `validation_no_spyx.json`.
+
+- 0 of 24 pairs reject H0 after BH. The two development passes do not replicate as significant:
+  NAVX_USDT θ = +10.9 bp (p = 0.118), BOS_USDT θ = +4.7 bp (p = 0.190).
+- Cross-pair median θ = −11.09 bp (median RS̄(60 s) = −1.09 bp). Without SPYX_USDT: 0 of 23,
+  median θ = −11.51 bp.
+
+The decision stays **rejected**; the validation period agrees with it.
+
+### Post-hoc observations (not tests; candidates for new hypotheses)
+
+- The five pairs with θ > 0 in development (NAVX, ZIX, AIDOGE, BOS, FIS) have θ > 0 in validation
+  too (+4.7 to +10.9 bp), none significant on its own after BH. Their effective half-spread in
+  validation is 50–188 bp. These pairs were picked by looking at the development period, so this
+  persistence is evidence for a new hypothesis, not a result.
+- Their D-001 volume strata (median daily volume in July 2026) are 1,000–3,162 USDT (NAVX, ZIX),
+  3,162–10,000 (AIDOGE, BOS) and 10,000–31,623 (FIS). At these θ and July volumes, all makers on a
+  pair together would net from under 1 to about 20 USDT a day; capacity has to be measured before
+  such a hypothesis is worth testing.
+- Volume-weighted means are dominated by a few large trades on the thinnest pairs: in validation
+  PEOPLEFB_USDT has RS̄(300 s) = +337.7 bp against ES = 159.5 bp. New hypotheses should register a
+  robust variant (trimmed or per-trade median) alongside the volume-weighted one.
