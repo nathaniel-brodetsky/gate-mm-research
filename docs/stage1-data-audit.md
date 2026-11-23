@@ -29,21 +29,57 @@ Evidence labels used below:
    files, not from book takes. [measured]
 8. Forward data (shadow mode, forward tests) cannot come from the archive: books are published
    ~1 h late and trades only monthly. An own WebSocket recorder is required. [measured]
-9. **Open blocker:** which venue the account can trade (global gate.com vs Gate EU, spot only per
-   secondary sources) and whether Gate EU shares the global order book. The archive describes the
-   global venue. [secondary]
+9. **Gate EU is a separate market.** Own host and order books (Paris), 427 pairs quoted in EUR and
+   USDC only (no USDT), and about 73k USDC + 33k EUR of 24 h volume for the whole venue. The archive
+   (global venue, USDT pairs, Tokyo) does not describe it, and no archive for Gate EU was found. [measured]
+10. **Latency from the owner's network:** 391–412 ms TCP round trip to the global API, 64 ms to Gate EU.
+    [measured]
+11. **Open blocker:** which venue a Romanian resident may use. Per primary sources Romania is not named
+    in the global platform's restricted list, but that list is non-exhaustive, and MiCA allows only
+    authorised providers to serve EU residents (Gate's EU entity is Gate EU). Not legal advice; the
+    account onboarding decides. [docs] [secondary]
 
 ## 2. Venue and legal status (Romania)
 
 | Item | Finding | Label |
 |---|---|---|
-| EU entity | Gate Technology Ltd (Malta), MiCA CASP authorisation by MFSA, 29 Sep 2025, passported in the EEA | [secondary] |
-| EU product scope | Spot, convert, fiat; no perpetuals for EU residents | [secondary] |
-| Global platform | User agreement lists several EEA states as restricted locations; list is non-exhaustive; Romania not named in the excerpts seen | [secondary] |
-| Gate EU API | Separate host `api.gateeu.com`; docs not readable by our fetcher | [docs], unverified |
-| Gate EU order book | Shared with global or separate: **unknown** | — |
+| Global platform terms | Clause 2.5 Restricted Locations: US, Mainland China, Singapore, Canada, France, Germany, Hong Kong, Malaysia, Malta, Spain, Netherlands, UK, Austria, Japan, and others; "include but are not limited to"; updated without notice. Romania not named. Perpetuals and margin "not allowed in the jurisdictions in which they are prohibited" | [docs] gate.com/legal/user-agreement |
+| MiCA | Since 2026-07-01 only authorised CASPs may serve EU clients (narrow reverse-solicitation exception) | [secondary] |
+| EU entity | Gate Technology Limited (Malta), MFSA, authorised 2025-09-29, LEI 984500D6A0F945BB5A15; 6 MiCA services incl. trading platform, exchange crypto/fiat and crypto/crypto, order execution | [secondary] renderings of the ESMA register |
+| Gate EU products | Spot, convert, fiat; USDT not tradable (one-way USDT to USDC conversion) | [docs] Gate Europe announcement 228081 |
+| Gate EU API | `https://api.gateeu.com/api/v4`; data centre AWS Paris (eu-west-3); public endpoints 900 r/s per IP; orders 10 r/s per user and pair | [docs] search snippet of the Gate EU API page |
 
-Not legal advice. The account owner must confirm which platform and products are available to him.
+Not legal advice. Which platform and products are available is decided at account onboarding.
+
+### 2.1 Venue comparison — measured 2026-11-23 ~14:57 UTC from the owner's network
+
+Tool: `python -m mmlab.data_ingestion.gate_venues OUT_DIR` (public endpoints, no credentials).
+
+| | Global (`api.gateio.ws`) | Gate EU (`api.gateeu.com`) |
+|---|---|---|
+| Network RTT, min TCP connect of 5 | 391–412 ms (3 runs) | 64 ms |
+| HTTP requests | 0.5–2 s small, 15–22 s for full pair and ticker lists | 0.1–0.6 s |
+| Public data without key | yes | pairs, tickers, order books yes; `/spot/time` needs a key; every request needs a `Timestamp` header |
+| Tradable pairs | 2,157 (USDT 2,008, USDC 66, …) | 427 (EUR 214, USDC 213, no USDT) |
+| 24 h quote volume | ≈ 2.17 bn USDT, 5.0 m USDC | ≈ 72.8 k USDC, 32.8 k EUR |
+| Most active | BTC_USDT 1.0 bn, ETH_USDT 0.37 bn | USDC_EUR 24.8 k, BTC_USDC 21.2 k, QNT_USDC 15.4 k, AAVE_USDC 14.5 k, ETH_USDC 8.7 k; all others < 3 k |
+
+Order books of the six most active pairs listed on both venues, fetched back to back: **different on
+every pair** (different book ids, prices and sizes), so the venues do not share a matching engine.
+Quoted spreads in that snapshot (single observation):
+
+| Pair | Gate EU spread | Global spread (same USDC pair) |
+|---|---|---|
+| BTC_USDC | 10.9 bp | 2.5 bp |
+| ETH_USDC | 2.8 bp | 10.7 bp |
+| SOL_USDC | 2.6 bp | 13.1 bp |
+| BNB_USDC | 5.2 bp | 15.7 bp |
+| XRP_USDC | 6.1 bp | 11.1 bp |
+| PENDLE_USDC | 21.9 bp | 95 bp |
+
+[hypothesis] Gate EU majors are quoted tightly by an incumbent liquidity provider despite very small
+traded volume; with a 0.10% maker fee per side (Gate EU fee not verified) a maker–maker round trip
+costs about 20 bp, more than most of these spreads.
 
 ## 3. Data sources
 
@@ -208,8 +244,9 @@ the hour.
 ## 7. Open questions
 
 1. Venue and product availability for the account (global vs Gate EU; spot vs perpetuals).
-2. Whether Gate EU shares the global order book (compare public books at the same instant).
-3. Account-level fees (`GET /spot/fee`, read-only key) and Gate EU fee schedule.
+2. Gate EU: fee schedule, WebSocket endpoint and limits, history of public data (no archive found),
+   who provides the tight quotes, how volume varies across days.
+3. Account-level fees (`GET /spot/fee`, read-only key).
 4. Time-of-day pattern of the November futures outages.
 5. Spot completeness across more pairs and months before any historical study; cause of the
    2026-10-13 16h spot incident.
@@ -222,6 +259,7 @@ python -m mmlab.data_ingestion.gate_archive --help    # availability probe (HEAD
 python -m mmlab.orderbook.gate_coverage --help        # hourly completeness and chaining
 python -m mmlab.orderbook.gate_replay --help          # replay and integrity checks of hourly files
 python -m mmlab.orderbook.gate_reconcile --help       # trades vs book takes
+python -m mmlab.data_ingestion.gate_venues --help     # global vs Gate EU public data and latency
 ```
 
 Raw files are cached under `data/raw/gate/` (not in git).
@@ -236,6 +274,10 @@ Raw files are cached under `data/raw/gate/` (not in git).
 - Order book push changes: https://www.gate.com/announcements/article/44678
 - Fee schedule from 2026-04-09: https://www.gate.com/announcements/article/50390
 - Gate EU entity: https://www.gate.com/en-eu/about-us
+- Global user agreement (clause 2.5, clause 4): https://www.gate.com/legal/user-agreement
+- Gate Europe, USDT not tradable: https://www.gate.com/en-eu/announcements/article/228081
+- Gate EU API (Paris data centre, limits): https://www.gate.com/fr-eu/docs/developers/apiv4/
+  (read via search snippet; the page served to our fetcher was a marketing page)
 - Tardis.dev Gate coverage: https://docs.tardis.dev/historical-data-details/gate-io ,
   https://docs.tardis.dev/historical-data-details/gate-io-futures
 - Secondary sources on MiCA status and EU product scope: casptracker.eu, perpfinder.com, bitcoin.com
