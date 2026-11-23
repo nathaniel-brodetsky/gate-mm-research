@@ -9,7 +9,7 @@ hourly snapshot. The snapshot itself is not emitted: its exact cut-off time is n
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from decimal import Decimal
 
@@ -37,7 +37,10 @@ def _anomalies(rep: ReplayReport) -> int:
     )
 
 
-def top_of_book(events: Iterable[BookEvent]) -> tuple[list[TopOfBook], ReplayReport]:
+def top_of_book(
+    events: Iterable[BookEvent], on_snapshot: Callable[[L2Book], None] | None = None
+) -> tuple[list[TopOfBook], ReplayReport, L2Book]:
+    """Rows, the replay report and the final book (for chaining to the next hour)."""
     rows: list[TopOfBook] = []
     last: tuple[object, ...] | None = None
 
@@ -55,5 +58,5 @@ def top_of_book(events: Iterable[BookEvent]) -> tuple[list[TopOfBook], ReplayRep
             rows.append(TopOfBook(ts, ts + BATCH_US, *state))
             last = state
 
-    _, rep = replay(events, on_batch=on_batch)
-    return rows, rep
+    book, rep = replay(events, on_snapshot=on_snapshot, on_batch=on_batch)
+    return rows, rep, book

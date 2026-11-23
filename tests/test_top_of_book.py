@@ -25,7 +25,7 @@ def test_matches_brute_force_and_emits_only_changes() -> None:
     for ts, st in every:
         if not expected or expected[-1][1] != st:
             expected.append((ts, st))
-    rows, rep = top_of_book(events)
+    rows, rep, _ = top_of_book(events)
     assert rep.clean
     assert [(r.label_us, (r.bid, r.bid_qty, r.ask, r.ask_qty, r.valid)) for r in rows] == expected
     assert len(rows) < rep.batches  # deep-book changes do not create rows
@@ -37,7 +37,7 @@ def test_rows_after_an_anomaly_are_invalid() -> None:
     rows_raw = SynthMarket("spot", seed=22).hour(T0, steps=800)
     first_update = next(i for i, r in enumerate(rows_raw) if ",set," not in r)
     del rows_raw[first_update + 400]  # lost update -> id break
-    rows, rep = top_of_book(_events(rows_raw))
+    rows, rep, _ = top_of_book(_events(rows_raw))
     assert rep.id_breaks >= 1
     flags = [r.valid for r in rows]
     assert flags[0] is True

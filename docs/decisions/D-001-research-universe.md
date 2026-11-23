@@ -48,3 +48,9 @@ TEVA_USDT may be one too. Fixed now, before any data of these pairs is loaded:
   (`configs/universe_U001_assets.json`, from `mmlab.data_ingestion.gate_assets`) identifies as
   tokenized equities or other assets with external trading hours. The excluded pairs are listed here,
   in a further amendment, before any result is computed.
+
+## Amendment 2 — 2026-11-23, from asset metadata, before any order book or trade data was loaded
+
+Asset metadata (`configs/universe_U001_assets.json`) names SPYX_USDT "SP500 xStock", a tokenized equity
+index. TEVA_USDT is "Tevaera", a crypto-native token, and is not flagged. Every result is reported for
+all 24 research pairs (the basis of decisions) and for the 23 pairs without SPYX_USDT.

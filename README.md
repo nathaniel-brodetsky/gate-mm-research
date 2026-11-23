@@ -18,7 +18,7 @@ small live size (only with separate written approval) → scaling (same).
 
 ```bash
 python3 -m venv .venv
-.venv/bin/python -m pip install -e ".[dev]"
+.venv/bin/python -m pip install -r requirements.lock && .venv/bin/python -m pip install -e . --no-deps
 .venv/bin/ruff check . && .venv/bin/ruff format --check . && .venv/bin/mypy && .venv/bin/pytest
 ```
 
@@ -33,3 +33,4 @@ python3 -m venv .venv
 | `docs/` | stage reports and technical decisions |
 | `scripts/` | CLI entry points |
 | `data/` | local data, not in git |
+| `requirements.lock` | exact versions of all dependencies (`pip freeze`) |
