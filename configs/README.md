@@ -1,3 +1,3 @@
-# Конфигурации экспериментов
+# Experiment configurations
 
-Каждый эксперимент запускается из файла конфигурации, ссылка на который пишется в реестр гипотез.
+Every experiment runs from a config file, and that file is referenced in the hypothesis registry.

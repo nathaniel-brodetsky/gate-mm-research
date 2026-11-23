@@ -1,3 +1,3 @@
-# Скрипты
+# Scripts
 
-Тонкие CLI-обёртки над `src/mmlab`. Логика здесь не живёт.
+Thin CLI wrappers around `src/mmlab`. No logic lives here.

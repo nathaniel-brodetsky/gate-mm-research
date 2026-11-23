@@ -1,4 +1,4 @@
-# Реестр гипотез
+# Hypothesis registry
 
-Один файл на гипотезу: `H-NNN-short-name.md`, по шаблону `TEMPLATE.md`.
-Файл коммитится до запуска эксперимента. Результаты дописываются, исходная формулировка не меняется.
+One file per hypothesis: `H-NNN-short-name.md`, based on `TEMPLATE.md`.
+The file is committed before the experiment runs. Results are appended; the original statement is never edited.

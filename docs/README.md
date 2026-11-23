@@ -1,3 +1,3 @@
-# Документация
+# Documentation
 
-Отчёты этапов (`stageN-*.md`) и записи технических решений (`decisions/`).
+Stage reports (`stageN-*.md`) and technical decision records (`decisions/`).

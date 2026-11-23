@@ -1,6 +1,6 @@
-# Данные (вне git)
+# Data (not in git)
 
-- `raw/` — исходные файлы как скачаны
-- `interim/` — нормализованные
-- `processed/` — признаки
-- `lockbox/` — отложенные данные; не открывать без явного разрешения
+- `raw/` — files as downloaded
+- `interim/` — normalized
+- `processed/` — features
+- `lockbox/` — held-out data; do not open without explicit approval

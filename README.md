@@ -1,20 +1,20 @@
 # gate-mm-research
 
-Исследование маркет-мейкинга на Gate. Приватный репозиторий.
+Market making research on Gate. Private repository.
 
-## Стадии
+## Stages
 
 Offline research → historical backtesting → forward data collection → shadow mode → paper trading →
-малый реальный размер (только с отдельным письменным разрешением) → масштабирование (так же).
+small live size (only with separate written approval) → scaling (same).
 
-## Правила
+## Rules
 
-- Гипотеза регистрируется в `hypotheses/` до эксперимента. Неудачные эксперименты не удаляются.
-- Данные в `data/` не коммитятся.
-- Секреты только из переменных окружения. В репозитории секретов нет.
-- Торговые API не подключены. Ордера не размещаются.
+- Every hypothesis is registered in `hypotheses/` before the experiment. Failed experiments are never deleted.
+- Data under `data/` is not committed.
+- Secrets come from environment variables only. No secrets in the repository.
+- No trading APIs are connected. No orders are placed.
 
-## Установка и проверки
+## Setup and checks
 
 ```bash
 python3 -m venv .venv
@@ -22,14 +22,14 @@ python3 -m venv .venv
 .venv/bin/ruff check . && .venv/bin/ruff format --check . && .venv/bin/mypy && .venv/bin/pytest
 ```
 
-## Структура
+## Layout
 
-| Путь | Назначение |
+| Path | Purpose |
 |---|---|
-| `src/mmlab/` | код; по подпакету на компонент (см. docstring каждого `__init__.py`) |
+| `src/mmlab/` | code; one subpackage per component (see each `__init__.py` docstring) |
 | `tests/` | pytest |
-| `hypotheses/` | реестр гипотез (`TEMPLATE.md`) |
-| `configs/` | конфигурации экспериментов |
-| `docs/` | отчёты этапов и технические решения |
-| `scripts/` | CLI-точки входа |
-| `data/` | локальные данные, вне git |
+| `hypotheses/` | hypothesis registry (`TEMPLATE.md`) |
+| `configs/` | experiment configurations |
+| `docs/` | stage reports and technical decisions |
+| `scripts/` | CLI entry points |
+| `data/` | local data, not in git |

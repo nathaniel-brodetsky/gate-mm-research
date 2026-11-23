@@ -11,18 +11,18 @@ dist/
 .coverage
 htmlcov/
 
-# Данные не коммитятся
+# Data is not committed
 /data/*
 !/data/README.md
 
-# Секреты
+# Secrets
 .env
 .env.*
 *.pem
 *.key
 secrets/
 
-# Редакторы / ОС
+# Editors / OS
 .idea/
 .vscode/
 .DS_Store

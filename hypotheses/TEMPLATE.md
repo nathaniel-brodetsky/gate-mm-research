@@ -1,35 +1,35 @@
-# H-NNN: <название>
+# H-NNN: <title>
 
 - **Status:** draft | registered | running | rejected | accepted
 - **Registered:** YYYY-MM-DD (commit: <sha>)
 
-## Экономическое обоснование
+## Economic rationale
 
-## Математическая формулировка
+## Mathematical formulation
 
-## Данные
+## Data
 
-## Признаки
+## Features
 
 ## Target variable
 
-## Горизонт прогнозирования
+## Forecast horizon
 
 ## Baseline
 
-## Метрика
+## Metric
 
-## Критерий успеха (до эксперимента)
+## Success criterion (fixed before the experiment)
 
-## Периоды
+## Periods
 
 - Development:
 - Validation:
-- Untouched holdout (открывается один раз):
+- Untouched holdout (opened once):
 
-## Протестированные варианты (все, включая неудачные)
+## Variants tested (all, including failed ones)
 
-| # | Дата | Вариант | Результат | Commit |
+| # | Date | Variant | Result | Commit |
 |---|---|---|---|---|
 
-## Результаты
+## Results
