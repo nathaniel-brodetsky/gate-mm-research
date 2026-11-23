@@ -2,12 +2,15 @@
 
 Format as verified on archive samples during the stage-1 audit (2026-11-23), not taken from Gate docs:
 
-  spot deals:       ts, trade_id, price, amount, side     side = taker side: 1 = sell, 2 = buy
+  spot deals:       ts, trade_id, price, amount, side     taker side: 1 = buy, 2 = sell (see below)
   futures trades:   ts, trade_id, price, size             sign of size = taker side: + buy, - sell
   funding_applies:  ts, rate                              ts in whole seconds
 
-Trade timestamps carry microseconds. Taker-side mapping was checked against `take` rows of the order
-book: taker buys hit asks, taker sells hit bids.
+Trade timestamps carry microseconds. Taker sides were verified by matching trades to `take` rows of
+the order book within +-1 s (taker buys hit asks, taker sells hit bids): futures GPS_USDT 1052/1054,
+spot LUNC_USDT 711/711, RAIN_USDT 912/915 on 2026-10-15. For spot this is the OPPOSITE of the published
+"1: sell, 2: buy", which therefore describes the resting (maker) order; read as taker side it matched
+only 19% and 9% of trades.
 """
 
 from __future__ import annotations
@@ -22,7 +25,7 @@ from typing import Final, Literal
 from mmlab.data_ingestion.gate_orderbook_file import Kind, parse_decimal, parse_ts_us
 
 Taker = Literal["buy", "sell"]
-_SPOT_TAKER: Final[dict[str, Taker]] = {"1": "sell", "2": "buy"}
+_SPOT_TAKER: Final[dict[str, Taker]] = {"1": "buy", "2": "sell"}
 
 
 @dataclass(frozen=True, slots=True)

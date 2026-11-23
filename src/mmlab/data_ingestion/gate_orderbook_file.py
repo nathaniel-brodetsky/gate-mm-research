@@ -9,8 +9,9 @@ Format as verified on archive samples during the stage-1 audit (2026-11-23), not
            make = quantity added to the level (delta)
            take = quantity removed from the level (delta; trades AND cancellations)
   ts:      seconds since epoch, UTC; snapshot on the hour, updates in 100 ms steps
-           A row labelled t holds changes made in [t, t + 100 ms): on futures, 97% of trades matched to
-           take rows fell in that window. Treat the book state of batch t as known only at t + 100 ms.
+           A row labelled t holds changes made in [t, t + 100 ms): of trades matched to take rows,
+           97.5% (futures GPS_USDT), 97.9% (spot LUNC_USDT) and 99.0% (spot RAIN_USDT) fell in that
+           window. Treat the book state of batch t as known only at t + 100 ms.
   ids:     first update id = snapshot id + 1; next begin_id = begin_id + merged
 """
 

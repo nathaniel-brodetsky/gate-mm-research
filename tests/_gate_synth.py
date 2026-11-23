@@ -76,7 +76,7 @@ class SynthMarket:
         for ts_us, tid, px, qty, taker in sorted(self.trades):
             ts = f"{ts_us // 1_000_000}.{ts_us % 1_000_000:06d}"
             if self.kind == "spot":
-                out.append(f"{ts},{tid},{px:f},{qty},{1 if taker == 'sell' else 2}")
+                out.append(f"{ts},{tid},{px:f},{qty},{1 if taker == 'buy' else 2}")  # 1 = taker buy
             else:
                 out.append(f"{ts},{tid},{px:f},{qty if taker == 'buy' else -qty}")
         return out

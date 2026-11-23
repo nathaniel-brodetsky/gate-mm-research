@@ -20,8 +20,9 @@ def row(s: str) -> list[str]:
 
 
 def test_spot_deal_taker_side() -> None:
-    buy = parse_trade_line(row("1790812935.470294,16340555,0.00005277,82518.7,2"), "spot")
-    sell = parse_trade_line(row("1793487655.862658,16383437,0.00004287,116938.4,1"), "spot")
+    # archive code 1 = taker buy, 2 = taker sell (verified against order book takes, not Gate's docs)
+    buy = parse_trade_line(row("1790812935.470294,16340555,0.00005277,82518.7,1"), "spot")
+    sell = parse_trade_line(row("1793487655.862658,16383437,0.00004287,116938.4,2"), "spot")
     assert buy == Trade(1_790_812_935_470_294, 16340555, D("0.00005277"), D("82518.7"), "buy")
     assert sell.taker == "sell"
 
