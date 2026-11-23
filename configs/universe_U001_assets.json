@@ -1,0 +1,1244 @@
+{
+  "AIDOGE_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ARBEVM",
+      "chains": [
+        {
+          "addr": "0x09E18590E8f76b6Cf471b3cd75fE1A1a9D2B2c2b",
+          "deposit_disabled": false,
+          "name": "ARBEVM",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "AIDOGE",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "1100605.7164994213",
+      "name": "ArbDoge AI",
+      "total_supply": "210000000000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "AIDOGE",
+      "base_name": "ArbDoge AI",
+      "buy_start": 1681826400,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "AIDOGE_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "10758472296933800",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 14,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/AIDOGE_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "ANON_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "SOL",
+      "chains": [
+        {
+          "addr": "9McvH6w97oewLmPxqQEoHUAv3u5iYMyQ9AeZZhguYf1T",
+          "deposit_disabled": false,
+          "name": "SOL",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "ANON",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "3114509.344723305",
+      "name": "HeyAnon",
+      "total_supply": "21000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 1,
+      "base": "ANON",
+      "base_name": "HeyAnon",
+      "buy_start": 1737979200,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "ANON_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "321854",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.1",
+      "min_quote_amount": "3",
+      "precision": 4,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/ANON_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "BAND_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "BAND",
+      "chains": [
+        {
+          "addr": "",
+          "deposit_disabled": false,
+          "name": "BAND",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        },
+        {
+          "addr": "0xBA11D00c5f74255f56a5E366F4F77f5A186d7f55",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "BAND",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "26427524.90222625",
+      "name": "Band",
+      "total_supply": "\u221e",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 2,
+      "base": "BAND",
+      "base_name": "Band",
+      "buy_start": 1597651200,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "BAND_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "429923",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.01",
+      "min_quote_amount": "3",
+      "precision": 4,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1597636800,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/BAND_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "BOS_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0x13239c268beddd88ad0cb02050d3ff6a9d00de6d",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        },
+        {
+          "addr": "1fa8a8909a66bb5c850c1fc3fe48903a5879ca2c1c9882e9055eef8d0014df10424f5320546f6b656e",
+          "deposit_disabled": true,
+          "name": "ADA",
+          "withdraw_delayed": false,
+          "withdraw_disabled": true
+        }
+      ],
+      "currency": "BOS",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "9892.344000000001",
+      "name": "BitcoinOS",
+      "total_supply": "21000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "BOS",
+      "base_name": "BitcoinOS",
+      "buy_start": 1761739200,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "BOS_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "3977724741",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 8,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/BOS_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "CKB_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "CKB",
+      "chains": [
+        {
+          "addr": "",
+          "deposit_disabled": false,
+          "name": "CKB",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "CKB",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "39103627.944892354",
+      "name": "Nervos",
+      "total_supply": "44686783153",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "CKB",
+      "base_name": "Nervos",
+      "buy_start": 1573878900,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "CKB_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "63536438",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 7,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1573878900,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/CKB_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "CREO_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "BSC",
+      "chains": [
+        {
+          "addr": "0x9521728bf66a867bc65a93ece4a543d817871eb7",
+          "deposit_disabled": false,
+          "name": "BSC",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "CREO",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "633369.1567887999",
+      "name": "Creo Engine",
+      "total_supply": "1000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "CREO",
+      "base_name": "Creo Engine",
+      "buy_start": 1709899200,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "CREO_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "20212024",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 7,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/CREO_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "DEEP_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "SUI",
+      "chains": [
+        {
+          "addr": "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP",
+          "deposit_disabled": false,
+          "name": "SUI",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        },
+        {
+          "addr": "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP",
+          "deposit_disabled": true,
+          "name": "SUINEW",
+          "withdraw_delayed": false,
+          "withdraw_disabled": true
+        }
+      ],
+      "currency": "DEEP",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "29477500.0",
+      "name": "DeepBook",
+      "total_supply": "10000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "DEEP",
+      "base_name": "DeepBook",
+      "buy_start": 1728900000,
+      "down_rate": "0.25",
+      "fee": "0.2",
+      "id": "DEEP_USDT",
+      "market_order_max_money": "200000",
+      "market_order_max_stock": "8389966",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.06",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/DEEP_USDT",
+      "type": "normal",
+      "up_rate": "0.25"
+    }
+  },
+  "FIS_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0xef3a930e1ffffacd2fc13434ac81bd278b0ecc8d",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "FIS",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "191244.3034648377",
+      "name": "Stafi",
+      "total_supply": "\u221e",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "FIS",
+      "base_name": "Stafi",
+      "buy_start": 1611892800,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "FIS_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "85616438",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1609434000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/FIS_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "FLOCK_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "BASEEVM",
+      "chains": [
+        {
+          "addr": "0x5ab3d4c385b400f3abb49e80de2faf6a88a7b691",
+          "deposit_disabled": false,
+          "name": "BASEEVM",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "FLOCK",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "15782199.360383898",
+      "name": "Flock.io",
+      "total_supply": "1000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 2,
+      "base": "FLOCK",
+      "base_name": "Flock.io",
+      "buy_start": 1735646400,
+      "down_rate": "0.3",
+      "fee": "0.2",
+      "id": "FLOCK_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "2178412",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.01",
+      "min_quote_amount": "3",
+      "precision": 5,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/FLOCK_USDT",
+      "type": "normal",
+      "up_rate": "0.3"
+    }
+  },
+  "GMX_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ARBEVM",
+      "chains": [
+        {
+          "addr": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+          "deposit_disabled": false,
+          "name": "ARBEVM",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "GMX",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "80444873.81934361",
+      "name": "GMX",
+      "total_supply": "13250000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 3,
+      "base": "GMX",
+      "base_name": "GMX",
+      "buy_start": 1664978400,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "GMX_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "11825",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.001",
+      "min_quote_amount": "3",
+      "precision": 3,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/GMX_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "IMU_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0xb48c6b24f36307c7a1f2a9281e978a9ef2902ba5",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "IMU",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "1274325.0",
+      "name": "Immunefi",
+      "total_supply": "10000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "IMU",
+      "base_name": "Immunefi",
+      "buy_start": 1769090400,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "IMU_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "55463117",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/IMU_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "MLN_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0xec67005c4e498ec7f55e092bd1d35cbc47c91892",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "MLN",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "3665855.3728257786",
+      "name": "Enzyme",
+      "total_supply": "\u221e",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 1,
+      "base": "MLN",
+      "base_name": "Enzyme",
+      "buy_start": 1625464800,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "MLN_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "72409",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.1",
+      "min_quote_amount": "3",
+      "precision": 4,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/MLN_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "NAVX_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "SUI",
+      "chains": [
+        {
+          "addr": "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+          "deposit_disabled": false,
+          "name": "SUI",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        },
+        {
+          "addr": "0xa99b8952d4f7d947ea77fe0ecdcc9e5fc0bcab2841d6e2a5aa00c3044e5544b5::navx::NAVX",
+          "deposit_disabled": true,
+          "name": "SUINEW",
+          "withdraw_delayed": false,
+          "withdraw_disabled": true
+        }
+      ],
+      "currency": "NAVX",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "6269798.69659",
+      "name": "NAVI Protocol",
+      "total_supply": "1000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "NAVX",
+      "base_name": "NAVI Protocol",
+      "buy_start": 1707307200,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "NAVX_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "8778861",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 0,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/NAVX_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "ORCA_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "SOL",
+      "chains": [
+        {
+          "addr": "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
+          "deposit_disabled": false,
+          "name": "SOL",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "ORCA",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "71870176.87384985",
+      "name": "Orca",
+      "total_supply": "100000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 2,
+      "base": "ORCA",
+      "base_name": "Orca",
+      "buy_start": 1633003200,
+      "down_rate": "0.3",
+      "fee": "0.2",
+      "id": "ORCA_USDT",
+      "market_order_max_money": "200000",
+      "market_order_max_stock": "102020",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.01",
+      "min_quote_amount": "3",
+      "precision": 4,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1596702900,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/ORCA_USDT",
+      "type": "normal",
+      "up_rate": "0.3"
+    }
+  },
+  "PEOPLEFB_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "FBBRC",
+      "chains": [
+        {
+          "addr": "people",
+          "deposit_disabled": false,
+          "name": "FBBRC",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "PEOPLEFB",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "14660.1",
+      "name": "People",
+      "total_supply": "21000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "PEOPLEFB",
+      "base_name": "People",
+      "buy_start": 1727337600,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "PEOPLEFB_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "82665124",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 7,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/PEOPLEFB_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "PINGO_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "TON",
+      "chains": [
+        {
+          "addr": "EQCRWpQQmfSglpLp6D5Xebix50AStBxjfQQNkssFP_IsiQc3",
+          "deposit_disabled": true,
+          "name": "TON",
+          "withdraw_delayed": false,
+          "withdraw_disabled": true
+        },
+        {
+          "addr": "EQCRWpQQmfSglpLp6D5Xebix50AStBxjfQQNkssFP_IsiQc3",
+          "deposit_disabled": true,
+          "name": "GRAM",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "PINGO",
+      "delisted": false,
+      "deposit_disabled": true,
+      "fixed_rate": "",
+      "market_cap": "1327964.202",
+      "name": "PinGo",
+      "total_supply": "1000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "PINGO",
+      "base_name": "PinGo",
+      "buy_start": 1732878000,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "PINGO_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "9736150",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/PINGO_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "SAITO_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0xFa14Fa6958401314851A17d6C5360cA29f74B57B",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "SAITO",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "618900.0",
+      "name": "Saito",
+      "total_supply": "3000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "SAITO",
+      "base_name": "Saito",
+      "buy_start": 1622260800,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "SAITO_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "277277138",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 7,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/SAITO_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "SPYX_USDT": {
+    "currency": {
+      "category": [
+        "stocks",
+        "xstocks"
+      ],
+      "chain": "SOL",
+      "chains": [
+        {
+          "addr": "XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W",
+          "deposit_disabled": false,
+          "name": "SOL",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "SPYX",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "75056723.40312462",
+      "name": "SP500 xStock",
+      "tokenized_security_info": {
+        "current_multiplier": "1.007474126658766",
+        "underlying": "SPY"
+      },
+      "total_supply": "\u221e",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 3,
+      "base": "SPYX",
+      "base_name": "SP500 xStock",
+      "buy_start": 1751680800,
+      "down_rate": "0.25",
+      "fee": "0.2",
+      "id": "SPYX_USDT",
+      "market_order_max_money": "300000",
+      "market_order_max_stock": "389",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.001",
+      "min_quote_amount": "3",
+      "precision": 2,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.06",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/SPYX_USDT",
+      "type": "normal",
+      "up_rate": "0.25"
+    }
+  },
+  "SUKU_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0x0763fdccf1ae541a5961815c0872a8c5bc6de4d7",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "SUKU",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "2777350.8073885",
+      "name": "SUKU",
+      "total_supply": "1500000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "SUKU",
+      "base_name": "SUKU",
+      "buy_start": 1617681600,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "SUKU_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "18682858",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/SUKU_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "SUPER_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "ETH",
+      "chains": [
+        {
+          "addr": "0xe53EC727dbDEB9E2d5456c3be40cFF031AB40A55",
+          "deposit_disabled": false,
+          "name": "ETH",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "SUPER",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "74500704.60337679",
+      "name": "SuperFarm",
+      "total_supply": "999998077.417",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "SUPER",
+      "base_name": "SuperFarm",
+      "buy_start": 1614070800,
+      "down_rate": "0.3",
+      "fee": "0.2",
+      "id": "SUPER_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "494548",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 5,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/SUPER_USDT",
+      "type": "normal",
+      "up_rate": "0.3"
+    }
+  },
+  "TEVA_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "BASEEVM",
+      "chains": [
+        {
+          "addr": "0x00309d634d11541b857f927be91ad2f0bd78894c",
+          "deposit_disabled": false,
+          "name": "BASEEVM",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "TEVA",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "821966.929852024",
+      "name": "Tevaera",
+      "total_supply": "4000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "TEVA",
+      "base_name": "Tevaera",
+      "buy_start": 1735308000,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "TEVA_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "69137168",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 7,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/TEVA_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "TITN_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "BASEEVM",
+      "chains": [
+        {
+          "addr": "0xe62bfbe57763ec24c0f130426f34dbce11fc5b06",
+          "deposit_disabled": false,
+          "name": "BASEEVM",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "TITN",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "628745.0",
+      "name": "THORWallet",
+      "total_supply": "1000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "TITN",
+      "base_name": "THORWallet",
+      "buy_start": 1762164000,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "TITN_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "10357864",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 6,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/TITN_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "XT_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "XT",
+      "chains": [
+        {
+          "addr": "",
+          "deposit_disabled": false,
+          "name": "XT",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "XT",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "21541196.089",
+      "name": "XT Smart Chain",
+      "total_supply": "1000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 2,
+      "base": "XT",
+      "base_name": "XT Smart Chain",
+      "buy_start": 1735117200,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "XT_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "20263",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "0.01",
+      "min_quote_amount": "3",
+      "precision": 3,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1577808000,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/XT_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  },
+  "ZIX_USDT": {
+    "currency": {
+      "category": [],
+      "chain": "BSC",
+      "chains": [
+        {
+          "addr": "0x48077400faf11183c043feb5184a13ea628bb0db",
+          "deposit_disabled": false,
+          "name": "BSC",
+          "withdraw_delayed": false,
+          "withdraw_disabled": false
+        }
+      ],
+      "currency": "ZIX",
+      "delisted": false,
+      "deposit_disabled": false,
+      "fixed_rate": "",
+      "market_cap": "26371.71722416775",
+      "name": "COINZIX",
+      "total_supply": "6000000000",
+      "trade_disabled": false,
+      "withdraw_delayed": false,
+      "withdraw_disabled": false
+    },
+    "pair": {
+      "amount_precision": 0,
+      "base": "ZIX",
+      "base_name": "COINZIX",
+      "buy_start": 1683284400,
+      "down_rate": "0.4",
+      "fee": "0.2",
+      "id": "ZIX_USDT",
+      "market_order_max_money": "100000",
+      "market_order_max_stock": "7377351531",
+      "max_quote_amount": "5000000",
+      "min_base_amount": "1",
+      "min_quote_amount": "3",
+      "precision": 9,
+      "quote": "USDT",
+      "quote_name": "Tether",
+      "sell_start": 1607313600,
+      "slippage": "0.1",
+      "st_tag": false,
+      "trade_quotes": [],
+      "trade_status": "tradable",
+      "trade_url": "https://www.gate.com/trade/ZIX_USDT",
+      "type": "normal",
+      "up_rate": "0.4"
+    }
+  }
+}
