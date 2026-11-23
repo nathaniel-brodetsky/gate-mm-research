@@ -26,8 +26,9 @@ import multiprocessing
 import os
 import sys
 import time
-from collections.abc import Sequence
+from collections.abc import Iterable, Iterator, Sequence
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures.process import BrokenProcessPool
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -38,7 +39,7 @@ import polars as pl
 from mmlab.data_ingestion.gate_archive import BASE_URL, archive_ref
 from mmlab.data_ingestion.gate_download import fetch
 from mmlab.data_ingestion.gate_orderbook_file import iter_orderbook_file
-from mmlab.data_ingestion.gate_trades_file import check_sequence, iter_trades_file
+from mmlab.data_ingestion.gate_trades_file import Trade, check_sequence, iter_trades_file
 from mmlab.orderbook.gate_coverage import hours, parse_hour
 from mmlab.orderbook.gate_replay import ReplayReport, check_chain
 from mmlab.orderbook.l2 import L2Book
@@ -82,6 +83,25 @@ def _f(x: object) -> float | None:
     return None if x is None else float(str(x))
 
 
+def _tob_frame(rows: Sequence[TopOfBook]) -> pl.DataFrame:
+    return pl.DataFrame(
+        [(r.label_us, r.avail_us, _f(r.bid), _f(r.bid_qty), _f(r.ask), _f(r.ask_qty), r.valid) for r in rows],
+        schema=TOB_SCHEMA,
+        orient="row",
+    )
+
+
+def _collect(trades: Iterable[Trade], cols: dict[str, list[Any]]) -> Iterator[Trade]:
+    """Pass trades through while appending plain values to columns (no Trade objects are kept)."""
+    for x in trades:
+        cols["ts_us"].append(x.ts_us)
+        cols["trade_id"].append(x.trade_id)
+        cols["price"].append(float(x.price))
+        cols["qty"].append(float(x.qty))
+        cols["taker"].append(1 if x.taker == "buy" else -1)
+        yield x
+
+
 def _write_parquet(df: pl.DataFrame, path: Path) -> None:
     tmp = path.with_name(path.name + ".tmp")
     df.write_parquet(tmp)
@@ -89,10 +109,18 @@ def _write_parquet(df: pl.DataFrame, path: Path) -> None:
 
 
 def build_pair(
-    pair: str, start: datetime, end: datetime, raw_root: Path, out: Path, base: str, delete_raw: bool
+    pair: str,
+    start: datetime,
+    end: datetime,
+    raw_root: Path,
+    out: Path,
+    base: str,
+    delete_raw: bool,
+    retries: int = 5,
+    backoff_s: float = 2.0,
 ) -> PairSummary:
     t0 = time.monotonic()
-    rows: list[TopOfBook] = []
+    frames: list[pl.DataFrame] = []  # one small frame per hour keeps memory flat
     hour_rows: list[dict[str, Any]] = []
     prev: tuple[L2Book, ReplayReport] | None = None
     last_rep: ReplayReport | None = None
@@ -102,12 +130,14 @@ def build_pair(
 
     def sentinel(rep: ReplayReport) -> None:
         nonlocal sentinels
-        rows.append(TopOfBook(rep.last_ts_us, rep.last_ts_us + BATCH_US, None, None, None, None, False))
+        frames.append(
+            _tob_frame([TopOfBook(rep.last_ts_us, rep.last_ts_us + BATCH_US, None, None, None, None, False)])
+        )
         sentinels += 1
 
     for t in hours(start, end):
         ref = archive_ref("spot", "orderbooks", pair, t.strftime("%Y%m"), t.day, t.hour, base)
-        path = fetch(ref, raw_root)
+        path = fetch(ref, raw_root, retries=retries, backoff_s=backoff_s)
         label = t.strftime("%Y-%m-%dT%H")
         if path is None:
             if last_rep is not None and prev is not None:
@@ -123,7 +153,7 @@ def build_pair(
         chained = prev is not None and check_chain(prev[0], prev[1], snaps[0], rep).ok
         if prev is not None and not chained:
             sentinel(prev[1])
-        rows += tob
+        frames.append(_tob_frame(tob))
         hour_rows.append(
             {
                 "hour": label,
@@ -143,27 +173,22 @@ def build_pair(
         if delete_raw:
             path.unlink()
 
-    tob_df = pl.DataFrame(
-        [(r.label_us, r.avail_us, _f(r.bid), _f(r.bid_qty), _f(r.ask), _f(r.ask_qty), r.valid) for r in rows],
-        schema=TOB_SCHEMA,
-        orient="row",
-    ).sort("avail_us", maintain_order=True)
+    tob_df = (pl.concat(frames) if frames else _tob_frame([])).sort("avail_us", maintain_order=True)
+    frames.clear()
 
     start_us, end_us = int(start.timestamp() * 1e6), int(end.timestamp() * 1e6)
-    trades = []
-    months = sorted({t.strftime("%Y%m") for t in hours(start, end)})
-    for ym in months:
-        tpath = fetch(archive_ref("spot", "deals", pair, ym, base=base), raw_root)
-        if tpath is None:
-            continue
-        raw += tpath.stat().st_size
-        trades += list(iter_trades_file(tpath, "spot", start_us, end_us))
-    seq = check_sequence(trades)
-    trades_df = pl.DataFrame(
-        [(x.ts_us, x.trade_id, float(x.price), float(x.qty), 1 if x.taker == "buy" else -1) for x in trades],
-        schema=TRADE_SCHEMA,
-        orient="row",
-    )
+    cols: dict[str, list[Any]] = {k: [] for k in TRADE_SCHEMA}
+    paths = []
+    for ym in sorted({t.strftime("%Y%m") for t in hours(start, end)}):
+        tpath = fetch(
+            archive_ref("spot", "deals", pair, ym, base=base), raw_root, retries=retries, backoff_s=backoff_s
+        )
+        if tpath is not None:
+            raw += tpath.stat().st_size
+            paths.append(tpath)
+    stream = (x for tp in paths for x in iter_trades_file(tp, "spot", start_us, end_us))
+    seq = check_sequence(_collect(stream, cols))
+    trades_df = pl.DataFrame(cols, schema=TRADE_SCHEMA)
 
     for sub in ("tob", "trades", "hours"):
         (out / sub).mkdir(parents=True, exist_ok=True)
@@ -193,6 +218,14 @@ def build_pair(
     )
 
 
+def _build_pair_safe(*args: Any) -> PairSummary:
+    """build_pair for worker processes: exceptions come back as picklable RuntimeErrors (HTTPError is not)."""
+    try:
+        return build_pair(*args)
+    except Exception as e:
+        raise RuntimeError(f"{type(e).__name__}: {e}") from None
+
+
 def research_pairs(universe: dict[str, Any]) -> list[str]:
     return [p for s in sorted(universe["research"], key=int) for p in universe["research"][s]]
 
@@ -209,6 +242,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     p.add_argument("--base", default=BASE_URL)
     p.add_argument("--delete-raw", action="store_true", help="delete hourly order book files once processed")
     p.add_argument("--force", action="store_true", help="rebuild pairs that already have output")
+    p.add_argument("--retries", type=int, default=5, help="download retries on transient errors")
+    p.add_argument("--backoff", type=float, default=2.0, help="first retry delay, seconds (doubles)")
     p.add_argument("--open-time-holdout", action="store_true")
     a = p.parse_args(argv)
 
@@ -238,16 +273,37 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     results: list[PairSummary] = []
     failed: list[str] = []
-    # spawn, not fork: polars' thread pool does not survive fork (worker processes can deadlock)
+    # spawn, not fork: polars' thread pool does not survive fork (worker processes can deadlock).
+    # One pair per worker process, so memory is returned to the system after every pair.
     ctx = multiprocessing.get_context("spawn")
-    with ProcessPoolExecutor(max_workers=max(1, a.workers), mp_context=ctx) as ex:
+    with ProcessPoolExecutor(max_workers=max(1, a.workers), mp_context=ctx, max_tasks_per_child=1) as ex:
         futs = {
-            ex.submit(build_pair, x, start, end, Path(a.raw_dir), out, a.base, a.delete_raw): x for x in todo
+            ex.submit(
+                _build_pair_safe,
+                x,
+                start,
+                end,
+                Path(a.raw_dir),
+                out,
+                a.base,
+                a.delete_raw,
+                a.retries,
+                a.backoff,
+            ): x
+            for x in todo
         }
         for fut in as_completed(futs):
             pair = futs[fut]
             try:
                 s = fut.result()
+            except BrokenProcessPool as e:
+                failed.append(pair)
+                print(
+                    f"FAILED {pair}: {e} (a worker was killed, often out of memory; rerun to resume, "
+                    f"with fewer --workers)",
+                    flush=True,
+                )
+                continue
             except Exception as e:  # report and continue with the other pairs
                 failed.append(pair)
                 print(f"FAILED {pair}: {type(e).__name__}: {e}", flush=True)

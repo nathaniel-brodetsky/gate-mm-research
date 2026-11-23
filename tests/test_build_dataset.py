@@ -29,6 +29,11 @@ class _Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         HITS[self.path] += 1
+        if "BAD_USDT" in self.path:
+            self.send_response(503)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         body = FILES.get(self.path)
         self.send_response(200 if body is not None else 404)
         self.send_header("Content-Length", str(len(body or b"")))
@@ -153,3 +158,24 @@ def test_guards(archive: tuple[str, dict[str, Any]], universe: Path, tmp_path: P
     assert bd.main(late) == 2
     assert bd.main([*_argv(universe, out, base), "--pairs", "HOLD_USDT"]) == 2
     assert not out.exists()
+
+
+def test_failed_pair_is_reported_and_others_are_kept(
+    archive: tuple[str, dict[str, Any]],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    base, _ = archive
+    monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+    monkeypatch.setenv("no_proxy", "127.0.0.1,localhost")
+    uni = tmp_path / "u.json"
+    uni.write_text(json.dumps({"research": {"0": ["SYN_USDT", "BAD_USDT"]}, "holdout": {}}))
+    out = tmp_path / "ds"
+    argv = [*_argv(uni, out, base), "--workers", "2", "--retries", "1", "--backoff", "0"]
+    assert bd.main(argv) == 1
+    text = capsys.readouterr().out
+    assert "FAILED BAD_USDT: RuntimeError: HTTPError: HTTP Error 503" in text
+    assert (out / "tob" / "SYN_USDT.parquet").exists()
+    assert not (out / "tob" / "BAD_USDT.parquet").exists()
+    assert [r["pair"] for r in csv.DictReader((out / "summary.csv").open())] == ["SYN_USDT"]

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import gzip
 import threading
+import urllib.error
 import urllib.request
 from collections import Counter
 from collections.abc import Iterator
@@ -21,6 +22,7 @@ from mmlab.orderbook import gate_coverage as gc
 
 FILES: dict[str, bytes] = {}
 HITS: Counter[str] = Counter()
+FLAKY: dict[str, int] = {}  # path -> number of first requests answered by dropping the connection
 
 
 class _Handler(BaseHTTPRequestHandler):
@@ -29,6 +31,14 @@ class _Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         HITS[self.path] += 1
+        if HITS[self.path] <= FLAKY.get(self.path, 0):
+            self.close_connection = True  # no status line at all: the client sees a dropped connection
+            return
+        if "FORBID" in self.path:
+            self.send_response(403)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         body = FILES.get(self.path)
         if body is None:
             self.send_response(404)
@@ -77,7 +87,8 @@ def test_fetch_caches_and_handles_404_and_corruption(
     assert fetch(archive_ref("spot", "deals", "ZZZ_USDT", "202301", base=base), tmp_path, opener) is None
     bad = archive_ref("spot", "deals", "AAA_USDT", "202302", base=base)
     with pytest.raises(DownloadError):
-        fetch(bad, tmp_path, opener)
+        fetch(bad, tmp_path, opener, backoff_s=0)
+    assert HITS["/spot/deals/202302/AAA_USDT-202302.csv.gz"] == 6  # first try + 5 retries
     assert not cache_path(tmp_path, bad).exists()
     assert not list(cache_path(tmp_path, bad).parent.glob("*.part"))
 
@@ -160,3 +171,32 @@ def test_scan_reports_every_issue_counter(
     assert r.status == "issues"
     counters = (r.non_monotonic_ts, r.late_set_rows, r.id_breaks, r.crossed_batches, r.negative_levels)
     assert counters == (2, 1, 0, 0, 0)
+
+
+def test_fetch_retries_transient_failures(
+    base: str, opener: urllib.request.OpenerDirector, tmp_path: Path
+) -> None:
+    path = "/spot/deals/202303/FLK_USDT-202303.csv.gz"
+    FILES[path] = gzip.compress(b"1,2,3,4,1\n")
+    FLAKY[path] = 2
+    ref = archive_ref("spot", "deals", "FLK_USDT", "202303", base=base)
+    assert fetch(ref, tmp_path, opener, backoff_s=0) == cache_path(tmp_path, ref)
+    assert HITS[path] == 3
+
+    dead = "/spot/deals/202304/FLK_USDT-202304.csv.gz"
+    FILES[dead] = FILES[path]
+    FLAKY[dead] = 100
+    ref2 = archive_ref("spot", "deals", "FLK_USDT", "202304", base=base)
+    with pytest.raises(OSError):  # noqa: PT011
+        fetch(ref2, tmp_path, opener, retries=2, backoff_s=0)
+    assert HITS[dead] == 3
+    assert not list(cache_path(tmp_path, ref2).parent.glob("*.part"))
+
+
+def test_fetch_does_not_retry_client_errors(
+    base: str, opener: urllib.request.OpenerDirector, tmp_path: Path
+) -> None:
+    ref = archive_ref("spot", "deals", "FORBID_USDT", "202305", base=base)
+    with pytest.raises(urllib.error.HTTPError):
+        fetch(ref, tmp_path, opener, backoff_s=0)
+    assert HITS["/spot/deals/202305/FORBID_USDT-202305.csv.gz"] == 1
