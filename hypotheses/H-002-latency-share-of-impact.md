@@ -112,3 +112,8 @@ Consequences, as set out in the economic rationale:
 - Part of the share at 0.1 s is the trade's own effect on the book (consumed levels). No speed avoids
   that for the order that was filled; S does not measure how often a fast maker cancels before being
   hit.
+
+Addendum 2026-11-24: the WebSocket probe (docs/stage2-plan.md, step 6) measured a round trip of
+264 ms (p50) from the owner's machine to `api.gateio.ws`, whose addresses are all in AWS
+ap-northeast-1. A reaction to a trade from there comes about 0.27 s after it, between the 0.2 s and
+0.5 s points above (validation medians 0.73 and 0.78); the conclusion is unchanged.
