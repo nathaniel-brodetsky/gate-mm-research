@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Данные не коммитятся
+/data/*
+!/data/README.md
+
+# Секреты
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Редакторы / ОС
+.idea/
+.vscode/
+.DS_Store
