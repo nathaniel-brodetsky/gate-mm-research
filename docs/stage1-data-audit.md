@@ -29,12 +29,18 @@ Evidence labels used below:
    files, not from book takes. [measured]
 8. Forward data (shadow mode, forward tests) cannot come from the archive: books are published
    ~1 h late and trades only monthly. An own WebSocket recorder is required. [measured]
-9. **Gate EU is a separate market.** Own host and order books (Paris), 427 pairs quoted in EUR and
-   USDC only (no USDT), and about 73k USDC + 33k EUR of 24 h volume for the whole venue. The archive
-   (global venue, USDT pairs, Tokyo) does not describe it, and no archive for Gate EU was found. [measured]
+9. **Gate EU is a separate market with negligible capacity.** Own host and order books (Paris), 427
+   pairs quoted in EUR and USDC only (no USDT). Median venue day Sep–Nov 2026: about 68k–152k USDC +
+   16k–29k EUR; over the last 30 days 399 of 427 pairs had a median daily volume of zero, and the most
+   active pair (ETH_USDC) a median of 61k USDC. There is no Gate EU archive (EU-only pairs return 404),
+   so its history beyond daily candles and the last 30 days of trades exists only if we record it.
+   [measured]
 10. **Latency from the owner's network:** 391–412 ms TCP round trip to the global API, 64 ms to Gate EU.
-    [measured]
-11. **Open blocker:** which venue a Romanian resident may use. Per primary sources Romania is not named
+    Results of later stages will be reported as a function of latency (1, 10, 100, 400 ms), since the
+    strategy may be run by parties with co-located infrastructure. [measured]
+11. **Public REST trades are limited to the last 30 days** on both venues ("for public trades older than
+    30 days, download from historical data instead"). [measured]
+12. **Open blocker:** which venue a Romanian resident may use. Per primary sources Romania is not named
     in the global platform's restricted list, but that list is non-exhaustive, and MiCA allows only
     authorised providers to serve EU residents (Gate's EU entity is Gate EU). Not legal advice; the
     account onboarding decides. [docs] [secondary]
@@ -80,6 +86,39 @@ Quoted spreads in that snapshot (single observation):
 [hypothesis] Gate EU majors are quoted tightly by an incumbent liquidity provider despite very small
 traded volume; with a 0.10% maker fee per side (Gate EU fee not verified) a maker–maker round trip
 costs about 20 bp, more than most of these spreads.
+
+### 2.2 Gate EU trading history — daily candles, measured 2026-11-23
+
+Tool: `python -m mmlab.data_ingestion.gate_rest_history OUT_DIR` (427 tradable pairs, closed daily
+candles, up to 365 days). Only pairs tradable today are covered: pairs delisted earlier (for example
+USDT pairs before July 2026) are missing, so early months are understated. [measured]
+
+| Month | USDC volume (median day) | EUR volume (median day) | Largest pairs by share |
+|---|---|---|---|
+| 2025-11 (8 d) | 13.1 m (1.45 m) | 0 | BTC_USDC 67%, ETH_USDC 27% |
+| 2025-12 | 68.5 m (12 k) | 0 | BTC_USDC 61%, ETH_USDC 36% |
+| 2026-01 | 70.3 m (1.50 m) | 3 k | BTC_USDC 23%, ETH_USDC 9%, LTC_USDC 6% |
+| 2026-02 | 52.0 m (1.97 m) | 0.2 k | BTC_USDC 16%, ETH_USDC 6%, LTC_USDC 6% |
+| 2026-03 | 10.5 m (254 k) | 95 k | BTC_USDC 19%, STX_USDC 8% |
+| 2026-04 | 7.3 m (154 k) | 38 k | BTC_USDC 9%, ETH_USDC 6% |
+| 2026-05 | 1.4 m (40 k) | 1 k | BTC_USDC 17%, NEAR_USDC 10% |
+| 2026-06 | 2.0 m (1.8 k) | 2.9 m (13) | BTC_EUR 19%, ETH_EUR 18% |
+| 2026-07 | 0.28 m (5.9 k) | 0.17 m (4.5 k) | BTC_USDC 23%, USDC_EUR 22% |
+| 2026-08 | 1.8 m (11.5 k) | 1.3 m (6.3 k) | USDC_EUR 23%, ETH_USDC 15% |
+| 2026-09 | 3.6 m (68 k) | 0.8 m (16 k) | ETH_USDC 34%, BTC_USDC 22% |
+| 2026-10 | 4.8 m (152 k) | 1.1 m (29 k) | ETH_USDC 26%, BTC_USDC 21% |
+| 2026-11 (22 d) | 3.4 m (126 k) | 0.7 m (25 k) | ETH_USDC 33%, BTC_USDC 10% |
+
+- Late 2025 volume came in bursts (BTC_USDC 10.3 m on 2025-12-12 alone). [measured] Whether this was
+  promotional or organic is unknown. [hypothesis: launch incentives]
+- July 2026, the end of the MiCA transition and the removal of USDT, is the low point. [measured]
+- Last 30 days, pairs by median daily quote volume: 0 — 399; < 100 — 7; 100–1k — 9; 1k–10k — 10;
+  10k–100k — 2; ≥ 100k — 0. Top medians: ETH_USDC 61.0k, BTC_USDC 16.8k, USDC_EUR 8.7k, INJ_USDC 7.0k,
+  SOL_USDC 7.0k, AAVE_USDC 5.1k, QNT_USDC 4.8k, XRP_USDC 3.8k, PENDLE_USDC 3.4k, BTC_EUR 2.3k. [measured]
+- Illustration, not an estimate: a maker taking a third of ETH_USDC median volume at a net 5–10 bp would
+  earn about USD 10–20 per day, and that net edge is itself unproven.
+- No Gate EU archive: BTC_EUR, ETH_EUR, USDC_EUR return 404 for `deals` and `orderbooks` (2026-09 – 11);
+  BTC_USDC, listed on both venues, is present but is the global book. [measured]
 
 ## 3. Data sources
 
@@ -128,6 +167,8 @@ illiquid pairs 0.05–0.75 MB/h.
 - Futures WS: `futures.obu` 50 levels / 20 ms, 400 levels / 100 ms. [docs]
 - Connection and subscription limits: not documented beyond "one subscription per stream per
   connection". [docs]
+- `GET /spot/trades` rejects windows older than 30 days with `INVALID_PARAM_VALUE` "for public trades
+  older than 30 days, download from historical data instead", on both venues. [measured]
 - Public REST tickers were reachable from the owner's network on 2026-11-23: 2,009 spot USDT pairs
   (524 with 24 h quote volume 20k–200k USDT), 1,037 USDT perpetuals (289 in that band). [measured]
 
@@ -244,13 +285,14 @@ the hour.
 ## 7. Open questions
 
 1. Venue and product availability for the account (global vs Gate EU; spot vs perpetuals).
-2. Gate EU: fee schedule, WebSocket endpoint and limits, history of public data (no archive found),
-   who provides the tight quotes, how volume varies across days.
-3. Account-level fees (`GET /spot/fee`, read-only key).
-4. Time-of-day pattern of the November futures outages.
-5. Spot completeness across more pairs and months before any historical study; cause of the
+2. Gate EU: fee schedule, WebSocket endpoint and limits, who provides the tight quotes.
+3. Global spot: distribution of pairs by median daily volume (capacity of the illiquid universe); run
+   in progress at the time of writing.
+4. Account-level fees (`GET /spot/fee`, read-only key).
+5. Time-of-day pattern of the November futures outages.
+6. Spot completeness across more pairs and months before any historical study; cause of the
    2026-10-13 16h spot incident.
-6. WebSocket behaviour in practice: message loss, resync frequency, latency from Romania.
+7. WebSocket behaviour in practice: message loss, resync frequency, latency from Romania.
 
 ## 8. Reproduction
 
@@ -260,6 +302,7 @@ python -m mmlab.orderbook.gate_coverage --help        # hourly completeness and 
 python -m mmlab.orderbook.gate_replay --help          # replay and integrity checks of hourly files
 python -m mmlab.orderbook.gate_reconcile --help       # trades vs book takes
 python -m mmlab.data_ingestion.gate_venues --help     # global vs Gate EU public data and latency
+python -m mmlab.data_ingestion.gate_rest_history --help   # venue-wide daily volume, trades API depth
 ```
 
 Raw files are cached under `data/raw/gate/` (not in git).

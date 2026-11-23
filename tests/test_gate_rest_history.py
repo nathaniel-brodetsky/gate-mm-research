@@ -70,9 +70,11 @@ class _Handler(BaseHTTPRequestHandler):
             rows = CANDLES.get(q["currency_pair"])
             return self._send(200, rows) if rows else self._send(400, {"label": "INVALID_CURRENCY_PAIR"})
         if u.path.endswith("/spot/trades"):
-            # history reaches back 30 days only
-            recent = int(q["from"]) >= int(q["to"]) - DAY and int(q["to"]) > int(q["now"]) - 31 * DAY
-            return self._send(200, [{"id": "1"}] if recent else [])
+            # like Gate on 2026-11-23: windows older than 30 days are rejected
+            if int(q["from"]) < int(q["now"]) - 30 * DAY:
+                msg = "for public trades older than 30 days, download from historical data instead"
+                return self._send(400, {"label": "INVALID_PARAM_VALUE", "message": msg})
+            return self._send(200, [{"id": "1"}] if q["currency_pair"] == "BTC_USDC" else [])
         return self._send(404, {})
 
 
@@ -130,7 +132,8 @@ def test_main_end_to_end(
     text = capsys.readouterr().out
     assert "3 pairs, 6 closed daily candles, failed pairs 1" in text
     assert "2026-11 ( 3 d)  USDC            600 [        200]  EUR            100 [         50]" in text
-    assert "1d: data  7d: data  30d: data  90d: empty  180d: empty  365d: empty" in text
+    assert "BTC_USDC         1d: data  7d: data  30d: data  90d: error: HTTP 400" in text
+    assert "for public trades older than 30 days" in text
     rows = list(csv.reader((tmp_path / "eu_venue_daily.csv").open()))
     assert rows[0] == ["day", "USDC", "EUR"]
     assert rows[2] == ["2026-11-02", "300", "50"]

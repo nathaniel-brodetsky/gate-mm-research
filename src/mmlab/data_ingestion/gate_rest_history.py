@@ -98,7 +98,8 @@ def probe_trade_depth(v: Venue, pair: str, now_s: int) -> dict[int, str]:
             rows, _ = v.get(f"/spot/trades?currency_pair={pair}&limit=1&from={start}&to={start + DAY_S}")
             out[d] = "data" if rows else "empty"
         except _ERRORS as e:
-            out[d] = f"error: {str(e)[:60]}"
+            msg = str(e)
+            out[d] = "error: " + (msg[msg.find("HTTP") :] if "HTTP" in msg else msg)[:200]
     return out
 
 
