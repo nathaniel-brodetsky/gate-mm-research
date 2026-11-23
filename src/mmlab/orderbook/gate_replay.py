@@ -67,9 +67,12 @@ class ChainReport:
 def replay(
     events: Iterable[BookEvent],
     on_snapshot: Callable[[L2Book], None] | None = None,
-    on_batch: Callable[[int, L2Book], None] | None = None,
+    on_batch: Callable[[int, L2Book, ReplayReport], None] | None = None,
 ) -> tuple[L2Book, ReplayReport]:
-    """Build the snapshot, then apply delta updates in 100 ms batches (rows sharing a timestamp)."""
+    """Build the snapshot, then apply delta updates in 100 ms batches (rows sharing a timestamp).
+
+    `on_batch(ts, book, report)` runs after each batch; the report holds the counters so far.
+    """
     book, rep = L2Book(), ReplayReport()
     it = iter(events)
     first_update: BookEvent | None = None
@@ -98,7 +101,7 @@ def replay(
         if book.is_crossed():
             rep.crossed_batches += 1
         if on_batch is not None:
-            on_batch(ts, book)
+            on_batch(ts, book, rep)
 
     updates = chain([first_update], it) if first_update is not None else iter(())
     for ev in updates:

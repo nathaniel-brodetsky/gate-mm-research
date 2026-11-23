@@ -37,3 +37,14 @@ the periods it will be tested on.
 
 Holdout pairs are not loaded, plotted or summarised until a hypothesis has been decided on the research
 pairs; then they are opened once per hypothesis, and that use is recorded in the hypothesis file.
+
+## Amendment 1 — 2026-11-23, after the selection, before any order book or trade data was loaded
+
+The research set contains SPYX_USDT, whose ticker suggests a tokenized equity (S&P 500 tracker), and
+TEVA_USDT may be one too. Fixed now, before any data of these pairs is loaded:
+
+- Decisions on H-001 and H-002 use all 24 research pairs as selected. No pair is replaced.
+- Every result is also reported without the pairs that asset metadata
+  (`configs/universe_U001_assets.json`, from `mmlab.data_ingestion.gate_assets`) identifies as
+  tokenized equities or other assets with external trading hours. The excluded pairs are listed here,
+  in a further amendment, before any result is computed.

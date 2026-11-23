@@ -78,7 +78,7 @@ def test_crossed_negative_nonmonotonic_lateset() -> None:
 def test_batches_group_rows_with_same_timestamp() -> None:
     rows = ["100,2,set,1,5,10,0", "100.1,2,make,1,1,11,1", "100.1,2,make,1,1,12,1", "100.2,2,take,1,1,13,1"]
     seen: list[int] = []
-    _, rep = gr.replay(_events(rows), on_batch=lambda ts, b: seen.append(ts))
+    _, rep = gr.replay(_events(rows), on_batch=lambda ts, b, r: seen.append(ts))
     assert rep.batches == 2
     assert seen == [100_100_000, 100_200_000]
 
