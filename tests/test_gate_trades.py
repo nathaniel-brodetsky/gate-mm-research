@@ -123,3 +123,28 @@ def test_reconcile_consumes_take_quantity() -> None:
     book[1] = BookEvent(101_100_000, "bid", "take", D(1), D(5), 11, 1)
     rep = rc.reconcile(book, trades)
     assert (rep.trades, rep.matched, rep.matched_qty) == (2, 1, D(3))
+
+
+def _ev(ts_ms: int, side: str, action: str, px: int, qty: int, uid: int) -> BookEvent:
+    return BookEvent(ts_ms * 1000, side, action, D(px), D(qty), uid, 0 if action == "set" else 1)  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize(
+    ("rows", "kind"),
+    [
+        ([], "no_row"),
+        ([(103_000, "ask", "take", 1, 5)], "no_row"),  # outside +-1 s
+        ([(101_000, "bid", "make", 1, 5)], "opposite_side_only"),
+        ([(101_000, "ask", "make", 1, 5)], "make_only"),
+        ([(101_000, "ask", "take", 1, 2)], "take_too_small"),
+        ([(101_000, "ask", "take", 1, 2), (101_100, "ask", "take", 1, 2)], "take_split"),
+    ],
+)
+def test_unmatched_trade_classification(rows: list[tuple[int, str, str, int, int]], kind: str) -> None:
+    book = [_ev(100_000, "ask", "set", 1, 10, 10)]
+    book += [_ev(ts, s, a, px, q, 11 + i) for i, (ts, s, a, px, q) in enumerate(rows)]
+    book.append(_ev(110_000, "ask", "make", 2, 1, 99))  # extends the book's time range
+    rep = rc.reconcile(book, [Trade(101_050_000, 1, D(1), D(3), "buy")])
+    assert (rep.trades, rep.matched) == (1, 0)
+    assert rep.unmatched == {kind: 1}
+    assert f"{kind}:1" in rc.describe(rep)

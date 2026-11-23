@@ -2,9 +2,13 @@
 
 Each trade is matched to take quantity on the side it hit (taker buy -> ask, taker sell -> bid), at the
 same price, within +-1 s, nearest batch first, consuming that quantity. Take rows of one level in one
-100 ms batch are pooled. The offset histogram
-(book batch timestamp minus trade timestamp, in 100 ms buckets) tells how batch timestamps relate to
-event time; the unmatched share of take volume is cancellations.
+100 ms batch are pooled. The offset histogram (book batch timestamp minus trade timestamp, in 100 ms
+buckets) shows how batch timestamps relate to event time; take volume not explained by trades is
+cancellations.
+
+Unmatched trades are classified by what the book shows at that level within +-1 s: nothing, only the
+opposite side, only `make` rows (a fill netted against a refill in the same batch), take quantity
+smaller than the trade, or enough take quantity split over several batches.
 
 Usage:
   python -m mmlab.orderbook.gate_reconcile --kind futures --trades TRADES.csv.gz BOOK_H12 BOOK_H13 ...
@@ -35,6 +39,9 @@ class _TakeRow:
     left: Decimal
 
 
+UNMATCHED_KINDS = ("no_row", "opposite_side_only", "make_only", "take_too_small", "take_split")
+
+
 @dataclass(slots=True)
 class ReconcileReport:
     trades: int = 0
@@ -44,6 +51,7 @@ class ReconcileReport:
     take_rows: int = 0
     take_qty: Decimal = Decimal(0)
     offsets: Counter[int] = field(default_factory=Counter)  # bucket -> matched trades
+    unmatched: Counter[str] = field(default_factory=Counter)  # kind -> trades
 
     def merge(self, o: ReconcileReport) -> None:
         self.trades += o.trades
@@ -53,12 +61,14 @@ class ReconcileReport:
         self.take_rows += o.take_rows
         self.take_qty += o.take_qty
         self.offsets.update(o.offsets)
+        self.unmatched.update(o.unmatched)
 
 
 def reconcile(book_events: Iterable[BookEvent], trades: Iterable[Trade]) -> ReconcileReport:
     """Trades must cover at least the book file's time range; only trades inside it are used."""
     rep = ReconcileReport()
     takes: dict[tuple[Side, Decimal], list[_TakeRow]] = defaultdict(list)
+    makes: dict[tuple[Side, Decimal], list[int]] = defaultdict(list)
     t_min: int | None = None
     t_max = 0
     for ev in book_events:
@@ -72,6 +82,8 @@ def reconcile(book_events: Iterable[BookEvent], trades: Iterable[Trade]) -> Reco
                 rows.append(_TakeRow(ev.ts_us, ev.qty))
             rep.take_rows += 1
             rep.take_qty += ev.qty
+        elif ev.action == "make":
+            makes[(ev.side, ev.price)].append(ev.ts_us)
     if t_min is None:
         return rep
     lo, hi = t_min + EDGE_US, t_max - EDGE_US
@@ -92,19 +104,45 @@ def reconcile(book_events: Iterable[BookEvent], trades: Iterable[Trade]) -> Reco
             rep.matched += 1
             rep.matched_qty += tr.qty
             rep.offsets[best_off // BUCKET_US] += 1
+        else:
+            rep.unmatched[_classify(tr, side, takes, makes)] += 1
     return rep
 
 
+def _classify(
+    tr: Trade,
+    side: Side,
+    takes: dict[tuple[Side, Decimal], list[_TakeRow]],
+    makes: dict[tuple[Side, Decimal], list[int]],
+) -> str:
+    def near(ts: int) -> bool:
+        return abs(ts - tr.ts_us) <= WINDOW_US
+
+    near_takes = [r for r in takes.get((side, tr.price), ()) if near(r.ts_us)]
+    if near_takes:
+        return "take_split" if sum(r.left for r in near_takes) >= tr.qty else "take_too_small"
+    if any(near(ts) for ts in makes.get((side, tr.price), ())):
+        return "make_only"
+    other: Side = "bid" if side == "ask" else "ask"
+    if any(near(r.ts_us) for r in takes.get((other, tr.price), ())) or any(
+        near(ts) for ts in makes.get((other, tr.price), ())
+    ):
+        return "opposite_side_only"
+    return "no_row"
+
+
 def describe(rep: ReconcileReport) -> str:
-    def pct(a: Decimal | int, b: Decimal | int) -> str:
-        return f"{100 * Decimal(a) / Decimal(b):.1f}%" if b else "n/a"
+    def pct(a: Decimal | int, b: Decimal | int, digits: int = 1) -> str:
+        return f"{100 * Decimal(a) / Decimal(b):.{digits}f}%" if b else "n/a"
 
     hist = "  ".join(f"[{k * 100:+d},{(k + 1) * 100:+d})ms:{v}" for k, v in sorted(rep.offsets.items()))
     return (
         f"trades {rep.trades}, matched {rep.matched} ({pct(rep.matched, rep.trades)}), "
         f"matched qty {pct(rep.matched_qty, rep.trade_qty)}; take rows {rep.take_rows}, "
-        f"take qty explained by trades {pct(rep.matched_qty, rep.take_qty)}\n"
-        f"  offset = book batch ts - trade ts: {hist or 'none'}"
+        f"take qty explained by trades {pct(rep.matched_qty, rep.take_qty, 4)}\n"
+        f"  offset = book batch ts - trade ts: {hist or 'none'}\n"
+        f"  unmatched: "
+        + ("  ".join(f"{k}:{rep.unmatched[k]}" for k in UNMATCHED_KINDS if rep.unmatched[k]) or "none")
     )
 
 
