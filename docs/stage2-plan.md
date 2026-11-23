@@ -12,9 +12,18 @@ Status: started 2026-11-23. No trading strategy in this stage.
 5. Descriptive facts and the tests of H-001 and H-002 on the development period, then validation.
    *(done: H-001 rejected, H-002 rejected; reports for [development](results/h001-h002-development.md)
    and [validation](results/h001-h002-validation.md))*
-6. Plan for a WebSocket recorder; where it runs depends on H-002. *(next. H-002 is rejected: most
-   impact arrives within 1 s, about 70% within the first 100 ms batch, so the recorder must capture
-   order book and trade events finer than 100 ms, with exchange timestamps)*
+6. Plan for a WebSocket recorder; where it runs depends on H-002. *(this step. H-002 is rejected:
+   most impact arrives within 1 s, about 70% within the first 100 ms batch, so the recorder must
+   capture order book and trade events finer than 100 ms, with exchange timestamps)*
+   - Documented (Spot WebSocket v4, read 2026-11-23): `spot.trades` is real time and
+     `create_time_ms` may carry decimals below 1 ms; `spot.book_ticker` updates every 10 ms;
+     `spot.obu` sends 50 levels every 20 ms or 400 levels every 100 ms, with `U`/`u` sequencing.
+     No connection limits and no server location are documented.
+   - Consequence if confirmed: from public channels the order book cannot be resolved below 20 ms
+     (best bid and ask: 10 ms), wherever the recorder runs.
+   - `mmlab.data_ingestion.gate_ws_probe` checks this from the owner's machine on pairs outside
+     U-001: message spacing, delay against exchange time, sequence breaks, disconnects, ping round
+     trip, and the API's addresses against AWS ip-ranges.
 7. Holdout for H-001 and H-002, opened once after 2026-12-01 (November trades): the 12 holdout pairs
    over 2026-08-01 – 2026-11-30 and the research pairs in November. It estimates the effects; the
    decisions stand.

@@ -13,3 +13,4 @@ Pygments==2.21.0
 pytest==9.2.0
 ruff==0.17.6
 typing_extensions==4.16.0
+websockets==17.4
