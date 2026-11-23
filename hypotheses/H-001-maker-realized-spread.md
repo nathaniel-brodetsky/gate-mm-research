@@ -1,7 +1,8 @@
 # H-001: Liquidity providers on illiquid Gate spot pairs earn a realized spread above the maker fee
 
-- **Status:** registered
+- **Status:** rejected
 - **Registered:** 2026-11-23 (before any order book or trade data of the U-001 pairs was examined)
+- **Decided:** 2026-11-23, on the development period (see Results)
 
 ## Economic rationale
 
@@ -70,7 +71,29 @@ Otherwise rejected. The holdout is then opened once to estimate the effect, not 
 
 | # | Date | Variant | Result | Commit |
 |---|---|---|---|---|
+| 1 | 2026-11-23 | Development, 24 research pairs, as registered | 2 of 24 reject after BH (12 required); median θ −9.63 bp; criterion not met | 35449bd |
+| 2 | 2026-11-23 | Development, 23 pairs without SPYX_USDT (D-001 amendment 2) | 2 of 23 reject after BH; median θ −9.38 bp; criterion not met | 35449bd |
 
 ## Results
 
-None yet.
+### Development period, 2026-08-01 – 2026-09-30
+
+Full tables: [docs/results/h001-h002-development.md](../docs/results/h001-h002-development.md), generated
+from `results/h001_h002/development.json` and `development_no_spyx.json`.
+
+- 2 of 24 pairs reject H0 after BH at q = 0.10: NAVX_USDT (θ = +11.1 bp, p = 0.0013) and BOS_USDT
+  (θ = +16.4 bp, p = 0.0042). 12 were required.
+- The point estimate of θ is positive in 5 of 24 pairs. Cross-pair median θ = −9.63 bp: the median
+  pair's RS̄(60 s) is +0.37 bp against a 10 bp fee.
+- Without SPYX_USDT: 2 of 23 reject, median θ = −9.38 bp.
+
+**Decision: rejected** under the registered criterion. Its development half fails, so the hypothesis
+cannot be accepted whatever the validation period shows. The validation period is still run and
+reported here; it does not change the decision. The holdout is opened once, together with H-002's,
+because both hypotheses use the same markouts and H-002 is not decided yet (November trades are
+published on 2026-12-01).
+
+Scope: the liquidity that traded on these pairs, volume-weighted as a whole, did not earn the VIP 0
+maker fee at 60 s. This does not test selective quoting (conditioning on book state or order flow),
+lower fee tiers, or the two pairs that passed. Each of these needs its own hypothesis, registered
+before it is tested on data not used here.

@@ -1,6 +1,6 @@
 # H-002: On illiquid Gate spot pairs most price impact after a trade arrives later than 1 s
 
-- **Status:** registered
+- **Status:** running
 - **Registered:** 2026-11-23 (before any order book or trade data of the U-001 pairs was examined)
 
 ## Economic rationale
@@ -64,7 +64,20 @@ Otherwise undecided, and latency stays an open question for the recorder plan.
 
 | # | Date | Variant | Result | Commit |
 |---|---|---|---|---|
+| 1 | 2026-11-23 | Development, 24 research pairs, as registered | S defined for 24; median S 0.867, 95% CI [0.724, 0.939] | 35449bd |
+| 2 | 2026-11-23 | Development, 23 pairs without SPYX_USDT (D-001 amendment 2) | median S 0.895, 95% CI [0.717, 0.945] | 35449bd |
 
 ## Results
 
-None yet.
+### Development period, 2026-08-01 – 2026-09-30
+
+Full tables, including the curve Λ(h) of every pair:
+[docs/results/h001-h002-development.md](../docs/results/h001-h002-development.md).
+
+- S is defined for all 24 pairs (Λ(300 s) > 0 in each). Cross-pair median S = 0.867, 95% CI
+  [0.724, 0.939]. Without SPYX_USDT: 0.895, 95% CI [0.717, 0.945].
+- Per pair, S ranges from 0.15 (SAITO_USDT) to 1.33 (ORCA_USDT). S > 1 in 3 pairs (BAND_USDT,
+  XT_USDT, ORCA_USDT): there the impact at 300 s is smaller than at 1 s.
+
+The lower end of the interval is above 0.5: the development half of the rejection criterion holds.
+**Not decided yet:** the decision needs the validation period, 2026-10-01 – 2026-10-31.

@@ -7,8 +7,11 @@ Status: started 2026-11-23. No trading strategy in this stage.
 3. Asset metadata for research pairs; top of book per batch with availability time and validity.
    *(done; SPYX_USDT flagged, D-001 amendment 2)*
 4. Dataset builder: download and validate archives for the research pairs, store top of book and
-   trades in Parquet with gap sentinels. *(this step)*
+   trades in Parquet with gap sentinels. *(done: 24 pairs, 2026-08-01 – 2026-10-31, 2208 hours each,
+   none missing; see [results/README.md](../results/README.md))*
 5. Descriptive facts and the tests of H-001 and H-002 on the development period, then validation.
+   *(this step; development done: H-001 rejected, H-002 waits for validation;
+   [report](results/h001-h002-development.md))*
 6. Plan for a WebSocket recorder; where it runs depends on H-002.
 
 Results are reported as a function of latency (1, 10, 100, 400 ms) wherever latency matters.
