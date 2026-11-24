@@ -6,6 +6,12 @@ files with `python -m mmlab.reporting.h001_h002_report`.
 
 Evaluation code (`mmlab.evaluation`, `mmlab.microstructure`) is the same at 35449bd and b0881fb.
 
+Reproducibility: rerunning a command on the same dataset gives the same integers and strings, but
+floats can differ in their last bits, because polars adds in parallel and the order of additions
+changes between runs. Two runs of the development evaluation differed by at most 4.1e-14 relative
+(2026-11-24). Check a rerun with `python -m mmlab.evaluation.compare new.json results/<file>
+--ignore role`, which accepts float differences up to 1e-12 absolute or 1e-9 relative.
+
 | File | Command | Code commit |
 |---|---|---|
 | `h001_h002/development.json` | `python -m mmlab.evaluation.h001_h002 data/processed/U001 --period development` | 35449bd |
