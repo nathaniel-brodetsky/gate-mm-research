@@ -1,0 +1,296 @@
+{
+  "calibration": "results/lab/daypools.json",
+  "reps": 800,
+  "resamples": 10000,
+  "seed": 20261124,
+  "results": {
+    "pooled/all/30d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.07125,
+        "mc_se": 0.009094877507421415
+      },
+      "reject": {
+        "rate": 0.92875,
+        "mc_se": 0.009094877507421419
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0
+    },
+    "pooled/all/30d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -1.0842021724855044e-19
+    },
+    "pooled/all/30d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.995,
+        "mc_se": 0.0024937421679075015
+      },
+      "reject": {
+        "rate": 0.005,
+        "mc_se": 0.0024937421679075006
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0010000000000000002
+    },
+    "pooled/all/30d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -0.0010451387848772543
+    },
+    "pooled/all/61d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.05,
+        "mc_se": 0.007705517503711221
+      },
+      "reject": {
+        "rate": 0.95,
+        "mc_se": 0.007705517503711224
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0
+    },
+    "pooled/all/61d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -1.0842021724855044e-19
+    },
+    "pooled/all/61d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.995,
+        "mc_se": 0.0024937421679075015
+      },
+      "reject": {
+        "rate": 0.005,
+        "mc_se": 0.0024937421679075006
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0010000000000000002
+    },
+    "pooled/all/61d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -0.0010451387848772543
+    },
+    "pooled/q80/30d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.025,
+        "mc_se": 0.005519850541454904
+      },
+      "reject": {
+        "rate": 0.975,
+        "mc_se": 0.005519850541454907
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.66625,
+      "mean_true_median": 0.0
+    },
+    "pooled/q80/30d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0025,
+        "mc_se": 0.001765555861478192
+      },
+      "reject": {
+        "rate": 0.9975,
+        "mc_se": 0.0017655558614781731
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.67125,
+      "mean_true_median": 2.416560535549009e-05
+    },
+    "pooled/q80/30d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.04125,
+        "mc_se": 0.007031041663580155
+      },
+      "reject": {
+        "rate": 0.95875,
+        "mc_se": 0.007031041663580156
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.67375,
+      "mean_true_median": 0.0010238455311123709
+    },
+    "pooled/q80/30d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.48375,
+        "mc_se": 0.017668331043847917
+      },
+      "reject": {
+        "rate": 0.51625,
+        "mc_se": 0.017668331043847917
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.67875,
+      "mean_true_median": 0.0034672890032557704
+    },
+    "pooled/q80/61d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.04,
+        "mc_se": 0.006928203230275509
+      },
+      "reject": {
+        "rate": 0.96,
+        "mc_se": 0.006928203230275512
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.21875,
+      "mean_true_median": 0.0
+    },
+    "pooled/q80/61d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.21625,
+      "mean_true_median": 1.4334753602547102e-05
+    },
+    "pooled/q80/61d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.02,
+        "mc_se": 0.0049497474683058325
+      },
+      "reject": {
+        "rate": 0.98,
+        "mc_se": 0.004949747468305834
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.2375,
+      "mean_true_median": 0.0010139460920216168
+    },
+    "pooled/q80/61d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.59125,
+        "mc_se": 0.017380788154597593
+      },
+      "reject": {
+        "rate": 0.40875,
+        "mc_se": 0.017380788154597596
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.2175,
+      "mean_true_median": 0.0034579839877593803
+    }
+  }
+}

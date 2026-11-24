@@ -1,0 +1,296 @@
+{
+  "calibration": "results/lab/calibration.json",
+  "reps": 800,
+  "resamples": 10000,
+  "seed": 20261124,
+  "results": {
+    "pooled/all/30d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.02875,
+        "mc_se": 0.005907985856025723
+      },
+      "reject": {
+        "rate": 0.97125,
+        "mc_se": 0.005907985856025729
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0
+    },
+    "pooled/all/30d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -1.0842021724855044e-19
+    },
+    "pooled/all/30d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.9675,
+        "mc_se": 0.00626934506148768
+      },
+      "reject": {
+        "rate": 0.0325,
+        "mc_se": 0.006269345061487683
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0010000000000000002
+    },
+    "pooled/all/30d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -0.0010451387848772543
+    },
+    "pooled/all/61d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0325,
+        "mc_se": 0.006269345061487683
+      },
+      "reject": {
+        "rate": 0.9675,
+        "mc_se": 0.00626934506148768
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0
+    },
+    "pooled/all/61d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -1.0842021724855044e-19
+    },
+    "pooled/all/61d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.97375,
+        "mc_se": 0.005652536764586321
+      },
+      "reject": {
+        "rate": 0.02625,
+        "mc_se": 0.005652536764586321
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": 0.0010000000000000002
+    },
+    "pooled/all/61d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 24.0,
+      "mean_true_median": -0.0010451387848772543
+    },
+    "pooled/q80/30d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.01375,
+        "mc_se": 0.004117180087754239
+      },
+      "reject": {
+        "rate": 0.98625,
+        "mc_se": 0.004117180087754245
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.26,
+      "mean_true_median": 0.0
+    },
+    "pooled/q80/30d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.25,
+      "mean_true_median": 1.1380350616813634e-05
+    },
+    "pooled/q80/30d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.01625,
+        "mc_se": 0.004470170228861536
+      },
+      "reject": {
+        "rate": 0.98375,
+        "mc_se": 0.004470170228861535
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.245,
+      "mean_true_median": 0.0010085834110227143
+    },
+    "pooled/q80/30d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.50875,
+        "mc_se": 0.017674962429238713
+      },
+      "reject": {
+        "rate": 0.49125,
+        "mc_se": 0.017674962429238713
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.2675,
+      "mean_true_median": 0.0034547323729764647
+    },
+    "pooled/q80/61d/zero": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.02375,
+        "mc_se": 0.005383532471806964
+      },
+      "reject": {
+        "rate": 0.97625,
+        "mc_se": 0.005383532471806969
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.84875,
+      "mean_true_median": 0.0
+    },
+    "pooled/q80/61d/centred": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "reject": {
+        "rate": 1.0,
+        "mc_se": 0.0
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.8325,
+      "mean_true_median": 3.0635677555682806e-06
+    },
+    "pooled/q80/61d/centred_plus10bp": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.00375,
+        "mc_se": 0.002161000202452559
+      },
+      "reject": {
+        "rate": 0.99625,
+        "mc_se": 0.002161000202452568
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.85875,
+      "mean_true_median": 0.0010025834563908897
+    },
+    "pooled/q80/61d/explored": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.49625,
+        "mc_se": 0.017677172338216314
+      },
+      "reject": {
+        "rate": 0.50375,
+        "mc_se": 0.017677172338216314
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 16.84,
+      "mean_true_median": 0.003446598489682715
+    }
+  }
+}
