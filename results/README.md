@@ -40,6 +40,8 @@ calibrated level.
 
 `h004_explore/quote_pause.json` is `python -m mmlab.microstructure.quote_pause data/processed/U001`:
 quote pauses on unusual prices or trading, exploration period, research pairs (stage 3, step 3a).
+`h004_explore/state.json` is `python -m mmlab.microstructure.state_explore data/processed/U001`:
+realized spread by the as-of state before the trade (stage 3, step 4a).
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.

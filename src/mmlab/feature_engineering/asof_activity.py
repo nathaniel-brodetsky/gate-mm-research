@@ -15,6 +15,7 @@ Signals:
 from __future__ import annotations
 
 import warnings
+from datetime import UTC, datetime
 
 import numpy as np
 import polars as pl
@@ -23,6 +24,11 @@ from numpy.typing import NDArray
 from mmlab.microstructure.conditional import book_table
 
 DAY_S = 86_400
+
+
+def epoch_s(day: str) -> int:
+    """UTC midnight of an ISO date in seconds since the epoch."""
+    return int(datetime.fromisoformat(day).replace(tzinfo=UTC).timestamp())
 
 
 def mid_before(tob: pl.DataFrame, grid_s: NDArray[np.int64]) -> NDArray[np.float64]:

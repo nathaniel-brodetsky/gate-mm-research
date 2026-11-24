@@ -30,7 +30,7 @@ import statistics
 import sys
 from collections.abc import Mapping, Sequence
 from concurrent.futures import ProcessPoolExecutor
-from datetime import UTC, date, datetime
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -42,6 +42,7 @@ from mmlab.evaluation.h003 import MAKER_FEE, MIN_DAYS, MIN_TRADES, states
 from mmlab.feature_engineering.asof_activity import (
     DAY_S,
     daily_baseline,
+    epoch_s,
     grid_index,
     mid_before,
     trades_before,
@@ -64,10 +65,6 @@ def rule_name(signal: str, w: int, k: float) -> str:
 RULES = tuple(rule_name(s, w, k) for s in SIGNALS for w in WINDOWS_S for k in MULTIPLES)
 
 
-def _epoch_s(day: str) -> int:
-    return int(datetime.fromisoformat(day).replace(tzinfo=UTC).timestamp())
-
-
 def pause_flags(
     tob: pl.DataFrame,
     trade_ts: NDArray[np.int64],
@@ -77,8 +74,8 @@ def pause_flags(
     latency_us: int,
 ) -> dict[str, NDArray[np.bool_]]:
     """For every rule, whether each trade at ts_us falls into a pause. trade_ts: all trades, sorted."""
-    g0 = _epoch_s(start)
-    n = (_epoch_s(end) - g0) // DAY_S * DAY_S
+    g0 = epoch_s(start)
+    n = (epoch_s(end) - g0) // DAY_S * DAY_S
     grid = g0 + np.arange(n, dtype=np.int64)
     gi = grid_index(ts_us, g0, latency_us)
     known = (gi >= 0) & (gi < n)

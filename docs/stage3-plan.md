@@ -244,6 +244,15 @@ result. No orders, no keys: research on public data only.
 4. Feature library on the archive: quoted spread, imbalance, depth (if built), volatility, trade flow
    and its sign autocorrelation, time since the last trade, price impact per unit volume (Kyle's
    lambda), and topological features if step 3 passes.
+   4a. Realized spread by as-of state *(this step)*: `python -m mmlab.microstructure.state_explore`
+       cuts the trades of the exploration period into fixed buckets of five features known 1 s
+       before the trade (`mmlab.feature_engineering.trade_state`): top-of-book imbalance and taker
+       flow over 60 and 300 s, both signed so that positive points the taker's way; time since the
+       last trade; the mid's range over 300 s against its 7-day mean. Per bucket: the median over
+       pairs (at least 30 trades on 5 days) of theta, for all trades and for half-spreads of at least
+       80 bp. The taker side, which `h003.states` does not return, is recovered by repeating its
+       filter and checking that every row lines up; registered code is not touched before H-003 is
+       decided.
 5. Exploration on the exploration data, then one registered batch H-004… under D-002 before
    2027-01-01, tested on December.
 6. A queue-aware event-driven simulator (fills from the archive's make/take deltas, never on a price
