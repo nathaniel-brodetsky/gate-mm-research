@@ -34,12 +34,36 @@ result. No orders, no keys: research on public data only.
      true median of 0 in 2.4–3.9% of cases (nominal 2.5%).
    - The registered H-003 rule in a synthetic November accepts in 50.7% of months if every pair's
      August–October effect persists, 44.9% if it halves and 4.0% if it is absent.
-2. If the lab finds a method miscalibrated, *(this step: `mmlab.evaluation.day_tests` holds five
+2. If the lab finds a method miscalibrated, *(done 2026-11-24: `mmlab.evaluation.day_tests` holds five
    candidates; `python -m mmlab.evaluation.lab compare` runs them on the same synthetic months, with
-   Benjamini–Hochberg and Benjamini–Yekutieli on top)* compare alternatives on the same synthetic data (for
+   Benjamini–Hochberg and Benjamini–Yekutieli on top; `results/lab/compare.json`)* compare alternatives on the same synthetic data (for
    example a studentized or wider-block bootstrap, a t-test on daily values with a HAC variance,
    sign-flip tests over days, a correction of the false discovery rate for dependence) and register
    the one that holds its size for the next batch.
+   Findings (400 synthetic months per pair and setting; size = rejections at 5% with theta 0):
+   - No candidate holds 5% over 30 days on data like ours. The bootstrap-t is best: median size 7.6–7.7%
+     (worst pair 21–23%), interval coverage 90.2–90.7%. Over 61 days: 6.5% (worst 16.3–16.5%),
+     coverage 92.1–92.6%. On trades at quoted half-spreads of at least 80 bp (30 days): 8.5% with the
+     Politis–White block (worst 11.3%), coverage 88.2%. The registered percentile bootstrap gives
+     9.1% and 7.9%, the Newey–West t test 10.1% and 7.6%.
+   - Studentizing costs some power: rejection at +10 bp, all trades, 82% against 90% over 30 days
+     and 96.5% against 98.5% over 61 days.
+   - Across 24 pairs with no effect anywhere, a false discovery after Benjamini–Hochberg on bootstrap-t
+     p-values happens in 35–37% of 30-day months and 26–29% of 61-day periods; after
+     Benjamini–Yekutieli in 19–20% and 11–12% (target 10%). With half the pairs at +10 bp,
+     Benjamini–Yekutieli on bootstrap-t keeps the false discovery rate at 5.2–5.3% (30 days) and
+     4.0–4.2% (61 days), with power 46–47% and 57–58%.
+   - The calibration behind these numbers: trade-level noise has very heavy tails (fitted Student df
+     4.0–4.7 on all trades, up to 9.4 on wide-spread trades); daily trade counts are strongly over-dispersed (gamma shape 0.03–3.4, except XT_USDT and
+     SAITO_USDT); SUKU_USDT and DEEP_USDT hit the AR limit of 0.9, which produces the worst cases.
+   - Proposed standard, to be fixed in decision D-002 once step 2b confirms the generator: per-pair
+     tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
+     test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
+     over pairs, which holds its size.
+2b. Realism of the generator *(this step)*: `python -m mmlab.evaluation.lab realism` ranks five real
+    statistics of each pair (daily theta spread, lag-1 correlation and tails, share of days with
+    trades, variation of daily counts) among 1,000 synthetic periods. Ranks piling up near 0 or 1
+    show what the lab gets wrong, and how far its conclusions can be trusted.
 3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.

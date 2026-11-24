@@ -281,3 +281,58 @@ def test_show_and_compare_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]
     assert doc["results"]["bhcmp/all/30d/all_null"]["reps"] == 8  # 8 chunks of 1 merged
     assert "compare/all/30d/size/A_USDT" in doc["results"]
     assert "all/30d:" in capsys.readouterr().out
+
+
+def test_day_stats_by_hand() -> None:
+    den = np.array([1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+    num = np.array([1.0, 2.0, 0.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0])
+    counts = np.array([1, 1, 0, 1, 1, 1, 1, 1, 1, 1])
+    st = lab.day_stats(num, den, counts)
+    th = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0])
+    assert st["day_sd"] == pytest.approx(th.std(ddof=1))
+    assert st["active_share"] == pytest.approx(0.9)
+    assert st["day_ac1"] == pytest.approx(1.0)  # pairs (1,2), (3,4), ..., (8,9): the gap on day 2 is skipped
+    q05, q25, q75, q95 = np.percentile(th, [5, 25, 75, 95])
+    assert st["day_tail"] == pytest.approx((q95 - q05) / (q75 - q25))
+    assert st["count_cv"] == pytest.approx(counts.std() / counts.mean())
+    short = lab.day_stats(num[:3], den[:3], counts[:3])
+    assert np.isnan(short["day_tail"])
+    assert np.isnan(short["day_ac1"])
+
+
+def test_mid_rank() -> None:
+    assert lab._mid_rank([1.0, 1.0, 1.0], 1.0) == 0.5
+    assert lab._mid_rank([0.0, 1.0, 2.0, 3.0], 1.5) == 0.5
+    assert lab._mid_rank([0.0, 1.0, 2.0, 3.0], 2.0) == pytest.approx(2.5 / 4)
+    assert np.isnan(lab._mid_rank([], 1.0))
+    assert np.isnan(lab._mid_rank([1.0], float("nan")))
+
+
+def test_realism_ranks_fit_and_misfit() -> None:
+    p = mp.PairProfile(100.0, 1.0, 3.0, 1.0, 0.01, 1000.0, 0.002, 0.3)
+    day, v, x = mp.simulate_trades(p, 0.0, 92, np.random.default_rng(41))
+    fit = lab.realism_check(day, v, x, 92, p, 0.0, reps=200, seed=42)
+    assert all(0.02 < r < 0.98 for r in fit["rank"].values())
+    sticky = mp.PairProfile(100.0, 1.0, 3.0, 1.0, 0.0001, 1000.0, 0.003, 0.9)
+    day, v, x = mp.simulate_trades(sticky, 0.0, 92, np.random.default_rng(43))
+    loose = mp.PairProfile(100.0, 1.0, 3.0, 1.0, 0.0001, 1000.0, 0.003, 0.0)
+    miss = lab.realism_check(day, v, x, 92, loose, 0.0, reps=200, seed=44)
+    assert miss["rank"]["day_ac1"] > 0.975  # the real days are far more persistent than the profile says
+    assert set(miss["sim_median"]) == set(lab.REALISM_STATS)
+
+
+def test_realism_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    uni = tmp_path / "u.json"
+    uni.write_text(json.dumps({"research": {"0": ["A_USDT"]}, "holdout": {"0": ["H_USDT"]}}))
+    ds = _dataset(tmp_path, ["A_USDT"], "2026-08-01T00", "2026-10-31T23", days=92)
+    cal = tmp_path / "cal.json"
+    assert lab.main(["calibrate", str(ds), "--universe", str(uni), "--out", str(cal)]) == 0
+    out = tmp_path / "real.json"
+    assert lab.main(["realism", str(ds), str(cal), "--reps", "20", "--workers", "1", "--out", str(out)]) == 0
+    res = json.loads(out.read_text())["results"]
+    par = tmp_path / "real2.json"
+    assert lab.main(["realism", str(ds), str(cal), "--reps", "20", "--workers", "2", "--out", str(par)]) == 0
+    assert json.loads(par.read_text())["results"] == res  # same seeds, same answer in parallel
+    assert set(res) == {"all/A_USDT", "q80/A_USDT"}
+    assert res["all/A_USDT"]["real"]["active_share"] == 1.0
+    assert "median rank" in capsys.readouterr().out

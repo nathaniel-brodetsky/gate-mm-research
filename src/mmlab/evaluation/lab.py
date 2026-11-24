@@ -119,39 +119,45 @@ def mean_pairwise_corr(series: Sequence[NDArray[np.float64]], min_overlap: int =
     return float(np.mean(cs)) if cs else 0.0
 
 
+def pair_trades(
+    ds: Path, pair: str, start: str, end: str
+) -> dict[str, tuple[NDArray[np.int64], NDArray[np.float64], NDArray[np.float64]]]:
+    """Per subset ("all", "q80"): day index from start, quote value, markout net of the fee.
+
+    Only trades whose RS(60 s) is known are kept.
+    """
+    d0 = date.fromisoformat(start)
+    st = in_period(
+        states(
+            pl.read_parquet(ds / "trades" / f"{pair}.parquet"),
+            pl.read_parquet(ds / "tob" / f"{pair}.parquet"),
+        ),
+        start,
+        end,
+    )
+    out = {}
+    for name, sub in (("all", st), ("q80", eligible(st, THRESHOLD_BP))):
+        rs = sub.filter(pl.col("rs_60s").is_not_null())
+        day = np.array([(d - d0).days for d in rs["day"].to_list()], dtype=np.int64)
+        out[name] = (day, rs["v"].to_numpy(), rs["rs_60s"].to_numpy() - MAKER_FEE)
+    return out
+
+
 def calibrate_dataset(ds: Path, pairs: Sequence[str], start: str, end: str) -> dict[str, Any]:
     n_days = (date.fromisoformat(end) - date.fromisoformat(start)).days
-    d0 = date.fromisoformat(start)
     out: dict[str, Any] = {"period": [start, end], "n_days": n_days, "subsets": {}}
     per: dict[str, dict[str, Any]] = {"all": {}, "q80": {}}
     daily: dict[str, list[NDArray[np.float64]]] = {"all": [], "q80": []}
     for x in pairs:
-        st = in_period(
-            states(
-                pl.read_parquet(ds / "trades" / f"{x}.parquet"), pl.read_parquet(ds / "tob" / f"{x}.parquet")
-            ),
-            start,
-            end,
-        )
-        for name, sub in (("all", st), ("q80", eligible(st, THRESHOLD_BP))):
-            rs = sub.filter(pl.col("rs_60s").is_not_null())
-            day = np.array([(d - d0).days for d in rs["day"].to_list()], dtype=np.int64)
+        for name, (day, v, xs) in pair_trades(ds, x, start, end).items():
             n_active = len(set(day.tolist()))
-            entry: dict[str, Any] = {"trades": rs.height, "active_days": n_active}
-            if rs.height >= MIN_TRADES and n_active >= MIN_DAYS:
-                prof, theta, th_d = calibrate(
-                    day, rs["v"].to_numpy(), rs["rs_60s"].to_numpy() - MAKER_FEE, n_days
-                )
+            entry: dict[str, Any] = {"trades": int(day.size), "active_days": n_active}
+            if day.size >= MIN_TRADES and n_active >= MIN_DAYS:
+                prof, theta, th_d = calibrate(day, v, xs, n_days)
                 entry.update(profile=asdict(prof), theta=theta)
                 daily[name].append(th_d)
             else:
-                v = rs["v"].to_numpy()
-                entry.update(
-                    profile=None,
-                    theta=float((v * (rs["rs_60s"].to_numpy() - MAKER_FEE)).sum() / v.sum())
-                    if v.size
-                    else None,
-                )
+                entry.update(profile=None, theta=float((v * xs).sum() / v.sum()) if v.size else None)
             per[name][x] = entry
     for name in per:
         ars = [e["profile"]["day_ar"] for e in per[name].values() if e["profile"]]
@@ -323,6 +329,138 @@ def h003_check(
         **{k: _rate(v, reps) for k, v in outcomes.items()},
         "mean_counted_pairs": float(np.mean(counted)),
     }
+
+
+# ---------------------------------------------------------------- realism of the generator
+
+REALISM_STATS = ("day_sd", "day_ac1", "active_share", "day_tail", "count_cv")
+
+
+def day_stats(
+    num: NDArray[np.float64], den: NDArray[np.float64], counts: NDArray[np.int64]
+) -> dict[str, float]:
+    """Statistics of a month of daily sums that the generator should reproduce.
+
+    day_sd: standard deviation of daily theta; day_ac1: its lag-1 correlation over consecutive days with
+    trades; active_share: share of days with trades; day_tail: (q95 - q05) / (q75 - q25) of daily theta
+    (about 2.4 for a normal distribution, larger with heavy tails); count_cv: coefficient of variation of
+    daily trade counts. nan where undefined.
+    """
+    active = den > 0
+    th = np.full(den.size, np.nan)
+    th[active] = num[active] / den[active]
+    obs = th[active]
+    out = {
+        "day_sd": float(obs.std(ddof=1)) if obs.size > 1 else math.nan,
+        "active_share": float(active.mean()),
+    }
+    both = active[1:] & active[:-1]
+    a, b = th[1:][both], th[:-1][both]
+    out["day_ac1"] = (
+        float(np.corrcoef(a, b)[0, 1]) if both.sum() >= 3 and a.std() > 0 and b.std() > 0 else math.nan
+    )
+    if obs.size >= 8:
+        q05, q25, q75, q95 = np.percentile(obs, [5, 25, 75, 95])
+        out["day_tail"] = float((q95 - q05) / (q75 - q25)) if q75 > q25 else math.nan
+    else:
+        out["day_tail"] = math.nan
+    c = counts.astype(float)
+    out["count_cv"] = float(c.std() / c.mean()) if c.mean() > 0 else math.nan
+    return out
+
+
+def _mid_rank(sims: Sequence[float], real: float) -> float:
+    """Share of synthetic values below the real one, ties counted half (so 1.0 vs all 1.0 gives 0.5)."""
+    if not sims or math.isnan(real):
+        return math.nan
+    a = np.asarray(sims)
+    return float((np.sum(a < real) + 0.5 * np.sum(a == real)) / a.size)
+
+
+def realism_check(
+    day: NDArray[np.int64],
+    v: NDArray[np.float64],
+    x: NDArray[np.float64],
+    n_days: int,
+    profile: PairProfile,
+    theta: float,
+    reps: int,
+    seed: int,
+) -> dict[str, Any]:
+    """Rank of each real statistic among `reps` synthetic periods of the same length (0..1; nan if undefined).
+
+    A generator that fits gives ranks spread evenly between 0 and 1 across pairs; ranks piling up near 0 or
+    1 show what it gets wrong.
+    """
+    real = day_stats(
+        np.bincount(day, weights=v * x, minlength=n_days),
+        np.bincount(day, weights=v, minlength=n_days),
+        np.bincount(day, minlength=n_days),
+    )
+    sims: dict[str, list[float]] = {k: [] for k in REALISM_STATS}
+    for r in range(reps):
+        st = day_stats(*simulate_days(profile, theta, n_days, np.random.default_rng([seed, r])))
+        for k in REALISM_STATS:
+            if not math.isnan(st[k]):
+                sims[k].append(st[k])
+    ranks = {k: _mid_rank(sims[k], real[k]) for k in REALISM_STATS}
+    return {
+        "real": real,
+        "rank": ranks,
+        "sim_median": {k: float(np.median(sims[k])) if sims[k] else math.nan for k in REALISM_STATS},
+    }
+
+
+def _realism_pair(ds: Path, cal: dict[str, Any], pair: str, reps: int, seed: int) -> dict[str, Any]:
+    start, end = cal["period"]
+    n_days = int(cal["n_days"])
+    trades = pair_trades(ds, pair, start, end)
+    out = {}
+    for name in ("all", "q80"):
+        e = cal["subsets"][name]["pairs"][pair]
+        if e["profile"]:
+            day, v, x = trades[name]
+            out[f"{name}/{pair}"] = realism_check(
+                day, v, x, n_days, PairProfile(**e["profile"]), float(e["theta"]), reps, seed
+            )
+    return out
+
+
+def realism_dataset(ds: Path, cal: dict[str, Any], reps: int, seed: int, workers: int = 1) -> dict[str, Any]:
+    pairs = list(cal["subsets"]["all"]["pairs"])
+    args = [(ds, cal, pair, reps, seed * 1000 + i) for i, pair in enumerate(pairs)]
+    out: dict[str, Any] = {}
+    if workers <= 1:
+        parts = [_realism_pair(*a) for a in args]
+    else:
+        with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn")) as ex:
+            parts = list(ex.map(_realism_pair, *zip(*args, strict=True)))
+    for part in parts:
+        out.update(part)
+    return out
+
+
+def summarize_realism(res: dict[str, Any]) -> str:
+    lines = [
+        "rank of the real statistic among synthetic periods: 0.5 = typical; below 0.025 or above 0.975 ="
+        " the generator misses it"
+    ]
+    for name in ("all", "q80"):
+        items = {k.split("/", 1)[1]: v for k, v in res.items() if k.startswith(name + "/")}
+        if not items:
+            continue
+        lines.append(f"{name}: {len(items)} pairs")
+        for st in REALISM_STATS:
+            ranks = [v["rank"][st] for v in items.values() if not math.isnan(v["rank"][st])]
+            low = [p for p, v in items.items() if v["rank"][st] < 0.025]
+            high = [p for p, v in items.items() if v["rank"][st] > 0.975]
+            med = statistics.median(ranks) if ranks else math.nan
+            lines.append(
+                f"  {st:13} median rank {med:.2f}  below 2.5%: {len(low):2}  above 97.5%: {len(high):2}"
+                + (f"  (low: {', '.join(low[:4])})" if low else "")
+                + (f"  (high: {', '.join(high[:4])})" if high else "")
+            )
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------- method comparison (stage 3, step 2)
@@ -677,6 +815,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     r.add_argument("--seed", type=int, default=20261124)
     r.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     r.add_argument("--out", required=True)
+    rl = sub.add_parser("realism", help="compare real daily statistics with the calibrated generator")
+    rl.add_argument("dataset")
+    rl.add_argument("calibration")
+    rl.add_argument("--reps", type=int, default=1000)
+    rl.add_argument("--seed", type=int, default=20261124)
+    rl.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
+    rl.add_argument("--out", required=True)
     sh = sub.add_parser("show", help="print a calibration")
     sh.add_argument("calibration")
     cm = sub.add_parser("compare", help="compare the day tests of day_tests.METHODS")
@@ -687,6 +832,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     cm.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     cm.add_argument("--out", required=True)
     a = p.parse_args(argv)
+    if a.cmd == "realism":
+        cal = json.loads(Path(a.calibration).read_text())
+        res = realism_dataset(Path(a.dataset), cal, a.reps, a.seed, a.workers)
+        Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.out).write_text(
+            json.dumps(
+                {"calibration": a.calibration, "reps": a.reps, "seed": a.seed, "results": res}, indent=2
+            )
+            + "\n"
+        )
+        print(summarize_realism(res))
+        return 0
     if a.cmd == "show":
         print(show(json.loads(Path(a.calibration).read_text())))
         return 0
