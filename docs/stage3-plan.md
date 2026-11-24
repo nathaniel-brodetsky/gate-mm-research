@@ -244,15 +244,34 @@ result. No orders, no keys: research on public data only.
 4. Feature library on the archive: quoted spread, imbalance, depth (if built), volatility, trade flow
    and its sign autocorrelation, time since the last trade, price impact per unit volume (Kyle's
    lambda), and topological features if step 3 passes.
-   4a. Realized spread by as-of state *(this step)*: `python -m mmlab.microstructure.state_explore`
-       cuts the trades of the exploration period into fixed buckets of five features known 1 s
-       before the trade (`mmlab.feature_engineering.trade_state`): top-of-book imbalance and taker
-       flow over 60 and 300 s, both signed so that positive points the taker's way; time since the
-       last trade; the mid's range over 300 s against its 7-day mean. Per bucket: the median over
-       pairs (at least 30 trades on 5 days) of theta, for all trades and for half-spreads of at least
-       80 bp. The taker side, which `h003.states` does not return, is recovered by repeating its
-       filter and checking that every row lines up; registered code is not touched before H-003 is
-       decided.
+   4a. Realized spread by as-of state *(done 2026-11-24, `results/h004_explore/state.json`)*: `python -m
+       mmlab.microstructure.state_explore` cuts the trades of the exploration period into fixed buckets
+       of five features known 1 s before the trade (`mmlab.feature_engineering.trade_state`):
+       top-of-book imbalance and taker flow over 60 and 300 s, both signed so that positive points the
+       taker's way; time since the last trade; the mid's range over 300 s against its 7-day mean. Per
+       bucket: the median over pairs (at least 30 trades on 5 days) of theta, for all trades and for
+       half-spreads of at least 80 bp. The taker side, which `h003.states` does not return, is
+       recovered by repeating its filter and checking that every row lines up; registered code is not
+       touched before H-003 is decided.
+       Findings (median over pairs; exploration, about 60 buckets, no inference):
+       - All trades: every bucket is between −13.7 and −6.9 bp. The state moves theta by about 3 bp at
+         most: trades within 1 s of the previous trade are the worst (−13.7 bp; 10–60 s after: −10.6),
+         a book leaning the taker's way is slightly worse than a neutral one (−12.3 against −10.7), and
+         the relative range does not matter (−10.5 to −11.3). No state of these features makes
+         quoting on all trades pay against the 10 bp fee.
+       - Wide-spread trades: theta is positive in every bucket but one family. When the taker trades
+         against strong recent flow (signed flow below −0.6), theta is −12.3 bp over 300 s and +0.2 bp
+         over 60 s, against +23 to +61 bp in the other buckets of the 300-s flow. Picked from about 60
+         cells after looking: a candidate refinement of H-003, not a finding.
+       - Wide spreads come with turbulence: 78% of their volume trades while the 300-s range is above
+         five times its 7-day mean (theta +35.1 bp there).
+       Economics: theta is measured against the mid 60 s later, and when the spread is wide the mid is
+       not a price one can trade at. The maker must unwind: crossing the spread again cost a median of
+       71 bp at 60 s in the H-003 dry run (exit markout), while waiting for a fill on the other side
+       carries inventory risk through the same turbulent minutes. Such trades came to about 32,000 USDT
+       a day over all 24 pairs (H-003). Whether the wide-spread effect is money therefore depends on
+       round trips that only a queue-aware simulator can measure (step 6), which moves step 6 ahead of
+       further feature work.
 5. Exploration on the exploration data, then one registered batch H-004… under D-002 before
    2027-01-01, tested on December.
 6. A queue-aware event-driven simulator (fills from the archive's make/take deltas, never on a price
