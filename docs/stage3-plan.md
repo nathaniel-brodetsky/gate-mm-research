@@ -278,3 +278,15 @@ result. No orders, no keys: research on public data only.
    touch) for whatever survives step 5, with results as a function of latency. Public data resolve the
    book to 20 ms at best (WebSocket) and 100 ms in the archive, so 100 and 400 ms can be simulated and
    1 and 10 ms cannot.
+   6a. Fills at the back of the queue *(this step)*: `mmlab.execution_simulator.queue` places virtual
+       orders at the best bid and ask and fills them only from archived trades: an order joins at the
+       end of the 100 ms batch it arrives in (300 ms after the decision) behind everything displayed
+       at its price; trades at its price consume the queue ahead first; a trade through its price
+       fills what is left; later valid books cap the queue ahead at the displayed size and empty it
+       when the level is gone; post-only orders that would cross are not placed. A one-pass engine is
+       checked against a per-order reference on random books. `python -m
+       mmlab.execution_simulator.fill_explore` places such orders every 60 s on both sides (10 USDT,
+       cancelled after 300 s) over the exploration period and compares, per pair and for orders
+       decided at half-spreads of at least 80 bp, the fill rate, the wait and the theta of the fills
+       against the average trade, and the theta after closing across the spread 60 s later (maker and
+       taker fee).
