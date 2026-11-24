@@ -16,12 +16,27 @@ result. No orders, no keys: research on public data only.
 
 ## Steps
 
-1. Synthetic lab for the statistical methods *(this step)*. The generator
+1. Synthetic lab for the statistical methods *(done 2026-11-24, `results/lab/`)*. The generator
    (`mmlab.stochastic_models.markout_panel`) is calibrated per pair on the exploration period; the lab
    (`mmlab.evaluation.lab`) measures the coverage and size of the day bootstrap (30 and 61 days), the
    false discovery rate of Benjamini–Hochberg across 24 dependent pairs, the coverage of the bootstrap
    over pairs, and the power of the registered H-003 rule in November.
-2. If the lab finds a method miscalibrated, compare alternatives on the same synthetic data (for
+   Findings (synthetic months calibrated on the exploration period, 400 repetitions per check):
+   - The registered day bootstrap (stationary blocks of mean 3 days, percentile interval) is too
+     liberal. With a true theta of 0 it rejects at the 5% level in 9.5% of 30-day months for the
+     median pair (7.9% over 61 days), and in up to 30.2% for DEEP_USDT. Its 95% interval covers the
+     truth in 87.5% of 30-day months for the median pair, 52.5% for DEEP_USDT. On trades at quoted
+     half-spreads of at least 80 bp: 11.7% rejections, 82.8% coverage.
+   - Benjamini–Hochberg at q = 0.10 on those p-values, 24 pairs, no effect anywhere: at least one false
+     discovery in 59.3% of 30-day months and 41.0% of 61-day periods. With half the pairs at +10 bp
+     the false discovery rate is 11.6% (30 days) and 9.6% (61 days), power 66.5% and 73.5%.
+   - The bootstrap over pairs of the median holds: coverage 93.0–94.8%, lower end above 0 under a
+     true median of 0 in 2.4–3.9% of cases (nominal 2.5%).
+   - The registered H-003 rule in a synthetic November accepts in 50.7% of months if every pair's
+     August–October effect persists, 44.9% if it halves and 4.0% if it is absent.
+2. If the lab finds a method miscalibrated, *(this step: `mmlab.evaluation.day_tests` holds five
+   candidates; `python -m mmlab.evaluation.lab compare` runs them on the same synthetic months, with
+   Benjamini–Hochberg and Benjamini–Yekutieli on top)* compare alternatives on the same synthetic data (for
    example a studentized or wider-block bootstrap, a t-test on daily values with a HAC variance,
    sign-flip tests over days, a correction of the false discovery rate for dependence) and register
    the one that holds its size for the next batch.

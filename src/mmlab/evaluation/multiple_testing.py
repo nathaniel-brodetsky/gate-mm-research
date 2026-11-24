@@ -17,3 +17,9 @@ def benjamini_hochberg(p_values: Sequence[float], q: float) -> list[bool]:
     for i in order[:k]:
         reject[i] = True
     return reject
+
+
+def benjamini_yekutieli(p_values: Sequence[float], q: float) -> list[bool]:
+    """Benjamini-Yekutieli: BH at q / (1 + 1/2 + ... + 1/m); controls the FDR under any dependence."""
+    m = len(p_values)
+    return benjamini_hochberg(p_values, q / sum(1 / i for i in range(1, m + 1))) if m else []

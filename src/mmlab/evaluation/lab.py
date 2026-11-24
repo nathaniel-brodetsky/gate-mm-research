@@ -40,8 +40,9 @@ import polars as pl
 from numpy.typing import NDArray
 
 from mmlab.evaluation.bootstrap import ratio_resamples, stationary_indices
+from mmlab.evaluation.day_tests import METHODS
 from mmlab.evaluation.h003 import THRESHOLD_BP, eligible, states
-from mmlab.evaluation.multiple_testing import benjamini_hochberg
+from mmlab.evaluation.multiple_testing import benjamini_hochberg, benjamini_yekutieli
 from mmlab.microstructure.markouts import in_period
 from mmlab.stochastic_models.markout_panel import PairProfile, ar1, simulate_days
 
@@ -112,7 +113,8 @@ def mean_pairwise_corr(series: Sequence[NDArray[np.float64]], min_overlap: int =
             ok = ~np.isnan(series[i]) & ~np.isnan(series[j])
             if ok.sum() >= min_overlap:
                 a, b = series[i][ok], series[j][ok]
-                if a.std() > 0 and b.std() > 0:
+                tiny = 1e-12 * (abs(a.mean()) + abs(b.mean()) + 1e-12)  # float noise is not variation
+                if a.std() > tiny and b.std() > tiny:
                     cs.append(float(np.corrcoef(a, b)[0, 1]))
     return float(np.mean(cs)) if cs else 0.0
 
@@ -323,6 +325,205 @@ def h003_check(
     }
 
 
+# ---------------------------------------------------------------- method comparison (stage 3, step 2)
+
+
+def comparison_check(
+    p: PairProfile, theta: float, n_days: int, reps: int, resamples: int, seed: int, alpha: float = 0.05
+) -> dict[str, Any]:
+    """Every method of day_tests on the same synthetic months: coverage and rejection rate at alpha."""
+    cover = dict.fromkeys(METHODS, 0)
+    reject = dict.fromkeys(METHODS, 0)
+    used = 0
+    for r in range(reps):
+        rng = np.random.default_rng([seed, r])
+        num, den, _ = simulate_days(p, theta, n_days, rng)
+        keep = den > 0
+        if keep.sum() < MIN_DAYS:
+            continue
+        used += 1
+        for name, test in METHODS.items():
+            res = test(num[keep], den[keep], resamples, seed * 100_003 + r)
+            cover[name] += res.lower <= theta <= res.upper
+            reject[name] += res.p <= alpha
+    return {
+        "reps": used,
+        "theta": theta,
+        "coverage": {m: _rate(cover[m], used) for m in METHODS},
+        "reject_at_alpha": {m: _rate(reject[m], used) for m in METHODS},
+    }
+
+
+def bh_compare_check(
+    profiles: Sequence[PairProfile],
+    thetas: Sequence[float],
+    n_days: int,
+    rho: float,
+    common_ar: float,
+    reps: int,
+    resamples: int,
+    seed: int,
+    q: float = 0.10,
+) -> dict[str, Any]:
+    """Per method and procedure (BH, BY): sums over repetitions, merged by merge_bh()."""
+    null = np.array([t <= 0 for t in thetas])
+    keys = [f"{m}/{proc}" for m in METHODS for proc in ("bh", "by")]
+    out: dict[str, Any] = {
+        "reps": 0,
+        "fdp": dict.fromkeys(keys, 0.0),
+        "any_false": dict.fromkeys(keys, 0),
+        "power": dict.fromkeys(keys, 0.0),
+    }
+    for r in range(reps):
+        rng = np.random.default_rng([seed, r])
+        common = ar1(n_days, common_ar, rng)
+        ps: dict[str, list[float]] = {m: [] for m in METHODS}
+        for i, (p, t) in enumerate(zip(profiles, thetas, strict=True)):
+            num, den, _ = simulate_days(p, t, n_days, rng, common, rho)
+            keep = den > 0
+            for m, test in METHODS.items():
+                ps[m].append(
+                    test(num[keep], den[keep], resamples, seed * 100_003 + r * 101 + i).p
+                    if keep.sum() >= MIN_DAYS
+                    else 1.0
+                )
+        out["reps"] += 1
+        for m in METHODS:
+            for proc, fn in (("bh", benjamini_hochberg), ("by", benjamini_yekutieli)):
+                rej = np.array(fn(ps[m], q))
+                v, total = int((rej & null).sum()), int(rej.sum())
+                key = f"{m}/{proc}"
+                out["fdp"][key] += v / max(total, 1)
+                out["any_false"][key] += v > 0
+                if (~null).any():
+                    out["power"][key] += float(rej[~null].mean())
+    out["has_alternatives"] = bool((~null).any())
+    return out
+
+
+def merge_bh(parts: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    reps = sum(p["reps"] for p in parts)
+    keys = list(parts[0]["fdp"])
+    alt = parts[0]["has_alternatives"]
+    return {
+        "reps": reps,
+        **{
+            k: {
+                "fdr": sum(p["fdp"][k] for p in parts) / reps,
+                "any_false": sum(p["any_false"][k] for p in parts) / reps,
+                "power": sum(p["power"][k] for p in parts) / reps if alt else None,
+            }
+            for k in keys
+        },
+    }
+
+
+def compare_plan(
+    cal: dict[str, Any], reps: int, resamples: int, seed: int, chunks: int = 8
+) -> list[tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]]:
+    n_cal = int(cal["n_days"])
+    allp = profiles_for(cal["subsets"]["all"], n_cal)
+    q80 = profiles_for(cal["subsets"]["q80"], n_cal)
+    tasks: list[tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]] = []
+    for subset, profs, horizons in (("all", allp, (30, 61)), ("q80", q80, (30,))):
+        calibrated = [k for k, e in cal["subsets"][subset]["pairs"].items() if e["profile"]]
+        for n_days in horizons:
+            for theta, label in ((0.0, "size"), (BH_ALTERNATIVE, "power")):
+                for pair in calibrated:
+                    tasks.append(
+                        (
+                            f"compare/{subset}/{n_days}d/{label}/{pair}",
+                            comparison_check,
+                            {
+                                "p": profs[pair][0],
+                                "theta": theta,
+                                "n_days": n_days,
+                                "reps": reps,
+                                "resamples": resamples,
+                            },
+                        )
+                    )
+    pairs = list(allp)
+    sub = cal["subsets"]["all"]
+    for n_days in (30, 61):
+        for label, thetas in (
+            ("all_null", [0.0] * len(pairs)),
+            ("half_at_plus10bp", [BH_ALTERNATIVE if i % 2 else 0.0 for i in range(len(pairs))]),
+        ):
+            for c in range(chunks):
+                tasks.append(
+                    (
+                        f"bhcmp/all/{n_days}d/{label}#{c}",
+                        bh_compare_check,
+                        {
+                            "profiles": [allp[p][0] for p in pairs],
+                            "thetas": thetas,
+                            "n_days": n_days,
+                            "rho": sub["rho"],
+                            "common_ar": sub["common_ar"],
+                            "reps": reps // chunks,
+                            "resamples": resamples,
+                        },
+                    )
+                )
+    return [(name, fn, {**kw, "seed": seed * 10_000 + 5_000 + i}) for i, (name, fn, kw) in enumerate(tasks)]
+
+
+def summarize_compare(results: dict[str, dict[str, Any]]) -> str:
+    lines = [
+        "method comparison: median over pairs (max in brackets); size = rejections at 5% with theta 0, "
+        "power = rejections at 5% with theta +10 bp"
+    ]
+    groups: dict[str, dict[str, list[dict[str, Any]]]] = {}
+    for name, res in results.items():
+        if name.startswith("compare/") and res["reps"]:
+            _, subset, days, label, _ = name.split("/")
+            groups.setdefault(f"{subset}/{days}", {}).setdefault(label, []).append(res)
+    for g in sorted(groups):
+        lines.append(f"{g}:")
+        for m in METHODS:
+            size = [r["reject_at_alpha"][m]["rate"] for r in groups[g].get("size", [])]
+            cov = [r["coverage"][m]["rate"] for r in groups[g].get("size", [])]
+            power = [r["reject_at_alpha"][m]["rate"] for r in groups[g].get("power", [])]
+            lines.append(
+                f"  {m:14} size {statistics.median(size):.3f} ({max(size):.3f})"
+                f"  coverage {statistics.median(cov):.3f} ({min(cov):.3f} min)"
+                f"  power {statistics.median(power):.3f}"
+            )
+    for name, r in sorted(results.items()):
+        if name.startswith("bhcmp/"):
+            lines.append(f"{name} ({r['reps']} months):")
+            for k, v in r.items():
+                if k == "reps":
+                    continue
+                pw = "n/a" if v["power"] is None else f"{v['power']:.3f}"
+                lines.append(f"  {k:22} FDR {v['fdr']:.3f}  any false {v['any_false']:.3f}  power {pw}")
+    return "\n".join(lines)
+
+
+def show(cal: dict[str, Any]) -> str:
+    lines = []
+    for name, sub in cal["subsets"].items():
+        lines.append(f"{name}: cross-pair correlation {sub['rho']:.3f}, median day AR {sub['common_ar']:.3f}")
+        lines.append(
+            f"  {'pair':14} {'trades':>8} {'per day':>8} {'k':>6} {'log v sd':>8} {'trade sd bp':>11}"
+            f" {'df':>6} {'day sd bp':>9} {'day AR':>6} {'theta bp':>8}"
+        )
+        for pair, e in sub["pairs"].items():
+            pr = e["profile"]
+            th = "n/a" if e["theta"] is None else f"{e['theta'] * 1e4:8.1f}"
+            if pr is None:
+                lines.append(f"  {pair:14} {e['trades']:8d} {'(too thin to calibrate)':>51} {th:>8}")
+                continue
+            k = "Pois" if pr["count_k"] is None else f"{pr['count_k']:6.2f}"
+            lines.append(
+                f"  {pair:14} {e['trades']:8d} {pr['trades_per_day']:8.1f} {k:>6} {pr['logv_sd']:8.2f}"
+                f" {pr['trade_sd'] * 1e4:11.1f} {pr['trade_df']:6.1f} {pr['day_sd'] * 1e4:9.2f}"
+                f" {pr['day_ar']:6.2f} {th:>8}"
+            )
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------- runner
 
 
@@ -476,7 +677,42 @@ def main(argv: Sequence[str] | None = None) -> int:
     r.add_argument("--seed", type=int, default=20261124)
     r.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     r.add_argument("--out", required=True)
+    sh = sub.add_parser("show", help="print a calibration")
+    sh.add_argument("calibration")
+    cm = sub.add_parser("compare", help="compare the day tests of day_tests.METHODS")
+    cm.add_argument("calibration")
+    cm.add_argument("--reps", type=int, default=400)
+    cm.add_argument("--resamples", type=int, default=2_000)
+    cm.add_argument("--seed", type=int, default=20261124)
+    cm.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
+    cm.add_argument("--out", required=True)
     a = p.parse_args(argv)
+    if a.cmd == "show":
+        print(show(json.loads(Path(a.calibration).read_text())))
+        return 0
+    if a.cmd == "compare":
+        cal = json.loads(Path(a.calibration).read_text())
+        ctx = multiprocessing.get_context("spawn")
+        with ProcessPoolExecutor(max_workers=max(1, a.workers), mp_context=ctx) as ex:
+            raw = dict(ex.map(_run, compare_plan(cal, a.reps, a.resamples, a.seed)))
+        results: dict[str, dict[str, Any]] = {k: v for k, v in raw.items() if not k.startswith("bhcmp/")}
+        bh_groups: dict[str, list[dict[str, Any]]] = {}
+        for k, v in raw.items():
+            if k.startswith("bhcmp/"):
+                bh_groups.setdefault(k.split("#")[0], []).append(v)
+        results.update({k: merge_bh(v) for k, v in bh_groups.items()})
+        doc = {
+            "calibration": a.calibration,
+            "reps": a.reps,
+            "resamples": a.resamples,
+            "seed": a.seed,
+            "methods": list(METHODS),
+            "results": results,
+        }
+        Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.out).write_text(json.dumps(doc, indent=2) + "\n")
+        print(summarize_compare(results))
+        return 0
     if a.cmd == "calibrate":
         if a.end > EXPLORATION_END:
             print(f"refused: calibration stays on exploration data (end <= {EXPLORATION_END})")

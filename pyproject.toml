@@ -7,7 +7,7 @@ name = "mmlab"
 version = "0.0.0"
 description = "Quantitative market making research on Gate"
 requires-python = ">=3.11"
-dependencies = ["numpy==2.5.5", "polars==2.1.0", "websockets==17.4"]
+dependencies = ["numpy==2.5.5", "polars==2.1.0", "scipy==1.17.1", "websockets==17.4"]
 
 [project.optional-dependencies]
 dev = ["pytest==9.2.0", "ruff==0.17.6", "mypy==2.4.1"]
@@ -35,3 +35,7 @@ python_version = "3.11"
 strict = true
 files = ["src", "tests"]
 mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["scipy", "scipy.*"]
+ignore_missing_imports = true

@@ -112,6 +112,14 @@ from `results/h001_h002/validation.json` and `validation_no_spyx.json`.
 
 The decision stays **rejected**; the validation period agrees with it.
 
+### Synthetic lab, 2026-11-24 (after the decision)
+
+The lab (`results/lab/checks.json`, docs/stage3-plan.md) found the registered day bootstrap too
+liberal on data like ours: 7.9% rejections at a nominal 5% over 61 days for the median pair, and at
+least one pair significant after Benjamini–Hochberg in 41.0% of 61-day periods with no effect
+anywhere. The two development rejections (NAVX_USDT, BOS_USDT) are within that range, and neither
+replicated in validation. A too liberal test favours acceptance, so the rejection stands.
+
 ### Post-hoc observations (not tests; candidates for new hypotheses)
 
 - The five pairs with θ > 0 in development (NAVX, ZIX, AIDOGE, BOS, FIS) have θ > 0 in validation

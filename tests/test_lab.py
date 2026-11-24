@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from mmlab.evaluation import lab
+from mmlab.evaluation import day_tests, lab
 from mmlab.stochastic_models import markout_panel as mp
 from test_h003 import _dataset
 
@@ -71,6 +71,8 @@ def test_mean_pairwise_corr() -> None:
     assert lab.mean_pairwise_corr([a, b]) == pytest.approx(1.0)
     assert lab.mean_pairwise_corr([a, -a, a]) == pytest.approx(-1 / 3)
     assert lab.mean_pairwise_corr([a[:5], a[:5]]) == 0.0  # fewer than 10 common days
+    flat = np.full(20, 0.019) + np.arange(20) * 1e-19  # constant up to float noise
+    assert lab.mean_pairwise_corr([flat, flat]) == 0.0
 
 
 def test_day_bootstrap_is_calibrated_on_many_iid_days() -> None:
@@ -209,3 +211,73 @@ def test_cli_calibrate_and_run(tmp_path: Path, capsys: pytest.CaptureFixture[str
     assert "h003/november/scale_1" in res
     assert res["h003/november/scale_1"]["mean_counted_pairs"] == 2
     assert "day_bootstrap/all/30d" in capsys.readouterr().out
+
+
+def test_comparison_runs_every_method_on_the_same_months() -> None:
+    res = lab.comparison_check(IID, 0.005, 30, reps=20, resamples=500, seed=31)
+    assert res["reps"] == 20
+    assert set(res["coverage"]) == set(res["reject_at_alpha"]) == set(day_tests.METHODS)
+    assert all(v["rate"] == 1.0 for v in res["reject_at_alpha"].values())
+    thin = lab.comparison_check(
+        mp.PairProfile(0.05, None, 3.0, 1.0, 0.01, 1000.0, 0.0, 0.0), 0.0, 30, 10, 200, 32
+    )
+    assert thin["reps"] < 10
+    sticky = mp.PairProfile(200.0, None, 3.0, 1.0, 0.0001, 1000.0, 0.003, 0.9)  # persistent day effects
+    hard = lab.comparison_check(sticky, 0.0, 30, reps=60, resamples=500, seed=36)
+    assert hard["coverage"]["percentile"]["rate"] < 0.9  # the short-block bootstrap misses persistence
+
+
+def test_bh_compare_and_merge() -> None:
+    profiles = [IID] * 6
+    a = lab.bh_compare_check(profiles, [0.0] * 6, 60, 0.0, 0.0, reps=30, resamples=500, seed=33)
+    b = lab.bh_compare_check(profiles, [0.0] * 6, 60, 0.0, 0.0, reps=10, resamples=500, seed=34)
+    m = lab.merge_bh([a, b])
+    assert m["reps"] == 40
+    for key in (f"{x}/{proc}" for x in day_tests.METHODS for proc in ("bh", "by")):
+        assert m[key]["fdr"] == pytest.approx((a["fdp"][key] + b["fdp"][key]) / 40)
+        assert m[key]["fdr"] == m[key]["any_false"]  # all null
+        assert m[key]["power"] is None
+    for x in day_tests.METHODS:
+        assert m[f"{x}/by"]["any_false"] <= m[f"{x}/bh"]["any_false"]  # BY rejects a subset of BH
+    alt = lab.bh_compare_check(
+        profiles, [0.0] * 3 + [0.005] * 3, 30, 0.0, 0.0, reps=5, resamples=500, seed=35
+    )
+    assert lab.merge_bh([alt])["hac/bh"]["power"] == 1.0
+
+
+def test_compare_plan() -> None:
+    cal = _cal({p: {"trades": 4600, "profile": asdict(IID), "theta": 0.001} for p in ("A", "B")})
+    tasks = lab.compare_plan(cal, reps=16, resamples=100, seed=1, chunks=4)
+    names = [t[0] for t in tasks]
+    assert len(names) == len(set(names))
+    assert sum(n.startswith("compare/all/30d/size/") for n in names) == 2
+    assert sum(n.startswith("compare/q80/30d/power/") for n in names) == 2
+    assert sum(n.startswith("bhcmp/all/61d/all_null#") for n in names) == 4
+    bh = next(kw for n, _, kw in tasks if n.startswith("bhcmp/"))
+    assert bh["reps"] == 4
+    power = next(kw for n, _, kw in tasks if n.startswith("compare/all/30d/power/"))
+    assert power["theta"] == lab.BH_ALTERNATIVE
+    seeds = [kw["seed"] for _, _, kw in tasks]
+    assert len(seeds) == len(set(seeds))
+    assert not set(seeds) & {kw["seed"] for _, _, kw in lab.plan(cal, 16, 100, 1)}
+
+
+def test_show_and_compare_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    pairs: dict[str, dict[str, object]] = {
+        "A_USDT": {"trades": 4600, "profile": asdict(IID), "theta": 0.001},
+        "T_USDT": {"trades": 4, "profile": None, "theta": -0.0112},
+    }
+    cal = tmp_path / "cal.json"
+    cal.write_text(json.dumps(_cal(pairs)))
+    assert lab.main(["show", str(cal)]) == 0
+    text = capsys.readouterr().out
+    assert "too thin to calibrate" in text
+    assert "A_USDT" in text
+    out = tmp_path / "cmp.json"
+    argv = ["compare", str(cal), "--reps", "8", "--resamples", "100", "--workers", "1", "--out", str(out)]
+    assert lab.main(argv) == 0
+    doc = json.loads(out.read_text())
+    assert doc["methods"] == list(day_tests.METHODS)
+    assert doc["results"]["bhcmp/all/30d/all_null"]["reps"] == 8  # 8 chunks of 1 merged
+    assert "compare/all/30d/size/A_USDT" in doc["results"]
+    assert "all/30d:" in capsys.readouterr().out

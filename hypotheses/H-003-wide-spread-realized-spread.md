@@ -100,4 +100,14 @@ to estimate θ; they do not revise the decision.
 
 ## Results
 
-None yet.
+### Power, from the synthetic lab (2026-11-24, before November was opened)
+
+The lab (`results/lab/checks.json`) ran the registered rule on 800 synthetic Novembers calibrated per
+pair on August–October. It accepts in 50.7% of months if every pair's August–October theta persists,
+44.9% if it halves and 4.0% if it is absent (nominal 2.5%), with about 16 pairs counted. The spread of
+theta across pairs, not the number of days, limits the power: a rejection says little against an
+effect of the size seen in exploration.
+
+The per-pair p-values reported with this test come from the registered day bootstrap, which the lab
+found too liberal on these trades (11.7% rejections at a nominal 5% over 30 days). They are reported,
+not used in the decision.
