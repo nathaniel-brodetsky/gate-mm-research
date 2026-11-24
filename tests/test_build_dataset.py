@@ -160,6 +160,32 @@ def test_guards(archive: tuple[str, dict[str, Any]], universe: Path, tmp_path: P
     assert not out.exists()
 
 
+def test_holdout_pairs_need_a_decided_h003(
+    archive: tuple[str, dict[str, Any]], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    base, _ = archive
+    monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+    monkeypatch.setenv("no_proxy", "127.0.0.1,localhost")
+    uni = tmp_path / "u.json"
+    uni.write_text(json.dumps({"research": {"0": ["R_USDT"]}, "holdout": {"0": ["SYN_USDT"]}}))
+    out = tmp_path / "ds"
+    dec = tmp_path / "t.json"
+    argv = [*_argv(uni, out, base), "--holdout-pairs", "--decision", str(dec)]
+    assert bd.main(argv) == 2  # no result file
+    dec.write_text(
+        json.dumps({"hypothesis": "H-003", "period": "test", "summary": {"80.0": {"outcome": "extend"}}})
+    )
+    assert bd.main(argv) == 2
+    assert not out.exists()
+    dec.write_text(
+        json.dumps({"hypothesis": "H-003", "period": "test", "summary": {"80.0": {"outcome": "reject"}}})
+    )
+    assert bd.main([*argv, "--pairs", "R_USDT"]) == 2  # research pairs are not built in holdout mode
+    assert bd.main(argv) == 0
+    assert (out / "tob" / "SYN_USDT.parquet").exists()
+    assert bd.main([*_argv(uni, tmp_path / "ds2", base), "--pairs", "SYN_USDT"]) == 2  # research mode
+
+
 def test_failed_pair_is_reported_and_others_are_kept(
     archive: tuple[str, dict[str, Any]],
     tmp_path: Path,

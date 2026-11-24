@@ -1,6 +1,7 @@
 """Build the research dataset of a universe: top of book and trades per research pair, as Parquet.
 
-For every research pair (holdout pairs are refused) and every hour of the period, the hourly spot
+For every research pair (holdout pairs only with --holdout-pairs and an H-003 test result that is
+accepted or rejected, see mmlab.hypothesis_registry.holdout) and every hour of the period, the hourly spot
 `orderbooks` file is downloaded into the cache, replayed, reduced to top of book with availability time
 (`mmlab.orderbook.top_of_book`) and chained to the previous hour. Monthly `deals` files give the trades.
 
@@ -40,6 +41,7 @@ from mmlab.data_ingestion.gate_archive import BASE_URL, archive_ref
 from mmlab.data_ingestion.gate_download import fetch
 from mmlab.data_ingestion.gate_orderbook_file import iter_orderbook_file
 from mmlab.data_ingestion.gate_trades_file import Trade, check_sequence, iter_trades_file
+from mmlab.hypothesis_registry.holdout import holdout_unlocked
 from mmlab.orderbook.gate_coverage import hours, parse_hour
 from mmlab.orderbook.gate_replay import ReplayReport, check_chain
 from mmlab.orderbook.l2 import L2Book
@@ -245,17 +247,31 @@ def main(argv: Sequence[str] | None = None) -> int:
     p.add_argument("--retries", type=int, default=5, help="download retries on transient errors")
     p.add_argument("--backoff", type=float, default=2.0, help="first retry delay, seconds (doubles)")
     p.add_argument("--open-time-holdout", action="store_true")
+    p.add_argument(
+        "--holdout-pairs", action="store_true", help="build the U-001 holdout pairs (needs --decision)"
+    )
+    p.add_argument(
+        "--decision", help="H-003 test result, accepted or rejected, that unlocks the holdout pairs"
+    )
     a = p.parse_args(argv)
 
     start, end = parse_hour(a.start), parse_hour(a.end)
     if end > TIME_HOLDOUT_START and not a.open_time_holdout:
         print(f"refused: period ends after {TIME_HOLDOUT_START:%Y-%m-%d}, the untouched time holdout")
         return 2
-    research = research_pairs(json.loads(Path(a.universe).read_text()))
-    pairs = [x.strip() for x in a.pairs.split(",") if x.strip()] or research
-    outside = [x for x in pairs if x not in research]
+    uni = json.loads(Path(a.universe).read_text())
+    if a.holdout_pairs:
+        err = holdout_unlocked(a.decision)
+        if err:
+            print(f"refused: {err}")
+            return 2
+        allowed, kind = [x for s in sorted(uni["holdout"], key=int) for x in uni["holdout"][s]], "holdout"
+    else:
+        allowed, kind = research_pairs(uni), "research"
+    pairs = [x.strip() for x in a.pairs.split(",") if x.strip()] or allowed
+    outside = [x for x in pairs if x not in allowed]
     if outside:
-        print(f"refused: not research pairs of this universe: {outside}")
+        print(f"refused: not {kind} pairs of this universe: {outside}")
         return 2
     out = Path(a.out)
     todo = [

@@ -67,8 +67,19 @@ Status: started 2026-11-23. No trading strategy in this stage.
     - decide H-003: `python -m mmlab.evaluation.h003 data/processed/U001_2026-11 --period test
       --out results/h003/test.json` (it refuses a dataset without trades in every month of the
       period, e.g. one built before the deals file was published);
-    - then estimate H-001 and H-002 on November and open the holdout pairs once. Both still need
-      code: the H-001/H-002 evaluation refuses November and the builder refuses holdout pairs.
+    - estimate H-001 and H-002 on November: `python -m mmlab.evaluation.h001_h002
+      data/processed/U001_2026-11 --period november --h003 results/h003/test.json --out
+      results/h001_h002/november.json`;
+    - only if H-003 is accepted or rejected, build and evaluate the holdout pairs once:
+      `python -m mmlab.market_data.build_dataset configs/universe_U001.json data/processed/U001_holdout
+      --start 2026-08-01 --end 2026-12-01 --open-time-holdout --holdout-pairs --decision
+      results/h003/test.json`, then `python -m mmlab.evaluation.h003 data/processed/U001_holdout
+      --period holdout --decision results/h003/test.json --out results/h003/holdout.json` and
+      `python -m mmlab.evaluation.h001_h002 data/processed/U001_holdout --period holdout --h003
+      results/h003/test.json --out results/h001_h002/holdout.json`.
+    The order is enforced by `mmlab.hypothesis_registry.holdout`: the November estimates need the
+    H-003 test result, and the holdout pairs need it accepted or rejected (an extension to December
+    keeps them closed).
 
 Results are reported as a function of latency (1, 10, 100, 400 ms) wherever latency matters.
 

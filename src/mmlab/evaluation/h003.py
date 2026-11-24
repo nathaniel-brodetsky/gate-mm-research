@@ -33,6 +33,7 @@ import polars as pl
 
 from mmlab.evaluation.bootstrap import ratio_resamples, stationary_indices
 from mmlab.evaluation.multiple_testing import benjamini_hochberg
+from mmlab.hypothesis_registry.holdout import holdout_unlocked
 from mmlab.microstructure.conditional import book_table
 from mmlab.microstructure.markouts import daily_sums, in_period
 
@@ -240,6 +241,21 @@ def _label(day: str, hours_back: int = 0) -> str:
     return t.strftime("%Y-%m-%dT%H")
 
 
+def coverage_problems(ds: Path, pairs: Sequence[str], start: str, end: str) -> list[str]:
+    """Pairs whose dataset misses files, hours of [start, end) or trades in one of its months."""
+    problems = []
+    for x in pairs:
+        hours = ds / "hours" / f"{x}.csv"
+        cov = hour_coverage(hours) if hours.exists() else None
+        if not (ds / "tob" / f"{x}.parquet").exists() or cov is None:
+            problems.append(f"{x}: missing")
+        elif cov[0] > _label(start) or cov[1] < _label(end, 1):
+            problems.append(f"{x}: hours {cov[0]} .. {cov[1]} do not cover {start} .. {end}")
+        elif empty := months_without_trades(pl.read_parquet(ds / "trades" / f"{x}.parquet"), start, end):
+            problems.append(f"{x}: no trades in {', '.join(empty)} (monthly deals file not published yet?)")
+    return problems
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Test of H-003 on a built dataset.")
     p.add_argument("dataset")
@@ -250,18 +266,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     a = p.parse_args(argv)
     uni = json.loads(Path(a.universe).read_text())
     if a.period == "holdout":
-        if not a.decision:
-            print("refused: the holdout pairs need the decision file of the test (--decision)")
+        err = holdout_unlocked(a.decision)
+        if err:
+            print(f"refused: {err}")
             return 2
         dec = json.loads(Path(a.decision).read_text())
-        if dec.get("period") not in ("test", "extended") or dec["summary"][str(THRESHOLD_BP)][
-            "outcome"
-        ] not in (
-            "accept",
-            "reject",
-        ):
-            print("refused: the decision file does not hold an accepted or rejected test")
-            return 2
         start, end = HOLDOUT_START, PERIODS[dec["period"]][1]
         part = "holdout"
     else:
@@ -269,15 +278,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         part = "research"
     pairs = [x for s in sorted(uni[part], key=int) for x in uni[part][s]]
     ds = Path(a.dataset)
-    problems = []
-    for x in pairs:
-        cov = hour_coverage(ds / "hours" / f"{x}.csv") if (ds / "hours" / f"{x}.csv").exists() else None
-        if not (ds / "tob" / f"{x}.parquet").exists() or cov is None:
-            problems.append(f"{x}: missing")
-        elif cov[0] > _label(start) or cov[1] < _label(end, 1):
-            problems.append(f"{x}: hours {cov[0]} .. {cov[1]} do not cover {start} .. {end}")
-        elif empty := months_without_trades(pl.read_parquet(ds / "trades" / f"{x}.parquet"), start, end):
-            problems.append(f"{x}: no trades in {', '.join(empty)} (monthly deals file not published yet?)")
+    problems = coverage_problems(ds, pairs, start, end)
     if problems:
         print("dataset does not cover the period:\n  " + "\n  ".join(problems))
         return 2

@@ -306,9 +306,13 @@ def test_cli_holdout_needs_a_decided_test(tmp_path: Path) -> None:
     assert h003.main(base) == 2
     dec = tmp_path / "d.json"
     for period, outcome, rc in [("test", "extend", 2), ("exploration", "accept", 2), ("test", "reject", 0)]:
-        dec.write_text(json.dumps({"period": period, "summary": {"80.0": {"outcome": outcome}}}))
+        dec.write_text(
+            json.dumps({"hypothesis": "H-003", "period": period, "summary": {"80.0": {"outcome": outcome}}})
+        )
         assert h003.main([*base, "--decision", str(dec)]) == rc
     doc = json.loads(out.read_text())
     assert (doc["pairs"], doc["range"]) == (["H_USDT"], ["2026-08-01", "2026-12-01"])
-    dec.write_text(json.dumps({"period": "extended", "summary": {"80.0": {"outcome": "accept"}}}))
+    dec.write_text(
+        json.dumps({"hypothesis": "H-003", "period": "extended", "summary": {"80.0": {"outcome": "accept"}}})
+    )
     assert h003.main([*base, "--decision", str(dec)]) == 2  # the dataset ends in November, not December

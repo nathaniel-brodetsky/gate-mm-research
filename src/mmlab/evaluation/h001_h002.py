@@ -2,7 +2,10 @@
 
 Both hypotheses were registered on 2026-11-23 (hypotheses/H-001-*.md, H-002-*.md); this module
 implements them as written. Periods: development 2026-08-01 .. 2026-09-30, validation 2026-10-01 ..
-2026-10-31. The time holdout (November) is refused.
+2026-10-31. The decisions are taken on those periods only. Once November is opened (stage 2 plan,
+step 10) the same statistics are computed as estimates, which do not revise the decisions:
+  november  research pairs, 2026-11-01 .. 2026-11-30, after H-003 has been tested (--h003)
+  holdout   U-001 holdout pairs, 2026-08-01 .. 2026-11-30, after H-003 is decided (--h003)
 
 Usage:
   python -m mmlab.evaluation.h001_h002 data/processed/U001 --period development \\
@@ -24,10 +27,13 @@ import numpy as np
 import polars as pl
 
 from mmlab.evaluation.bootstrap import ratio_resamples, stationary_indices
+from mmlab.evaluation.h003 import coverage_problems
 from mmlab.evaluation.multiple_testing import benjamini_hochberg
+from mmlab.hypothesis_registry.holdout import h003_tested, holdout_unlocked
 from mmlab.microstructure.markouts import HORIZONS_S, _hkey, daily_sums, in_period, markouts
 
 PERIODS = {"development": ("2026-08-01", "2026-10-01"), "validation": ("2026-10-01", "2026-11-01")}
+ESTIMATES = {"november": ("2026-11-01", "2026-12-01"), "holdout": ("2026-08-01", "2026-12-01")}
 MAKER_FEE = 0.0010  # global spot VIP 0, from 2026-04-09
 RESAMPLES = 10_000
 MEAN_BLOCK_DAYS = 3.0
@@ -146,21 +152,34 @@ def _line(r: PairResult) -> str:
 def main(argv: Sequence[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Evaluate H-001 and H-002 on a built dataset.")
     p.add_argument("dataset")
-    p.add_argument("--period", required=True, choices=sorted(PERIODS))
+    p.add_argument("--period", required=True, choices=[*sorted(PERIODS), *ESTIMATES])
+    p.add_argument("--h003", help="H-003 test result; required for the november and holdout estimates")
     p.add_argument("--universe", default="configs/universe_U001.json")
     p.add_argument("--exclude", default="", help="comma-separated pairs left out (reported variant)")
     p.add_argument("--out", required=True)
     a = p.parse_args(argv)
     uni = json.loads(Path(a.universe).read_text())
-    research = [x for s in sorted(uni["research"], key=int) for x in uni["research"][s]]
+    part = "holdout" if a.period == "holdout" else "research"
+    registered = [x for s in sorted(uni[part], key=int) for x in uni[part][s]]
     excluded = {x.strip() for x in a.exclude.split(",") if x.strip()}
-    pairs = [x for x in research if x not in excluded]
+    pairs = [x for x in registered if x not in excluded]
     ds = Path(a.dataset)
-    missing = [x for x in pairs if not (ds / "tob" / f"{x}.parquet").exists()]
-    if missing:
-        print(f"dataset incomplete, missing: {missing}")
-        return 2
-    start, end = PERIODS[a.period]
+    if a.period in ESTIMATES:
+        err = h003_tested(a.h003) if a.period == "november" else holdout_unlocked(a.h003)
+        if err:
+            print(f"refused: {err}")
+            return 2
+        start, end = ESTIMATES[a.period]
+        problems = coverage_problems(ds, pairs, start, end)
+        if problems:
+            print("dataset does not cover the period:\n  " + "\n  ".join(problems))
+            return 2
+    else:
+        missing = [x for x in pairs if not (ds / "tob" / f"{x}.parquet").exists()]
+        if missing:
+            print(f"dataset incomplete, missing: {missing}")
+            return 2
+        start, end = PERIODS[a.period]
     results = []
     for x in pairs:
         r = evaluate_pair(
@@ -172,7 +191,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         results.append(r)
         print(_line(r))
-    decision = decide(results, registered_pairs=len(research))
+    decision = decide(results, registered_pairs=len(registered))
     doc = {
         "period": a.period,
         "range": [start, end],
@@ -189,11 +208,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         },
         "results": [asdict(r) for r in results],
         "decision": decision,
+        "role": "estimate: the registered decisions stand" if a.period in ESTIMATES else "decision period",
     }
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(doc, indent=2, default=str) + "\n")
     print("bp = basis points (1e-4); theta = RS60 - maker fee")
     print(json.dumps(decision, indent=2, default=str))
+    if a.period in ESTIMATES:
+        print("estimate only: H-001 and H-002 were decided on the development and validation periods")
     return 0
 
 
