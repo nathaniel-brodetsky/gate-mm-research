@@ -1,0 +1,454 @@
+{
+  "period": [
+    "2026-08-01",
+    "2026-11-01"
+  ],
+  "n_days": 92,
+  "generator": "empirical",
+  "subsets": {
+    "all": {
+      "pairs": {
+        "SUKU_USDT": {
+          "trades": 10848,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/SUKU_USDT.npz",
+          "pool_trades": 10848,
+          "theta": -0.002624662054746787,
+          "day_sd": 0.002494745062407392,
+          "day_ar": 0.06614163561917917
+        },
+        "BAND_USDT": {
+          "trades": 57958,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/BAND_USDT.npz",
+          "pool_trades": 57958,
+          "theta": -0.0010425624361448638,
+          "day_sd": 0.0005585946145364287,
+          "day_ar": 0.01951613937216683
+        },
+        "NAVX_USDT": {
+          "trades": 52271,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/NAVX_USDT.npz",
+          "pool_trades": 52271,
+          "theta": 0.0011026671877086634,
+          "day_sd": 0.0017147327907412022,
+          "day_ar": -0.03561371538513332
+        },
+        "TEVA_USDT": {
+          "trades": 74450,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/TEVA_USDT.npz",
+          "pool_trades": 74450,
+          "theta": -0.0038219232854103252,
+          "day_sd": 0.0018418124957731152,
+          "day_ar": 0.5360938755373966
+        },
+        "PEOPLEFB_USDT": {
+          "trades": 22452,
+          "active_days": 91,
+          "pool": "data/interim/lab_pools/all/PEOPLEFB_USDT.npz",
+          "pool_trades": 22450,
+          "theta": 0.003332782751448165,
+          "day_sd": 0.0042386168483183415,
+          "day_ar": 0.48421863897975576
+        },
+        "ZIX_USDT": {
+          "trades": 6281,
+          "active_days": 77,
+          "pool": "data/interim/lab_pools/all/ZIX_USDT.npz",
+          "pool_trades": 6274,
+          "theta": 0.0004546327618761595,
+          "day_sd": 0.008688685679988241,
+          "day_ar": 0.07016269725680763
+        },
+        "GMX_USDT": {
+          "trades": 25211,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/GMX_USDT.npz",
+          "pool_trades": 25211,
+          "theta": -0.0010477151336096445,
+          "day_sd": 0.0010351218000554966,
+          "day_ar": -0.006043718614555831
+        },
+        "AIDOGE_USDT": {
+          "trades": 49138,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/AIDOGE_USDT.npz",
+          "pool_trades": 49138,
+          "theta": 0.00027314209592953475,
+          "day_sd": 0.0013424605824592982,
+          "day_ar": 0.1410671721090103
+        },
+        "SUPER_USDT": {
+          "trades": 181829,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/SUPER_USDT.npz",
+          "pool_trades": 181829,
+          "theta": -0.0014214917422166664,
+          "day_sd": 0.0009816705196260512,
+          "day_ar": -0.0537371612055623
+        },
+        "BOS_USDT": {
+          "trades": 44953,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/BOS_USDT.npz",
+          "pool_trades": 44953,
+          "theta": 0.0010512952829460401,
+          "day_sd": 0.002411332535704409,
+          "day_ar": 0.006161083356953143
+        },
+        "IMU_USDT": {
+          "trades": 229734,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/IMU_USDT.npz",
+          "pool_trades": 229734,
+          "theta": -0.0021651776931029803,
+          "day_sd": 0.0014316210381027444,
+          "day_ar": 0.2605623614667849
+        },
+        "MLN_USDT": {
+          "trades": 141134,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/MLN_USDT.npz",
+          "pool_trades": 141134,
+          "theta": -0.0008169557040164421,
+          "day_sd": 0.0022268849594372473,
+          "day_ar": 0.04523469508282946
+        },
+        "ORCA_USDT": {
+          "trades": 369929,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/ORCA_USDT.npz",
+          "pool_trades": 369929,
+          "theta": -0.0010304693207370307,
+          "day_sd": 0.0003717922536291424,
+          "day_ar": -0.10161129312894646
+        },
+        "PINGO_USDT": {
+          "trades": 136677,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/PINGO_USDT.npz",
+          "pool_trades": 136677,
+          "theta": -0.0022991100981970694,
+          "day_sd": 0.0034879284289957716,
+          "day_ar": 0.287017482185521
+        },
+        "CREO_USDT": {
+          "trades": 285491,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/CREO_USDT.npz",
+          "pool_trades": 285491,
+          "theta": -0.0011648117150437046,
+          "day_sd": 0.0006624310583756584,
+          "day_ar": 0.10111341425246637
+        },
+        "FIS_USDT": {
+          "trades": 94734,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/FIS_USDT.npz",
+          "pool_trades": 94734,
+          "theta": 0.0008761891958764321,
+          "day_sd": 0.004977739292568735,
+          "day_ar": 0.11821412663698981
+        },
+        "ANON_USDT": {
+          "trades": 96432,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/ANON_USDT.npz",
+          "pool_trades": 96432,
+          "theta": -0.002695180317162315,
+          "day_sd": 0.0032124435410663178,
+          "day_ar": 0.19433648807930676
+        },
+        "CKB_USDT": {
+          "trades": 247993,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/CKB_USDT.npz",
+          "pool_trades": 247993,
+          "theta": -0.0015030118990305788,
+          "day_sd": 0.0007324742429386902,
+          "day_ar": -0.2804445852274893
+        },
+        "DEEP_USDT": {
+          "trades": 726157,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/DEEP_USDT.npz",
+          "pool_trades": 726157,
+          "theta": -0.0013028054358763305,
+          "day_sd": 0.00019755475557446512,
+          "day_ar": 0.474565262656236
+        },
+        "XT_USDT": {
+          "trades": 103598,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/XT_USDT.npz",
+          "pool_trades": 103598,
+          "theta": -0.0012024982581848838,
+          "day_sd": 1.733877730178846e-05,
+          "day_ar": -0.9
+        },
+        "FLOCK_USDT": {
+          "trades": 1950423,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/FLOCK_USDT.npz",
+          "pool_trades": 1950423,
+          "theta": -0.0009111186577262886,
+          "day_sd": 0.0005933851277225078,
+          "day_ar": 0.11532262928184522
+        },
+        "TITN_USDT": {
+          "trades": 108546,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/TITN_USDT.npz",
+          "pool_trades": 108546,
+          "theta": -0.000991267566432492,
+          "day_sd": 0.002297352917881854,
+          "day_ar": 0.3513344984842907
+        },
+        "SAITO_USDT": {
+          "trades": 29292,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/SAITO_USDT.npz",
+          "pool_trades": 29292,
+          "theta": -0.0036602919161153446,
+          "day_sd": 0.0032108854216686385,
+          "day_ar": 0.23773891350620993
+        },
+        "SPYX_USDT": {
+          "trades": 149661,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/all/SPYX_USDT.npz",
+          "pool_trades": 149661,
+          "theta": -0.0009557231430214183,
+          "day_sd": 0.0001482919033362226,
+          "day_ar": 0.13236925706651465
+        }
+      },
+      "rho": 0.007088257989289884,
+      "common_ar": 0.1082180217671558
+    },
+    "q80": {
+      "pairs": {
+        "SUKU_USDT": {
+          "trades": 852,
+          "active_days": 59,
+          "pool": "data/interim/lab_pools/q80/SUKU_USDT.npz",
+          "pool_trades": 846,
+          "theta": 0.0009274122886968423,
+          "day_sd": 0.006939024857875301,
+          "day_ar": -0.2956667419820884
+        },
+        "BAND_USDT": {
+          "trades": 4,
+          "active_days": 1,
+          "pool": "data/interim/lab_pools/q80/BAND_USDT.npz",
+          "pool_trades": 4,
+          "theta": -0.011257558108492487,
+          "day_sd": 0.0,
+          "day_ar": 0.0
+        },
+        "NAVX_USDT": {
+          "trades": 7080,
+          "active_days": 68,
+          "pool": "data/interim/lab_pools/q80/NAVX_USDT.npz",
+          "pool_trades": 7074,
+          "theta": 0.0055372853883174636,
+          "day_sd": 0.004576096566480068,
+          "day_ar": -0.14228023041273752
+        },
+        "TEVA_USDT": {
+          "trades": 39241,
+          "active_days": 92,
+          "pool": "data/interim/lab_pools/q80/TEVA_USDT.npz",
+          "pool_trades": 39241,
+          "theta": -0.003618323220472031,
+          "day_sd": 0.006166814184957793,
+          "day_ar": 0.22762147948195954
+        },
+        "PEOPLEFB_USDT": {
+          "trades": 5274,
+          "active_days": 77,
+          "pool": "data/interim/lab_pools/q80/PEOPLEFB_USDT.npz",
+          "pool_trades": 5273,
+          "theta": 0.013759458679883556,
+          "day_sd": 0.01022851925439988,
+          "day_ar": 0.32678963366931757
+        },
+        "ZIX_USDT": {
+          "trades": 1502,
+          "active_days": 48,
+          "pool": "data/interim/lab_pools/q80/ZIX_USDT.npz",
+          "pool_trades": 1496,
+          "theta": 0.006550468687684633,
+          "day_sd": 0.007113084297619067,
+          "day_ar": -0.2921708778143872
+        },
+        "GMX_USDT": {
+          "trades": 50,
+          "active_days": 2,
+          "pool": "data/interim/lab_pools/q80/GMX_USDT.npz",
+          "pool_trades": 50,
+          "theta": 0.026331069536660527,
+          "day_sd": 0.025149677753183056,
+          "day_ar": 0.0
+        },
+        "AIDOGE_USDT": {
+          "trades": 1134,
+          "active_days": 67,
+          "pool": "data/interim/lab_pools/q80/AIDOGE_USDT.npz",
+          "pool_trades": 1132,
+          "theta": 0.001866617848251435,
+          "day_sd": 0.005074199899091987,
+          "day_ar": 0.2741489947072894
+        },
+        "SUPER_USDT": {
+          "trades": 45,
+          "active_days": 3,
+          "pool": "data/interim/lab_pools/q80/SUPER_USDT.npz",
+          "pool_trades": 44,
+          "theta": -0.00012971983293767937,
+          "day_sd": 0.009108896134853666,
+          "day_ar": 0.0
+        },
+        "BOS_USDT": {
+          "trades": 18215,
+          "active_days": 91,
+          "pool": "data/interim/lab_pools/q80/BOS_USDT.npz",
+          "pool_trades": 18215,
+          "theta": 0.004740997829084512,
+          "day_sd": 0.0035726934255611736,
+          "day_ar": -0.30071963413214564
+        },
+        "IMU_USDT": {
+          "trades": 7067,
+          "active_days": 66,
+          "pool": "data/interim/lab_pools/q80/IMU_USDT.npz",
+          "pool_trades": 7059,
+          "theta": 0.004893481285168269,
+          "day_sd": 0.008934864258447549,
+          "day_ar": 0.02329123834563662
+        },
+        "MLN_USDT": {
+          "trades": 8638,
+          "active_days": 84,
+          "pool": "data/interim/lab_pools/q80/MLN_USDT.npz",
+          "pool_trades": 8635,
+          "theta": 0.003480252010102092,
+          "day_sd": 0.005890069336659818,
+          "day_ar": 0.19244474849097593
+        },
+        "ORCA_USDT": {
+          "trades": 2,
+          "active_days": 2,
+          "pool": "data/interim/lab_pools/q80/ORCA_USDT.npz",
+          "pool_trades": 0,
+          "theta": -0.002761534217620585,
+          "day_sd": 0.0,
+          "day_ar": 0.0
+        },
+        "PINGO_USDT": {
+          "trades": 3885,
+          "active_days": 33,
+          "pool": "data/interim/lab_pools/q80/PINGO_USDT.npz",
+          "pool_trades": 3882,
+          "theta": 0.01346288037039713,
+          "day_sd": 0.01531152050919848,
+          "day_ar": 0.24568337373698299
+        },
+        "CREO_USDT": {
+          "trades": 3581,
+          "active_days": 47,
+          "pool": "data/interim/lab_pools/q80/CREO_USDT.npz",
+          "pool_trades": 3576,
+          "theta": 0.005542128238538972,
+          "day_sd": 0.005659093302699928,
+          "day_ar": 0.07366291909661997
+        },
+        "FIS_USDT": {
+          "trades": 51299,
+          "active_days": 91,
+          "pool": "data/interim/lab_pools/q80/FIS_USDT.npz",
+          "pool_trades": 51298,
+          "theta": 0.0034436720966027692,
+          "day_sd": 0.005628641520868082,
+          "day_ar": 0.13119284520518795
+        },
+        "ANON_USDT": {
+          "trades": 21607,
+          "active_days": 88,
+          "pool": "data/interim/lab_pools/q80/ANON_USDT.npz",
+          "pool_trades": 21603,
+          "theta": 0.00012421562994006352,
+          "day_sd": 0.010280028139620223,
+          "day_ar": 0.09980697235868168
+        },
+        "CKB_USDT": {
+          "trades": 244,
+          "active_days": 5,
+          "pool": "data/interim/lab_pools/q80/CKB_USDT.npz",
+          "pool_trades": 244,
+          "theta": -0.0013604766057451426,
+          "day_sd": 0.031277133235690646,
+          "day_ar": 0.0
+        },
+        "DEEP_USDT": {
+          "trades": 47,
+          "active_days": 4,
+          "pool": "data/interim/lab_pools/q80/DEEP_USDT.npz",
+          "pool_trades": 47,
+          "theta": -0.0074872433240954096,
+          "day_sd": 0.019173781787370833,
+          "day_ar": 0.0
+        },
+        "XT_USDT": {
+          "trades": 9,
+          "active_days": 2,
+          "pool": "data/interim/lab_pools/q80/XT_USDT.npz",
+          "pool_trades": 9,
+          "theta": 0.0006006170739606638,
+          "day_sd": 0.0016969741843639622,
+          "day_ar": 0.0
+        },
+        "FLOCK_USDT": {
+          "trades": 815,
+          "active_days": 17,
+          "pool": "data/interim/lab_pools/q80/FLOCK_USDT.npz",
+          "pool_trades": 815,
+          "theta": -0.003209577442938189,
+          "day_sd": 0.015200427733090825,
+          "day_ar": -0.811824950371548
+        },
+        "TITN_USDT": {
+          "trades": 1850,
+          "active_days": 68,
+          "pool": "data/interim/lab_pools/q80/TITN_USDT.npz",
+          "pool_trades": 1840,
+          "theta": -0.0005811219359552982,
+          "day_sd": 0.006611454240206067,
+          "day_ar": 0.09729304136598402
+        },
+        "SAITO_USDT": {
+          "trades": 1405,
+          "active_days": 59,
+          "pool": "data/interim/lab_pools/q80/SAITO_USDT.npz",
+          "pool_trades": 1400,
+          "theta": 0.0003166854686749099,
+          "day_sd": 0.006552295557920622,
+          "day_ar": -0.3890613118088927
+        },
+        "SPYX_USDT": {
+          "trades": 1,
+          "active_days": 1,
+          "pool": "data/interim/lab_pools/q80/SPYX_USDT.npz",
+          "pool_trades": 0,
+          "theta": -0.012440563673085315,
+          "day_sd": 0.0,
+          "day_ar": 0.0
+        }
+      },
+      "rho": 0.0023585484167767752,
+      "common_ar": 0.07366291909661997
+    }
+  }
+}

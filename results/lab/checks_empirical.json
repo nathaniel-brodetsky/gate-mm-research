@@ -1,0 +1,939 @@
+{
+  "calibration": "results/lab/pools.json",
+  "reps": 400,
+  "resamples": 10000,
+  "seed": 20261124,
+  "results": {
+    "day_bootstrap/all/30d/SUKU_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8925,
+        "mc_se": 0.01548739406743433
+      },
+      "reject_at_alpha": {
+        "rate": 0.095,
+        "mc_se": 0.01466074691139575
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/BAND_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.91,
+        "mc_se": 0.014309088021254182
+      },
+      "reject_at_alpha": {
+        "rate": 0.0675,
+        "mc_se": 0.0125442965127583
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/NAVX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8775,
+        "mc_se": 0.016393119745795798
+      },
+      "reject_at_alpha": {
+        "rate": 0.0925,
+        "mc_se": 0.014486523910172517
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/TEVA_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8425,
+        "mc_se": 0.018213576666871335
+      },
+      "reject_at_alpha": {
+        "rate": 0.15,
+        "mc_se": 0.017853571071357127
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/PEOPLEFB_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.815,
+        "mc_se": 0.019414878315353924
+      },
+      "reject_at_alpha": {
+        "rate": 0.055,
+        "mc_se": 0.011399013115177999
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/ZIX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.86,
+        "mc_se": 0.01734935157289747
+      },
+      "reject_at_alpha": {
+        "rate": 0.125,
+        "mc_se": 0.016535945694153693
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/GMX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8725,
+        "mc_se": 0.016676611616272652
+      },
+      "reject_at_alpha": {
+        "rate": 0.0725,
+        "mc_se": 0.012965699942540702
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/AIDOGE_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8875,
+        "mc_se": 0.015799030824705677
+      },
+      "reject_at_alpha": {
+        "rate": 0.0725,
+        "mc_se": 0.012965699942540702
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/SUPER_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.85,
+        "mc_se": 0.017853571071357127
+      },
+      "reject_at_alpha": {
+        "rate": 0.1,
+        "mc_se": 0.015000000000000001
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/BOS_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8975,
+        "mc_se": 0.015165235738358969
+      },
+      "reject_at_alpha": {
+        "rate": 0.085,
+        "mc_se": 0.013944084767384343
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/IMU_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.84,
+        "mc_se": 0.018330302779823362
+      },
+      "reject_at_alpha": {
+        "rate": 0.115,
+        "mc_se": 0.01595109714094927
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/MLN_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8975,
+        "mc_se": 0.015165235738358969
+      },
+      "reject_at_alpha": {
+        "rate": 0.095,
+        "mc_se": 0.01466074691139575
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/ORCA_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9075,
+        "mc_se": 0.014486523910172518
+      },
+      "reject_at_alpha": {
+        "rate": 0.075,
+        "mc_se": 0.013169567191065924
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/PINGO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.865,
+        "mc_se": 0.017086178624841776
+      },
+      "reject_at_alpha": {
+        "rate": 0.11,
+        "mc_se": 0.015644487847162016
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/CREO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9075,
+        "mc_se": 0.014486523910172518
+      },
+      "reject_at_alpha": {
+        "rate": 0.0725,
+        "mc_se": 0.012965699942540702
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/FIS_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8775,
+        "mc_se": 0.016393119745795798
+      },
+      "reject_at_alpha": {
+        "rate": 0.0975,
+        "mc_se": 0.014831870246196196
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/ANON_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.84,
+        "mc_se": 0.018330302779823362
+      },
+      "reject_at_alpha": {
+        "rate": 0.0975,
+        "mc_se": 0.014831870246196196
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/CKB_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9025,
+        "mc_se": 0.014831870246196198
+      },
+      "reject_at_alpha": {
+        "rate": 0.085,
+        "mc_se": 0.013944084767384343
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/DEEP_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8325,
+        "mc_se": 0.018671083926756902
+      },
+      "reject_at_alpha": {
+        "rate": 0.12,
+        "mc_se": 0.01624807680927192
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/XT_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.665,
+        "mc_se": 0.023599523300270285
+      },
+      "reject_at_alpha": {
+        "rate": 0.385,
+        "mc_se": 0.02432976572020372
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/FLOCK_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.865,
+        "mc_se": 0.017086178624841776
+      },
+      "reject_at_alpha": {
+        "rate": 0.1125,
+        "mc_se": 0.015799030824705674
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/TITN_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.85,
+        "mc_se": 0.017853571071357127
+      },
+      "reject_at_alpha": {
+        "rate": 0.125,
+        "mc_se": 0.016535945694153693
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/SAITO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8875,
+        "mc_se": 0.015799030824705677
+      },
+      "reject_at_alpha": {
+        "rate": 0.0975,
+        "mc_se": 0.014831870246196196
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/30d/SPYX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.905,
+        "mc_se": 0.014660746911395748
+      },
+      "reject_at_alpha": {
+        "rate": 0.0775,
+        "mc_se": 0.013369157602481915
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/SUKU_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.895,
+        "mc_se": 0.015327671055969331
+      },
+      "reject_at_alpha": {
+        "rate": 0.07,
+        "mc_se": 0.012757350822173075
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/BAND_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9375,
+        "mc_se": 0.012103072956898178
+      },
+      "reject_at_alpha": {
+        "rate": 0.0625,
+        "mc_se": 0.012103072956898178
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/NAVX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.92,
+        "mc_se": 0.013564659966250532
+      },
+      "reject_at_alpha": {
+        "rate": 0.055,
+        "mc_se": 0.011399013115177999
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/TEVA_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9175,
+        "mc_se": 0.013756248580190752
+      },
+      "reject_at_alpha": {
+        "rate": 0.0775,
+        "mc_se": 0.013369157602481915
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/PEOPLEFB_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.915,
+        "mc_se": 0.013944084767384337
+      },
+      "reject_at_alpha": {
+        "rate": 0.05,
+        "mc_se": 0.010897247358851683
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/ZIX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.88,
+        "mc_se": 0.01624807680927192
+      },
+      "reject_at_alpha": {
+        "rate": 0.12,
+        "mc_se": 0.01624807680927192
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/GMX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.93,
+        "mc_se": 0.01275735082217307
+      },
+      "reject_at_alpha": {
+        "rate": 0.05,
+        "mc_se": 0.010897247358851683
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/AIDOGE_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9125,
+        "mc_se": 0.014128318194321646
+      },
+      "reject_at_alpha": {
+        "rate": 0.065,
+        "mc_se": 0.01232629303562105
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/SUPER_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.905,
+        "mc_se": 0.014660746911395748
+      },
+      "reject_at_alpha": {
+        "rate": 0.08,
+        "mc_se": 0.013564659966250536
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/BOS_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.93,
+        "mc_se": 0.01275735082217307
+      },
+      "reject_at_alpha": {
+        "rate": 0.0625,
+        "mc_se": 0.012103072956898178
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/IMU_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9,
+        "mc_se": 0.015
+      },
+      "reject_at_alpha": {
+        "rate": 0.07,
+        "mc_se": 0.012757350822173075
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/MLN_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8725,
+        "mc_se": 0.016676611616272652
+      },
+      "reject_at_alpha": {
+        "rate": 0.095,
+        "mc_se": 0.01466074691139575
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/ORCA_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9325,
+        "mc_se": 0.0125442965127583
+      },
+      "reject_at_alpha": {
+        "rate": 0.0725,
+        "mc_se": 0.012965699942540702
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/PINGO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9225,
+        "mc_se": 0.013369157602481916
+      },
+      "reject_at_alpha": {
+        "rate": 0.075,
+        "mc_se": 0.013169567191065924
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/CREO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9,
+        "mc_se": 0.015
+      },
+      "reject_at_alpha": {
+        "rate": 0.065,
+        "mc_se": 0.01232629303562105
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/FIS_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.935,
+        "mc_se": 0.012326293035621046
+      },
+      "reject_at_alpha": {
+        "rate": 0.065,
+        "mc_se": 0.01232629303562105
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/ANON_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.905,
+        "mc_se": 0.014660746911395748
+      },
+      "reject_at_alpha": {
+        "rate": 0.08,
+        "mc_se": 0.013564659966250536
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/CKB_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9225,
+        "mc_se": 0.013369157602481916
+      },
+      "reject_at_alpha": {
+        "rate": 0.0925,
+        "mc_se": 0.014486523910172517
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/DEEP_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8625,
+        "mc_se": 0.017218721642444885
+      },
+      "reject_at_alpha": {
+        "rate": 0.1,
+        "mc_se": 0.015000000000000001
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/XT_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.7475,
+        "mc_se": 0.021722324346165167
+      },
+      "reject_at_alpha": {
+        "rate": 0.315,
+        "mc_se": 0.023225793850803037
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/FLOCK_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.89,
+        "mc_se": 0.015644487847162013
+      },
+      "reject_at_alpha": {
+        "rate": 0.0775,
+        "mc_se": 0.013369157602481915
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/TITN_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8875,
+        "mc_se": 0.015799030824705677
+      },
+      "reject_at_alpha": {
+        "rate": 0.085,
+        "mc_se": 0.013944084767384343
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/SAITO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.89,
+        "mc_se": 0.015644487847162013
+      },
+      "reject_at_alpha": {
+        "rate": 0.085,
+        "mc_se": 0.013944084767384343
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/all/61d/SPYX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.9025,
+        "mc_se": 0.014831870246196198
+      },
+      "reject_at_alpha": {
+        "rate": 0.09,
+        "mc_se": 0.014309088021254185
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/SUKU_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.865,
+        "mc_se": 0.017086178624841776
+      },
+      "reject_at_alpha": {
+        "rate": 0.105,
+        "mc_se": 0.015327671055969333
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/NAVX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.85,
+        "mc_se": 0.017853571071357127
+      },
+      "reject_at_alpha": {
+        "rate": 0.1375,
+        "mc_se": 0.01721872164244489
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/TEVA_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.83,
+        "mc_se": 0.018781639970992952
+      },
+      "reject_at_alpha": {
+        "rate": 0.1175,
+        "mc_se": 0.01610075696978251
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/PEOPLEFB_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.75,
+        "mc_se": 0.021650635094610966
+      },
+      "reject_at_alpha": {
+        "rate": 0.025,
+        "mc_se": 0.007806247497997998
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/ZIX_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.7675,
+        "mc_se": 0.02112130145137842
+      },
+      "reject_at_alpha": {
+        "rate": 0.2425,
+        "mc_se": 0.021429754431630803
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/AIDOGE_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.84,
+        "mc_se": 0.018330302779823362
+      },
+      "reject_at_alpha": {
+        "rate": 0.135,
+        "mc_se": 0.017086178624841776
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/BOS_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.885,
+        "mc_se": 0.01595109714094927
+      },
+      "reject_at_alpha": {
+        "rate": 0.1025,
+        "mc_se": 0.015165235738358965
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/IMU_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.845,
+        "mc_se": 0.01809523417919757
+      },
+      "reject_at_alpha": {
+        "rate": 0.12,
+        "mc_se": 0.01624807680927192
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/MLN_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.875,
+        "mc_se": 0.016535945694153693
+      },
+      "reject_at_alpha": {
+        "rate": 0.1075,
+        "mc_se": 0.015487394067434327
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/PINGO_USDT": {
+      "reps": 396,
+      "coverage": {
+        "rate": 0.7651515151515151,
+        "mc_se": 0.02130198181684966
+      },
+      "reject_at_alpha": {
+        "rate": 0.1590909090909091,
+        "mc_se": 0.01838017375355719
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/CREO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8475,
+        "mc_se": 0.01797524339195439
+      },
+      "reject_at_alpha": {
+        "rate": 0.11,
+        "mc_se": 0.015644487847162016
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/FIS_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8625,
+        "mc_se": 0.017218721642444885
+      },
+      "reject_at_alpha": {
+        "rate": 0.0975,
+        "mc_se": 0.014831870246196196
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/ANON_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.87,
+        "mc_se": 0.016815171720800236
+      },
+      "reject_at_alpha": {
+        "rate": 0.08,
+        "mc_se": 0.013564659966250536
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/CKB_USDT": {
+      "reps": 9,
+      "coverage": {
+        "rate": 0.7777777777777778,
+        "mc_se": 0.13857990321384966
+      },
+      "reject_at_alpha": {
+        "rate": 0.2222222222222222,
+        "mc_se": 0.13857990321384966
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/FLOCK_USDT": {
+      "reps": 257,
+      "coverage": {
+        "rate": 0.708171206225681,
+        "mc_se": 0.028357415111803338
+      },
+      "reject_at_alpha": {
+        "rate": 0.21011673151750973,
+        "mc_se": 0.02541237256903008
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/TITN_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8325,
+        "mc_se": 0.018671083926756902
+      },
+      "reject_at_alpha": {
+        "rate": 0.0475,
+        "mc_se": 0.010635289135702893
+      },
+      "alpha": 0.05
+    },
+    "day_bootstrap/q80/30d/SAITO_USDT": {
+      "reps": 400,
+      "coverage": {
+        "rate": 0.8575,
+        "mc_se": 0.017478111311008404
+      },
+      "reject_at_alpha": {
+        "rate": 0.1075,
+        "mc_se": 0.015487394067434327
+      },
+      "alpha": 0.05
+    },
+    "bh/all/30d/all_null": {
+      "reps": 400,
+      "q": 0.1,
+      "fdr": {
+        "rate": 0.5725,
+        "mc_se": 0.024766769210836873
+      },
+      "any_false_rejection": {
+        "rate": 0.5725,
+        "mc_se": 0.02473579137606072
+      },
+      "power": null,
+      "mean_rejections": 1.015
+    },
+    "bh/all/30d/half_at_plus10bp": {
+      "reps": 400,
+      "q": 0.1,
+      "fdr": {
+        "rate": 0.10557582695082696,
+        "mc_se": 0.005089565243131471
+      },
+      "any_false_rejection": {
+        "rate": 0.6,
+        "mc_se": 0.02449489742783178
+      },
+      "power": 0.594375,
+      "mean_rejections": 8.0875
+    },
+    "bh/all/61d/all_null": {
+      "reps": 400,
+      "q": 0.1,
+      "fdr": {
+        "rate": 0.41,
+        "mc_se": 0.024622462593339462
+      },
+      "any_false_rejection": {
+        "rate": 0.41,
+        "mc_se": 0.024591665254715876
+      },
+      "power": null,
+      "mean_rejections": 0.6325
+    },
+    "bh/all/61d/half_at_plus10bp": {
+      "reps": 400,
+      "q": 0.1,
+      "fdr": {
+        "rate": 0.07836328255078256,
+        "mc_se": 0.004400443487693372
+      },
+      "any_false_rejection": {
+        "rate": 0.505,
+        "mc_se": 0.02499874996874844
+      },
+      "power": 0.66125,
+      "mean_rejections": 8.7075
+    },
+    "median_ci/8_pairs/mu0": {
+      "reps": 1600,
+      "coverage": {
+        "rate": 0.93375,
+        "mc_se": 0.0062179647745464126
+      },
+      "lower_above_0": {
+        "rate": 0.030625,
+        "mc_se": 0.004307486896018954
+      }
+    },
+    "median_ci/12_pairs/mu0": {
+      "reps": 1600,
+      "coverage": {
+        "rate": 0.93,
+        "mc_se": 0.006378675411086535
+      },
+      "lower_above_0": {
+        "rate": 0.039375,
+        "mc_se": 0.004862137478452763
+      }
+    },
+    "median_ci/17_pairs/mu0": {
+      "reps": 1600,
+      "coverage": {
+        "rate": 0.9475,
+        "mc_se": 0.005575826732422735
+      },
+      "lower_above_0": {
+        "rate": 0.02375,
+        "mc_se": 0.00380673231755268
+      }
+    },
+    "median_ci/24_pairs/mu0": {
+      "reps": 1600,
+      "coverage": {
+        "rate": 0.941875,
+        "mc_se": 0.005849491664612831
+      },
+      "lower_above_0": {
+        "rate": 0.0275,
+        "mc_se": 0.0040883791103565725
+      }
+    },
+    "h003/november/scale_1": {
+      "reps": 800,
+      "scale": 1.0,
+      "accept": {
+        "rate": 0.46625,
+        "mc_se": 0.017637351611707465
+      },
+      "reject": {
+        "rate": 0.53375,
+        "mc_se": 0.01763735161170747
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.69625
+    },
+    "h003/november/scale_0.5": {
+      "reps": 800,
+      "scale": 0.5,
+      "accept": {
+        "rate": 0.21125,
+        "mc_se": 0.014431884730519434
+      },
+      "reject": {
+        "rate": 0.78875,
+        "mc_se": 0.014431884730519436
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.69375
+    },
+    "h003/november/scale_0": {
+      "reps": 800,
+      "scale": 0.0,
+      "accept": {
+        "rate": 0.02375,
+        "mc_se": 0.005383532471806964
+      },
+      "reject": {
+        "rate": 0.97625,
+        "mc_se": 0.005383532471806969
+      },
+      "extend": {
+        "rate": 0.0,
+        "mc_se": 0.0
+      },
+      "mean_counted_pairs": 15.715
+    }
+  }
+}
