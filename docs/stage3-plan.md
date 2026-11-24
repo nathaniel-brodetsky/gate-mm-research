@@ -204,17 +204,40 @@ result. No orders, no keys: research on public data only.
 3. After step 2e the question is concrete: can the days of extreme prices of a token be recognised
    from as-of data early enough to stop quoting, and what is lost before that? Rolling volatility,
    price range, volume and trade flow are the baselines.
-   3a. Quote pauses *(this step)*: `python -m mmlab.microstructure.quote_pause` evaluates, on the
-       exploration period and the research pairs only, 24 rules that stop quoting while the mid's
-       range or the number of trades over the last 60, 300 or 1,800 s is more than 2, 3, 5 or 10 times
-       its mean over the previous 7 days (`mmlab.feature_engineering.asof_activity`: one-second grid,
-       a signal is used 1 s after it was known; the archive's books count from their availability).
-       A paused maker takes no part in the trades during the pause and earns, on the others, what the
-       liquidity that traded earned (volume-weighted RS(60 s) minus the fee). Per pair: volume kept,
-       theta kept and paused, the change of theta, the share of the worst day paused; the theta
-       without the three worst days as an ex-post bound. Exploration only: 24 rules on the same data
-       select candidates, and a candidate goes into the H-004 batch only with its own lab levels under
-       D-002 (day pools built for the paused statistic), tested on December.
+   3a. Quote pauses *(done 2026-11-24, `results/h004_explore/quote_pause.json`)*: `python -m
+       mmlab.microstructure.quote_pause` evaluates, on the exploration period and the research pairs
+       only, 24 rules that stop quoting while the mid's range or the number of trades over the last
+       60, 300 or 1,800 s is more than 2, 3, 5 or 10 times its mean over the previous 7 days
+       (`mmlab.feature_engineering.asof_activity`: one-second grid, a signal is used 1 s after it was
+       known; the archive's books count from their availability). A paused maker takes no part in the
+       trades during the pause and earns, on the others, what the liquidity that traded earned
+       (volume-weighted RS(60 s) minus the fee).
+       Findings (median over 24 pairs; theta of all trades −10.45 bp):
+       - No rule moves the median pair much. The best, a range over 1,800 s above 5 times its 7-day
+         mean, raises theta by 0.69 bp, improves 15 of 24 pairs, keeps 81% of the volume and pauses
+         47% of the worst day. The 24 rules give −0.46 to +0.69 bp and improve 8 to 15 pairs, which is
+         what correlated rules without an effect give; 9 of the 12 rules on trade counts lower theta.
+       - Even the ex-post bound is small: dropping each pair's three worst days raises theta by 3.36 bp.
+         The loss is not mainly in the event days. The liquidity that trades on these pairs captures
+         close to 0 bp of realized spread at 60 s on ordinary days too (H-001: median +0.37 bp before
+         the fee in development, −1.09 bp in validation), and the 10 bp maker fee makes theta
+         negative. Heavy days make the result risky and hard to test (step 2e), not negative.
+       - Pausing 24–75% of the worst day's volume gains little. This fits H-002 (about 70% of the
+         5-minute impact comes within the first 100 ms): most of the loss is probably done before a
+         signal 1 s old reacts. Not measured directly.
+       - No pause rule goes into H-004 as an edge hypothesis. Whether pauses cut the tails (risk, not
+         the mean) is a question for the risk module.
+       Fees (Gate's own pages, read 2026-11-24): VIP 0 pays 0.1% as maker. Negative maker fees on
+       spot USDT pairs come only with the Global Market Maker Program
+       (https://www.gate.com/gmmc): from 0.15% of the platform's monthly spot maker volume, or as a
+       30-day trial for users with more than USD 20 million traded in 30 days; its 2022 announcement
+       (https://www.gate.com/announcements/article/28527) lists −0.005% for the MM1 trial and at least
+       −0.012% at the best tier. Even at −0.012% the median pair's traded liquidity would sit near 0
+       (+1.6 bp in development, +0.1 bp in validation). The 24 research pairs had median daily volumes
+       of at most USD 0.9 million together in July (upper ends of the D-001 strata), for all their
+       trading, so a maker on them alone stays far below either threshold. An edge has to come from
+       where and when to quote (steps 4–5: H-003 and conditions beyond the spread) or from quoting
+       better than the average liquidity (step 6), not from fees or pauses.
    Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.
