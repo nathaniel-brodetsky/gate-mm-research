@@ -32,8 +32,10 @@ def sell_at(b: qu.Book, horizon_s: float = 100.0, size: float = 101.0) -> list[q
     return qu.place(b, np.array([1 * S]), 1, size, 300_000, int(horizon_s * S))
 
 
-def run(b: qu.Book, t: qu.Trades, orders: list[qu.Order]) -> list[tuple[int, float, float]]:
-    return [(f.order, f.ts / S, round(f.qty, 12)) for f in qu.simulate(b, t, orders)]
+def run(
+    b: qu.Book, t: qu.Trades, orders: list[qu.Order], optimistic: bool = False
+) -> list[tuple[int, float, float]]:
+    return [(f.order, f.ts / S, round(f.qty, 12)) for f in qu.simulate(b, t, orders, optimistic)]
 
 
 def test_place_joins_the_back_at_the_end_of_the_arrival_batch() -> None:
@@ -97,9 +99,13 @@ def test_invalid_states_do_not_cap() -> None:
     assert run(b, trades([(3.0, 101.0, 1.25, 1)]), sell_at(b)) == []
 
 
-def test_sweep_fills_everything_left() -> None:
+def test_sweep_fills_up_to_the_trade_size() -> None:
     b = book(BASE)
-    assert run(b, trades([(2.0, 102.0, 0.01, 1)]), sell_at(b)) == [(0, 2.0, 1.0)]
+    assert run(b, trades([(2.0, 102.0, 0.01, 1)]), sell_at(b)) == [(0, 2.0, 0.01)]
+    assert run(b, trades([(2.0, 102.0, 0.01, 1), (2.1, 103.0, 5.0, 1)]), sell_at(b)) == [
+        (0, 2.0, 0.01),
+        (0, 2.1, 0.99),
+    ]
 
 
 def test_level_gone_empties_the_queue() -> None:
@@ -133,13 +139,15 @@ def test_buy_side_and_independent_orders() -> None:
     buys = qu.place(b, np.array([S, S]), -1, 99.0, 300_000, 100 * S)
     assert [o.ahead for o in buys] == [5.0, 5.0]
     t = trades([(2.0, 99.0, 5.5, -1), (3.0, 98.0, 0.1, -1), (3.5, 99.0, 9.0, 1)])
-    assert run(b, t, buys) == [(0, 2.0, 0.5), (1, 2.0, 0.5), (0, 3.0, 0.5), (1, 3.0, 0.5)]
+    assert run(b, t, buys) == [(0, 2.0, 0.5), (1, 2.0, 0.5), (0, 3.0, 0.1), (1, 3.0, 0.1)]
 
 
-def _reference(b: qu.Book, t: qu.Trades, orders: list[qu.Order]) -> list[tuple[int, float, float]]:
+def _reference(
+    b: qu.Book, t: qu.Trades, orders: list[qu.Order], optimistic: bool = False
+) -> list[tuple[int, float, float]]:
     out = []
     for n, o in enumerate(orders):
-        ahead, rem = o.ahead, o.size
+        ahead, rem, last, since = o.ahead, o.size, float("nan"), 0.0
         ev = [(int(b.avail[j]), 0, j) for j in range(b.avail.size) if o.act_us < b.avail[j] < o.expire_us]
         ev += [(int(t.ts[k]), 1, k) for k in range(t.ts.size) if o.act_us <= t.ts[k] < o.expire_us]
         for _, kind, i in sorted(ev):
@@ -149,9 +157,14 @@ def _reference(b: qu.Book, t: qu.Trades, orders: list[qu.Order]) -> list[tuple[i
                 if b.ok[i]:
                     best = b.ask[i] if o.side == 1 else b.bid[i]
                     if qu._same(float(best), o.price):
-                        ahead = min(ahead, float(b.ask_qty[i] if o.side == 1 else b.bid_qty[i]))
+                        shown = float(b.ask_qty[i] if o.side == 1 else b.bid_qty[i])
+                        if optimistic and np.isfinite(last):
+                            ahead = max(0.0, ahead - max(0.0, last - since - shown))
+                        ahead = min(ahead, shown)
+                        last, since = shown, 0.0
                     elif (best - o.price) * o.side > 0:
                         ahead = 0.0
+                        last, since = float("nan"), 0.0
                 continue
             if t.taker[i] != o.side:
                 continue
@@ -159,9 +172,10 @@ def _reference(b: qu.Book, t: qu.Trades, orders: list[qu.Order]) -> list[tuple[i
             if qu._same(p, o.price):
                 take = min(ahead, x)
                 ahead -= take
+                since += x
                 got = min(x - take, rem)
             elif (p - o.price) * o.side > 0:
-                got = rem
+                got = min(x, rem)
             else:
                 continue
             if got > 0:
@@ -170,8 +184,9 @@ def _reference(b: qu.Book, t: qu.Trades, orders: list[qu.Order]) -> list[tuple[i
     return sorted(out, key=lambda r: (r[1], r[0]))
 
 
+@pytest.mark.parametrize("optimistic", [False, True])
 @pytest.mark.parametrize("seed", range(12))
-def test_engine_matches_the_per_order_reference(seed: int) -> None:
+def test_engine_matches_the_per_order_reference(seed: int, optimistic: bool) -> None:
     rng = np.random.default_rng(seed)
     n = 400
     times = np.round(np.cumsum(rng.uniform(0.05, 2.0, n)), 1)  # states on 100 ms batch ends
@@ -204,7 +219,24 @@ def test_engine_matches_the_per_order_reference(seed: int) -> None:
         qu.place(b, decide, 1, 50.0, 300_000, 20 * S) + qu.place(b, decide, -1, 50.0, 300_000, 20 * S),
         key=lambda o: (o.act_us, o.decided_us, o.side),
     )
-    got = sorted(run(b, t, orders), key=lambda r: (r[1], r[0]))
+    got = sorted(run(b, t, orders, optimistic), key=lambda r: (r[1], r[0]))
     assert len(orders) > 50
     assert len(got) > 10
-    assert got == _reference(b, t, orders)
+    assert got == _reference(b, t, orders, optimistic)
+
+
+def test_optimistic_queue_credits_unexplained_falls_of_the_display() -> None:
+    # 4 ahead at 1.4 s; 6 join behind (10 shown); then the display falls to 6 without trades
+    b = book([*BASE, (2.0, 99.0, 101.0, 5.0, 10.0, True), (3.0, 99.0, 101.0, 5.0, 6.0, True)])
+    t = trades([(3.5, 101.0, 0.5, 1)])
+    assert run(b, t, sell_at(b)) == []  # pessimistic: the 4 cancels came from behind
+    assert run(b, t, sell_at(b), optimistic=True) == [(0, 3.5, 0.5)]  # optimistic: from ahead
+
+
+def test_optimistic_queue_does_not_count_trades_as_cancels() -> None:
+    b = book([*BASE, (2.0, 99.0, 101.0, 5.0, 10.0, True), (3.0, 99.0, 101.0, 5.0, 7.0, True)])
+    t = trades([(2.5, 101.0, 3.0, 1), (3.5, 101.0, 1.5, 1)])  # 10 - 3 traded = 7 shown: no cancels
+    assert run(b, t, sell_at(b), optimistic=True) == [(0, 3.5, 0.5)]  # 4 - 3 = 1 ahead, then filled
+    hidden = book([*BASE, (2.0, 99.0, 100.5, 5.0, 1.0, True), (3.0, 99.0, 101.0, 5.0, 1.0, True)])
+    # 101 was shown with 4, hidden behind 100.5, then shown with 1: 3 cancelled, all from ahead
+    assert run(hidden, trades([(3.5, 101.0, 1.5, 1)]), sell_at(hidden), optimistic=True) == [(0, 3.5, 0.5)]

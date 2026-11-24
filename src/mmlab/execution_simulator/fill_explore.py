@@ -141,7 +141,15 @@ def summarize_orders(
 
 
 def explore_pair(
-    ds: Path, pair: str, start: str, end: str, every_s: int, horizon_s: int, latency_ms: int, size: float
+    ds: Path,
+    pair: str,
+    start: str,
+    end: str,
+    every_s: int,
+    horizon_s: int,
+    latency_ms: int,
+    size: float,
+    queue: str = "pessimistic",
 ) -> tuple[str, dict[str, Any] | None]:
     trades = pl.read_parquet(ds / "trades" / f"{pair}.parquet")
     tob = pl.read_parquet(ds / "tob" / f"{pair}.parquet")
@@ -161,7 +169,7 @@ def explore_pair(
         + place(book, t, -1, size, latency_ms * 1000, horizon_s * 1_000_000),
         key=lambda o: (o.act_us, o.decided_us, o.side),
     )
-    fills = simulate(book, tr, orders)
+    fills = simulate(book, tr, orders, optimistic=queue == "optimistic")
     known = _asof(book, np.array([o.decided_us for o in orders], dtype=np.int64))
     k = np.clip(known, 0, None)
     q = (book.ask[k] - book.bid[k]) / (book.ask[k] + book.bid[k])
@@ -180,8 +188,9 @@ def explore(
     latency_ms: int = LATENCY_MS,
     size: float = SIZE_USDT,
     workers: int = 1,
+    queue: str = "pessimistic",
 ) -> dict[str, Any]:
-    args = [(ds, p, start, end, every_s, horizon_s, latency_ms, size) for p in pairs]
+    args = [(ds, p, start, end, every_s, horizon_s, latency_ms, size, queue) for p in pairs]
     if workers > 1:
         with ProcessPoolExecutor(max_workers=workers) as ex:
             done = list(ex.map(explore_pair, *zip(*args, strict=True)))
@@ -193,6 +202,7 @@ def explore(
         "horizon_s": horizon_s,
         "latency_ms": latency_ms,
         "size_usdt": size,
+        "queue": queue,
         "pairs": {p: r for p, r in done if r is not None},
         "too_thin": [p for p, r in done if r is None],
     }
@@ -202,40 +212,73 @@ def _med(xs: Sequence[float]) -> str:
     return f"{statistics.median(xs) * 1e4:+8.2f}" if xs else "     n/a"
 
 
+def subset_stats(res: Mapping[str, Any], subset: str) -> dict[str, Any]:
+    """Medians over pairs: fill rate and wait over all pairs, thetas over pairs with enough fills."""
+    es = [e[subset] for e in res["pairs"].values() if e[subset]["orders"] > 0]
+    counted = [e for e in es if e["fills"] >= MIN_TRADES and e["fill_days"] >= MIN_DAYS]
+
+    def vals(key: str) -> list[float]:
+        return [e[key] for e in counted if e[key] is not None]
+
+    return {
+        "pairs": len(es),
+        "counted": len(counted),
+        "rate": [e["orders_filled"] / e["orders"] for e in es],
+        "wait": [e["median_wait_s"] for e in es if e["median_wait_s"] is not None],
+        "fill": vals("theta_fill"),
+        "exit": vals("theta_exit"),
+        "trades": vals("theta_trades"),
+        "gap": [
+            e["theta_fill"] - e["theta_trades"]
+            for e in counted
+            if e["theta_fill"] is not None and e["theta_trades"] is not None
+        ],
+    }
+
+
+def _m(xs: Sequence[float], fmt: str) -> str:
+    return format(statistics.median(xs), fmt) if xs else "n/a"
+
+
 def summarize(res: Mapping[str, Any]) -> str:
     pairs = res["pairs"]
     lines = [
         f"virtual orders at the back of the queue, {res['period'][0]} .. {res['period'][1]}: every "
         f"{res['every_s']} s on both sides, {res['size_usdt']:g} USDT, latency {res['latency_ms']} ms, "
-        f"cancelled after {res['horizon_s']} s; {len(pairs)} pairs; exploration, no inference",
+        f"cancelled after {res['horizon_s']} s, {res.get('queue', 'pessimistic')} queue; {len(pairs)} pairs; "
+        "exploration, no inference",
         f"theta in bp, median over pairs with >= {MIN_TRADES} fills on >= {MIN_DAYS} days; "
         "fill rate and wait: median over all pairs",
     ]
     for subset in ("all", "q80"):
-        es = [e[subset] for e in pairs.values() if e[subset]["orders"] > 0]
-        counted = [e for e in es if e["fills"] >= MIN_TRADES and e["fill_days"] >= MIN_DAYS]
-        rate = [e["orders_filled"] / e["orders"] for e in es]
-        waits = [e["median_wait_s"] for e in es if e["median_wait_s"] is not None]
-        fill = [e["theta_fill"] for e in counted if e["theta_fill"] is not None]
-        ex = [e["theta_exit"] for e in counted if e["theta_exit"] is not None]
-        trd = [e["theta_trades"] for e in counted if e["theta_trades"] is not None]
-        gap = [
-            e["theta_fill"] - e["theta_trades"]
-            for e in counted
-            if e["theta_fill"] is not None and e["theta_trades"] is not None
-        ]
+        st = subset_stats(res, subset)
         lines.append(
-            f"{subset}: pairs {len(es)} (counted {len(counted)}); orders filled "
-            f"{statistics.median(rate) if rate else float('nan'):.3f}; median wait "
-            f"{statistics.median(waits) if waits else float('nan'):.0f} s"
+            f"{subset}: pairs {st['pairs']} (counted {st['counted']}); "
+            f"orders filled {_m(st['rate'], '.3f')}; median wait {_m(st['wait'], '.0f')} s"
         )
         lines.append(
-            f"  theta fills {_med(fill)}  exit across the spread {_med(ex)}  trades {_med(trd)}  "
-            f"fills - trades {_med(gap)}"
+            f"  theta fills {_med(st['fill'])}  exit across the spread {_med(st['exit'])}  trades "
+            f"{_med(st['trades'])}  fills - trades {_med(st['gap'])}"
         )
     if res.get("too_thin"):
         lines.append(f"too thin: {', '.join(res['too_thin'])}")
     return "\n".join(lines)
+
+
+def compact(res: Mapping[str, Any]) -> str:
+    """One line per run: settings, then per subset the fill rate and the median thetas in bp."""
+    head = (
+        f"{res.get('queue', 'pessimistic'):11} {res['latency_ms']:5d} ms {res['horizon_s']:5d} s "
+        f"{res['size_usdt']:5g} USDT"
+    )
+    parts = []
+    for subset in ("all", "q80"):
+        st = subset_stats(res, subset)
+        parts.append(
+            f"{subset}: filled {_m(st['rate'], '.3f')} fills {_med(st['fill'])} exit {_med(st['exit'])} "
+            f"gap {_med(st['gap'])}"
+        )
+    return head + " | " + " | ".join(parts)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -248,6 +291,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     p.add_argument("--horizon-s", type=int, default=HORIZON_S)
     p.add_argument("--latency-ms", type=int, default=LATENCY_MS)
     p.add_argument("--size-usdt", type=float, default=SIZE_USDT)
+    p.add_argument("--queue", choices=["pessimistic", "optimistic"], default="pessimistic")
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--out", required=True)
     a = p.parse_args(argv)
@@ -257,7 +301,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     uni = json.loads(Path(a.universe).read_text())
     pairs = [x for s in sorted(uni["research"], key=int) for x in uni["research"][s]]
     res = explore(
-        Path(a.dataset), pairs, a.start, a.end, a.every_s, a.horizon_s, a.latency_ms, a.size_usdt, a.workers
+        Path(a.dataset),
+        pairs,
+        a.start,
+        a.end,
+        a.every_s,
+        a.horizon_s,
+        a.latency_ms,
+        a.size_usdt,
+        a.workers,
+        a.queue,
     )
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)

@@ -13,10 +13,13 @@ on a price touch; it is filled only by archived trades, after the displayed queu
   is not placed. If the level has disappeared in that state the order is alone at its price; if a
   better price has appeared, the queue ahead is the displayed size seen at the decision.
 - Queue: a trade at the order's price first consumes the queue ahead, then fills the order; a trade at
-  a worse price for the order's side (a taker sweeping through the level) fills what is left. Later
-  valid states cap the queue ahead at the displayed size when the order's price is still the best
-  (cancellations ahead are assumed only as far as the display forces), and empty it when the level is
-  gone. The order's own presence changes nothing in the archive.
+  a worse price for the order's side (a taker sweeping through the level) fills the order up to that
+  trade's size. Later valid states empty the queue ahead when the level is gone, and when the order's
+  price is still the best they treat cancellations in one of two ways that bound reality:
+  pessimistic (cancellations come from behind the order as far as possible: the queue ahead is only
+  capped at the displayed size) and optimistic (every fall of the displayed size not explained by
+  trades at the price since the last look came from ahead). The order's own presence changes nothing
+  in the archive.
 - The order lives `horizon` after activation; whatever is unfilled then is cancelled.
 """
 
@@ -129,13 +132,14 @@ def place(
     return out
 
 
-def simulate(book: Book, trades: Trades, orders: list[Order]) -> list[Fill]:
+def simulate(book: Book, trades: Trades, orders: list[Order], optimistic: bool = False) -> list[Fill]:
     """One chronological pass over book states and trades; orders sorted by activation time.
 
     At equal times a book state comes first, then orders joining, then trades.
     """
     fills: list[Fill] = []
-    active: list[list[float | int]] = []  # [order index, ahead, remaining]
+    # [order index, ahead, remaining, displayed size at the last look, traded at the price since then]
+    active: list[list[float | int]] = []
     nxt = 0
     j = k = 0
     nb, nt = book.avail.size, trades.ts.size
@@ -143,7 +147,8 @@ def simulate(book: Book, trades: Trades, orders: list[Order]) -> list[Fill]:
         is_book = k >= nt or (j < nb and book.avail[j] <= trades.ts[k])  # a state before trades at its time
         now = int(book.avail[j]) if is_book else int(trades.ts[k])
         while nxt < len(orders) and (orders[nxt].act_us < now or (not is_book and orders[nxt].act_us == now)):
-            active.append([nxt, orders[nxt].ahead, orders[nxt].size])
+            # no earlier look: at activation nobody is behind, so both queue models agree on the first look
+            active.append([nxt, orders[nxt].ahead, orders[nxt].size, float("nan"), 0.0])
             nxt += 1
         active = [a for a in active if orders[int(a[0])].expire_us > now]
         if is_book:
@@ -152,10 +157,14 @@ def simulate(book: Book, trades: Trades, orders: list[Order]) -> list[Fill]:
                     o = orders[int(a[0])]
                     best = book.ask[j] if o.side == 1 else book.bid[j]
                     if np.isfinite(best) and _same(float(best), o.price):
-                        shown = book.ask_qty[j] if o.side == 1 else book.bid_qty[j]
-                        a[1] = min(float(a[1]), float(shown))
+                        shown = float(book.ask_qty[j] if o.side == 1 else book.bid_qty[j])
+                        if optimistic and np.isfinite(float(a[3])):
+                            a[1] = max(0.0, float(a[1]) - max(0.0, float(a[3]) - float(a[4]) - shown))
+                        a[1] = min(float(a[1]), shown)
+                        a[3], a[4] = shown, 0.0
                     elif not np.isfinite(best) or (best - o.price) * o.side > 0:
                         a[1] = 0.0  # the level is gone
+                        a[3], a[4] = float("nan"), 0.0
             j += 1
             if not active and nxt >= len(orders):
                 break
@@ -168,9 +177,10 @@ def simulate(book: Book, trades: Trades, orders: list[Order]) -> list[Fill]:
             if _same(p, o.price):
                 take = min(float(a[1]), x)
                 a[1] = float(a[1]) - take
+                a[4] = float(a[4]) + x
                 got = min(x - take, float(a[2]))
             elif (p - o.price) * o.side > 0:
-                got = float(a[2])  # swept through the order's level
+                got = min(x, float(a[2]))  # swept through the order's level
             else:
                 continue
             if got > 0:

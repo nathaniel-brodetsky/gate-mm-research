@@ -102,7 +102,16 @@ def test_explore_pair_and_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]
     doc = json.loads(out.read_text())
     assert doc["too_thin"] == ["THIN_USDT"]
     assert (doc["every_s"], doc["horizon_s"], doc["latency_ms"], doc["size_usdt"]) == (600, 300, 300, 10.0)
+    assert doc["queue"] == "pessimistic"
     text = capsys.readouterr().out
     assert "exploration, no inference" in text
     assert "fills - trades" in text
     assert fe.main([*argv, "--end", "2026-11-02", "--out", str(out)]) == 2
+    assert fe.main([*argv, "--queue", "optimistic", "--out", str(out)]) == 0
+    doc = json.loads(out.read_text())
+    assert doc["queue"] == "optimistic"
+    assert "optimistic queue" in capsys.readouterr().out
+    line = fe.compact(doc)
+    assert line.startswith("optimistic    300 ms   300 s    10 USDT | all: filled ")
+    assert "| q80: filled" in line
+    assert "fills      n/a" in line  # one fill in the small dataset: below 30 fills on 5 days

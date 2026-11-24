@@ -44,6 +44,8 @@ quote pauses on unusual prices or trading, exploration period, research pairs (s
 realized spread by the as-of state before the trade (stage 3, step 4a).
 `h004_explore/fills.json` is `python -m mmlab.execution_simulator.fill_explore data/processed/U001`:
 fills of virtual orders at the back of the queue (stage 3, step 6a).
+`h004_explore/fills_grid/` holds the same with `--queue`, `--latency-ms`, `--horizon-s` and `--size-usdt`
+varied (step 6b); file names give the settings.
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.

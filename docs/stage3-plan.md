@@ -278,15 +278,32 @@ result. No orders, no keys: research on public data only.
    touch) for whatever survives step 5, with results as a function of latency. Public data resolve the
    book to 20 ms at best (WebSocket) and 100 ms in the archive, so 100 and 400 ms can be simulated and
    1 and 10 ms cannot.
-   6a. Fills at the back of the queue *(this step)*: `mmlab.execution_simulator.queue` places virtual
-       orders at the best bid and ask and fills them only from archived trades: an order joins at the
-       end of the 100 ms batch it arrives in (300 ms after the decision) behind everything displayed
-       at its price; trades at its price consume the queue ahead first; a trade through its price
-       fills what is left; later valid books cap the queue ahead at the displayed size and empty it
-       when the level is gone; post-only orders that would cross are not placed. A one-pass engine is
-       checked against a per-order reference on random books. `python -m
-       mmlab.execution_simulator.fill_explore` places such orders every 60 s on both sides (10 USDT,
-       cancelled after 300 s) over the exploration period and compares, per pair and for orders
-       decided at half-spreads of at least 80 bp, the fill rate, the wait and the theta of the fills
-       against the average trade, and the theta after closing across the spread 60 s later (maker and
-       taker fee).
+   6a. Fills at the back of the queue *(done 2026-11-25, `results/h004_explore/fills.json`)*:
+       `mmlab.execution_simulator.queue` places virtual orders at the best bid and ask and fills them
+       only from archived trades: an order joins at the end of the 100 ms batch it arrives in (300 ms
+       after the decision) behind everything displayed at its price; trades at its price consume the
+       queue ahead first; a trade through its price fills it; later valid books cap the queue ahead at
+       the displayed size and empty it when the level is gone; post-only orders that would cross are
+       not placed. A one-pass engine is checked against a per-order reference on random books.
+       `python -m mmlab.execution_simulator.fill_explore` places such orders every 60 s on both sides
+       (10 USDT, cancelled after 300 s) over the exploration period and compares, per pair and for
+       orders decided at half-spreads of at least 80 bp, the fill rate, the wait and the theta of the
+       fills against the average trade, and the theta after closing across the spread 60 s later
+       (maker and taker fee).
+       Findings (pessimistic queue, 10 USDT, 300 ms, 300 s; median over pairs with 30 fills on 5 days):
+       - All orders: 11.4% get any fill (median wait 125 s). Fills earn −25.9 bp against −10.5 bp for
+         the average trade, 11.4 bp of extra adverse selection; closed across the spread 60 s later,
+         −56.5 bp.
+       - Orders decided at half-spreads of at least 80 bp: 16.0% filled (86 s). Fills earn −14.5 bp
+         against +34.8 bp for the average trade (−33.5 bp); closed across the spread, −131 bp.
+       - The positive theta of wide-spread trades does not reach a maker who joins the back of the
+         queue: it goes to orders that were there before. The queue model is pessimistic, so this is
+         one bound. Computed with the first version of the engine, in which a trade through the
+         price filled the whole order; at 10 USDT this changes little.
+   6b. Bounds and sensitivity *(this step)*: a trade through the order's price now fills it only up to
+       that trade's size, and `--queue optimistic` credits every fall of the displayed size not
+       explained by trades to the queue ahead (the pessimistic model credits it only as far as the
+       display forces). The grid runs both models at latencies of 100, 300 and 1,000 ms, lifetimes of
+       60, 300 and 1,800 s and sizes of 10 and 100 USDT (24 runs, `results/h004_explore/fills_grid/`).
+       If even the optimistic bound leaves wide-spread fills negative, H-003's positive theta is not
+       available to a new maker on these pairs, whatever the November test says.
