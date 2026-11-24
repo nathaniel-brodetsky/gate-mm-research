@@ -120,6 +120,14 @@ least one pair significant after Benjamini–Hochberg in 41.0% of 61-day periods
 anywhere. The two development rejections (NAVX_USDT, BOS_USDT) are within that range, and neither
 replicated in validation. A too liberal test favours acceptance, so the rejection stands.
 
+### Calendar-day generator and D-002, 2026-11-24 (after the decision)
+
+With periods rebuilt from real days, the registered day bootstrap rejects a true 0 in 13.4% of 61-day
+periods for the median pair, and Benjamini–Hochberg finds at least one pair in 88.2% of periods with no
+effect anywhere (`results/lab/checks_days.json`). Under D-002 per-pair results are descriptive and the
+decision rests on the median over pairs, which is −9.63 bp (development) and −11.09 bp (validation).
+The decision stays **rejected**.
+
 ### Post-hoc observations (not tests; candidates for new hypotheses)
 
 - The five pairs with θ > 0 in development (NAVX, ZIX, AIDOGE, BOS, FIS) have θ > 0 in validation

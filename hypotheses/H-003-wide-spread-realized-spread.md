@@ -111,3 +111,19 @@ effect of the size seen in exploration.
 The per-pair p-values reported with this test come from the registered day bootstrap, which the lab
 found too liberal on these trades (11.7% rejections at a nominal 5% over 30 days). They are reported,
 not used in the decision.
+
+### Lab with real days, 2026-11-24 (before November was opened)
+
+With synthetic Novembers rebuilt from real days of August–October (the only generator of the lab that
+reproduces the real daily statistics; `docs/stage3-plan.md`, steps 2d–2g):
+
+- The registered rule accepts in 45.3% of Novembers if every pair's exploration theta persists, 23.6%
+  if it halves and 1.9% if it is absent (`results/lab/checks_days.json`).
+- At the registered level of 2.5% it accepts in 2.4% of periods with every pair at 0 and 0.9% with
+  pairs drawn at random around a median of 0 (`results/lab/levels_days.json`). 2.5% is the level
+  [D-002](../docs/decisions/D-002-testing-standard.md) calibrates for this subset and window; the rule
+  is unchanged.
+- On wide-spread trades the days are skewed to the gain side in 12 of 17 pairs: the three heaviest days
+  carry 54–63% of the absolute daily deviations for PEOPLEFB_USDT, NAVX_USDT and PINGO_USDT
+  (`results/lab/tails_days.json`). An effect, if accepted, would come in a few days per pair; that
+  matters for capacity and risk, not for the decision.

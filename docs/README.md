@@ -10,4 +10,4 @@ Stage reports (`stageN-*.md`) and technical decision records (`decisions/`).
 | [H-001 / H-002 results, development period](results/h001-h002-development.md) | generated |
 | [H-001 / H-002 results, validation period](results/h001-h002-validation.md) | generated |
 
-Decisions: [D-001 research universe](decisions/D-001-research-universe.md).
+Decisions: [D-001 research universe](decisions/D-001-research-universe.md), [D-002 testing standard](decisions/D-002-testing-standard.md).

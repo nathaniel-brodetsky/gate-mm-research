@@ -56,10 +56,11 @@ result. No orders, no keys: research on public data only.
    - The calibration behind these numbers: trade-level noise has very heavy tails (fitted Student df
      4.0–4.7 on all trades, up to 9.4 on wide-spread trades); daily trade counts are strongly over-dispersed (gamma shape 0.03–3.4, except XT_USDT and
      SAITO_USDT); SUKU_USDT and DEEP_USDT hit the AR limit of 0.9, which produces the worst cases.
-   - Proposed standard, to be fixed in decision D-002 after steps 2b–2g check the generator: per-pair
-     tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
-     test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
-     over pairs, which holds its size.
+   - *Superseded by [D-002](decisions/D-002-testing-standard.md) after steps 2b–2g:* per-pair tests
+     are descriptive, decisions use the median over pairs at a calibrated level. Original proposal:
+     per-pair tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across
+     pairs, over test windows of at least 61 days; claims about all pairs together use the median with
+     a bootstrap over pairs, which holds its size.
 2b. Realism of the generator *(done 2026-11-24, `results/lab/realism.json`)*: `python -m
     mmlab.evaluation.lab realism` ranks five real statistics of each pair (daily theta spread, lag-1
     correlation and tails, share of days with trades, variation of daily counts) among 1,000 synthetic
@@ -185,23 +186,32 @@ result. No orders, no keys: research on public data only.
       median of the pairs' theta is reached only if the estimates are not skewed; the lab measures the
       gap. Fixed configurations with many pairs exactly at 0 next to pairs far above 0 defeat any
       median rule and are outside this model.
-2g. Level of the pooled rule *(this step)*: `lab pooled` keeps the bootstrap p-value of the median of
-    every period and adds the random-pairs null (`centred_random`: in every period the pairs draw their
-    thetas with replacement from the centred values). The summary gives the acceptance at levels from
-    0.1% to 5% and the calibrated level: the largest one at which every null truth (`zero`, `centred`,
-    `centred_random`) is accepted in at most 2.5% of periods, with the power at it. 4,000 periods per
-    truth (Monte Carlo standard error about 0.25 points at 2.5%), with the calendar-day generator
-    (deciding) and the parametric one; the trade-resampling generator is not rerun (cost), its 800-period
-    results above stand. D-002 then fixes the model, the level per subset and window, and that per-pair
-    tests are descriptive.
-3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
+2g. Level of the pooled rule *(done 2026-11-24, `results/lab/levels*.json`)*: `lab pooled` keeps the
+    bootstrap p-value of the median of every period and adds the random-pairs null (`centred_random`:
+    in every period the pairs draw their thetas with replacement from the centred values). The summary
+    gives the acceptance at levels from 0.1% to 5% and the calibrated level: the largest one at which
+    every null truth (`zero`, `centred`, `centred_random`) is accepted in at most 2.5% of periods.
+    4,000 periods per truth (Monte Carlo standard error about 0.25 points at 2.5%).
+    Findings, calendar-day generator (parametric in brackets):
+    - All trades: α = 0.5% over 30 days (2%), 1% over 61 days (2%); there, every pair at 0 is accepted
+      in 1.8% and 2.1% of periods, random pairs in 0.5% and 1.1%, and a median of +10 bp in 91.3% and
+      97.8%.
+    - Wide-spread trades: α = 2.5% over 30 days (2.5%), 1.5% over 61 days (2.5%); every pair at 0 in
+      2.4% and 2.5%, random pairs in 0.9% and 0.5%; power at the exploration thetas 47.5% and 46.3%, at
+      +10 bp 3.2% and 0.6% (the thetas differ by over 170 bp across pairs).
+    - H-003's registered level, 2.5% on wide-spread trades over 30 days, is the calibrated one.
+    Fixed in [D-002](decisions/D-002-testing-standard.md).
+3. After step 2e the question is concrete: can the days of extreme prices of a token be recognised
+   from as-of data early enough to stop quoting, and what is lost before that? Rolling volatility,
+   price range, volume and trade flow are the baselines.
+   Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.
 4. Feature library on the archive: quoted spread, imbalance, depth (if built), volatility, trade flow
    and its sign autocorrelation, time since the last trade, price impact per unit volume (Kyle's
    lambda), and topological features if step 3 passes.
-5. Exploration on the exploration data, then one registered batch H-004… before 2027-01-01, tested on
-   December.
+5. Exploration on the exploration data, then one registered batch H-004… under D-002 before
+   2027-01-01, tested on December.
 6. A queue-aware event-driven simulator (fills from the archive's make/take deltas, never on a price
    touch) for whatever survives step 5, with results as a function of latency. Public data resolve the
    book to 20 ms at best (WebSocket) and 100 ms in the archive, so 100 and 400 ms can be simulated and

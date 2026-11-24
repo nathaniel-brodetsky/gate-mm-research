@@ -21,6 +21,13 @@
 
 ## Success criterion (fixed before the experiment)
 
+## Lab check of the decision rule (D-002)
+
+- Level α and how it was calibrated (generator, periods, file):
+- Size under each null truth (every pair at 0; centred, fixed pairs; centred, random pairs):
+- Power at the exploration effect and at half of it:
+- Cross-check with the parametric generator:
+
 ## Periods
 
 - Development:
