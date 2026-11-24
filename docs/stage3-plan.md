@@ -56,7 +56,7 @@ result. No orders, no keys: research on public data only.
    - The calibration behind these numbers: trade-level noise has very heavy tails (fitted Student df
      4.0–4.7 on all trades, up to 9.4 on wide-spread trades); daily trade counts are strongly over-dispersed (gamma shape 0.03–3.4, except XT_USDT and
      SAITO_USDT); SUKU_USDT and DEEP_USDT hit the AR limit of 0.9, which produces the worst cases.
-   - Proposed standard, to be fixed in decision D-002 once step 2b confirms the generator: per-pair
+   - Proposed standard, to be fixed in decision D-002 after steps 2b–2d check the generator: per-pair
      tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
      test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
      over pairs, which holds its size.
@@ -70,12 +70,39 @@ result. No orders, no keys: research on public data only.
     trades (9 pairs above 97.5%), and it gets the tails wrong in both directions (8 pairs low, 8 high).
     The likely cause is its assumption that the markout noise of a trade does not depend on its size.
     The lab's numbers above are therefore not yet a basis for a standard.
-2c. Resampling generator *(this step)*: `python -m mmlab.evaluation.lab pools` keeps, per pair, the real
-    trades as pairs (quote value, within-day residual) and the real daily trade counts; a synthetic
-    month draws days' counts from the real ones and trades with their real sizes and residuals, then
-    adds a known theta and an AR(1) daily effect estimated net of the trade noise. Within a day the
-    volume-weighted residuals sum to 0, so the truth is exactly theta. The realism check, the checks of
-    step 1 and the comparison of step 2 are rerun with it; if it fits, its numbers decide D-002.
+2c. Resampling generator *(done 2026-11-24, `results/lab/*_empirical.json`)*: `python -m
+    mmlab.evaluation.lab pools` keeps, per pair, the real trades as pairs (quote value, within-day
+    residual) and the real daily trade counts; a synthetic month draws days' counts from the real ones
+    and trades with their real sizes and residuals, then adds a known theta and an AR(1) daily effect
+    estimated net of the trade noise. Within a day the volume-weighted residuals sum to 0, so the truth
+    is exactly theta.
+    Findings: the share of days with trades now fits (median rank 0.50, no pair outside 2.5–97.5%), and
+    so do the lag-1 correlation and the variation of daily counts. The daily theta is still too
+    dispersed (15 of 24 pairs below 2.5%, 15 of 17 on wide-spread trades), and the real daily tails are
+    heavier than the synthetic ones for 8 pairs. With it the registered day bootstrap rejects a true 0 in
+    9.6% of 30-day months for the median pair (7.6% over 61 days, worst 38.5% for XT_USDT);
+    Benjamini–Hochberg finds something with no effect anywhere in 57% and 41% of periods; the H-003
+    rule accepts in 46.6% / 21.1% / 2.4% of Novembers (effect persists / halves / absent). The best
+    per-pair test is again the bootstrap-t with the Politis–White block: 8.5% (30 days), 7.0% (61 days),
+    9.5% on wide-spread trades; Benjamini–Yekutieli on it still makes a false discovery in 27.8% and
+    18.8% of periods with no effect anywhere.
+    Cause: within a day, makers on the two sides of the book hedge each other (when the price moves,
+    the one who sold loses what the one who bought gains), so trade residuals within a day are
+    negatively correlated. Drawing trades one by one breaks that and makes days noisier than real.
+    The unit of resampling has to be the day.
+2d. Calendar-day generator *(this step)*: `python -m mmlab.evaluation.lab pools --kind days` keeps, per
+    pair, every calendar day of the calibration period as it was (volume-weighted markout sum centred on
+    the pair's theta, volume, trade count; zeros on days without trades). A synthetic period draws real
+    days in blocks of consecutive days (stationary bootstrap, mean block by Politis–White on the pair's
+    days) and adds a known theta times the day's volume, so the truth is exactly theta and everything
+    within a day, including the hedging between sides, sizes, tails and empty days, is real. In checks
+    with several pairs, all pairs take the same calendar days, which keeps their real dependence
+    (pairs then share the median block; the AR(1) common factor of the other generators is not used).
+    Limits: there are only 92 source days, so synthetic periods overlap with each other and repeat
+    August–October; tails and regimes not seen then are missing; and there is no dependence beyond a
+    block, so a test that resamples with similar blocks may look better here than it is. The parametric
+    generator errs the other way (days too dispersed). D-002 takes the method that holds its size
+    under both: the calendar-day numbers as the optimistic bound, the others as the pessimistic one.
 3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.

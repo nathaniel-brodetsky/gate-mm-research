@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import asdict
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
@@ -360,6 +362,7 @@ def test_pool_roundtrip_and_dispatch(tmp_path: Path) -> None:
     path = tmp_path / "p" / "X.npz"
     lab.save_pool(path, pool)
     back = lab.load_pool(str(path))
+    assert isinstance(back, mp.EmpiricalPool)
     assert (back.v == pool.v).all()
     assert (back.r == pool.r).all()
     assert (back.day_sd, back.day_ar) == (pool.day_sd, pool.day_ar)
@@ -450,3 +453,135 @@ def test_thin_pools_are_not_tested_on_their_own() -> None:
     assert not any(n.endswith("/T") for n in names)
     assert "(too thin to test on its own)" in lab.show(cal)
     assert lab.profiles_for(sub, 92)["T"] == ("x.npz", 0.0)  # thin pairs still trade in multi-pair checks
+
+
+def test_daypool_build_save_and_share(tmp_path: Path) -> None:
+    day, v, x = mp.simulate_trades(TRUE, 0.001, 92, np.random.default_rng(61))
+    pool, theta = lab.build_daypool(day, v, x, 92)
+    assert theta == pytest.approx(float((v * x).sum() / v.sum()))
+    assert float(pool.num_c.sum()) == pytest.approx(0.0, abs=1e-12 * float(pool.den.sum()))
+    assert pool.den == pytest.approx(np.bincount(day, weights=v, minlength=92))
+    assert (pool.counts == np.bincount(day, minlength=92)).all()
+    assert 1.0 <= pool.block <= 28  # Politis-White cap min(3 sqrt(92), 92 / 3) rounded up
+    assert pool.block == day_tests.politis_white_block(pool.num_c / pool.den.mean())
+    assert pool.block > 1.0  # the AR(1) day effects of TRUE persist across days
+    a, b = tmp_path / "a.npz", tmp_path / "b.npz"
+    lab.save_pool(a, pool)
+    lab.save_pool(b, pool)
+    back = lab.load_pool(str(a))
+    assert isinstance(back, mp.DayPool)
+    assert (back.num_c == pool.num_c).all()
+    assert back.block == pool.block
+    rng = np.random.default_rng(62)
+    days = lab.shared_days([str(a), str(b)], 30, rng)
+    assert days is not None
+    assert days.size == 30
+    assert lab.shared_days([IID], 30, rng) is None
+    n1, d1, _ = lab.simulate(str(a), 0.0, 30, rng, days=days)
+    n2, _, _ = lab.simulate(str(b), 0.0, 30, rng, days=days)
+    assert (n1 == n2).all()  # same pool, same calendar days
+    assert (d1 == pool.den[days]).all()
+
+
+def test_daypools_cli_and_runs(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    uni = tmp_path / "u.json"
+    uni.write_text(json.dumps({"research": {"0": ["A_USDT", "B_USDT"]}, "holdout": {"0": ["H_USDT"]}}))
+    ds = _dataset(tmp_path, ["A_USDT", "B_USDT"], "2026-08-01T00", "2026-10-31T23", days=92)
+    pools = tmp_path / "lab" / "daypools.json"
+    argv = [
+        "pools",
+        str(ds),
+        "--universe",
+        str(uni),
+        "--dir",
+        str(tmp_path / "dp"),
+        "--kind",
+        "days",
+        "--out",
+        str(pools),
+    ]
+    assert lab.main(argv) == 0
+    doc = json.loads(pools.read_text())
+    assert doc["kind"] == "days"
+    assert doc["subsets"]["all"]["pairs"]["A_USDT"]["block"] >= 1.0
+    assert "mean block" in capsys.readouterr().out
+    out = tmp_path / "lab" / "x.json"
+    assert (
+        lab.main(
+            ["run", str(pools), "--reps", "3", "--resamples", "100", "--workers", "1", "--out", str(out)]
+        )
+        == 0
+    )
+    res = json.loads(out.read_text())["results"]
+    assert res["h003/november/scale_1"]["mean_counted_pairs"] == 2
+    assert (
+        lab.main(
+            ["compare", str(pools), "--reps", "8", "--resamples", "100", "--workers", "1", "--out", str(out)]
+        )
+        == 0
+    )
+
+
+def test_multi_pair_checks_share_calendar_days(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    paths = []
+    for i in range(3):
+        day, v, x = mp.simulate_trades(TRUE, 0.0, 92, np.random.default_rng(70 + i))
+        pool, _ = lab.build_daypool(day, v, x, 92)
+        path = tmp_path / f"P{i}.npz"
+        lab.save_pool(path, pool)
+        paths.append(str(path))
+    seen: list[tuple[str, tuple[int, ...] | None]] = []
+    real = lab.simulate
+
+    def spy(
+        gen: lab.Gen,
+        theta: float,
+        n_days: int,
+        rng: np.random.Generator,
+        common: Any = None,
+        rho: float = 0.0,
+        days: Any = None,
+    ) -> Any:
+        seen.append((str(gen), None if days is None else tuple(days.tolist())))
+        return real(gen, theta, n_days, rng, common, rho, days)
+
+    monkeypatch.setattr(lab, "simulate", spy)
+    runs: list[Callable[[], object]] = [
+        lambda: lab.bh_check(paths, [0.0] * 3, 30, 0.0, 0.0, reps=2, resamples=100, seed=1),
+        lambda: lab.bh_compare_check(paths, [0.0] * 3, 30, 0.0, 0.0, reps=2, resamples=100, seed=2),
+        lambda: lab.h003_check(
+            {p: (p, 0.0) for p in paths}, 1.0, 30, 0.0, 0.0, reps=2, resamples=100, seed=3
+        ),
+    ]
+    for run in runs:
+        seen.clear()
+        run()
+        assert len(seen) == 6
+        for rep in (seen[:3], seen[3:]):
+            assert [g for g, _ in rep] == paths
+            assert rep[0][1] is not None
+            assert len(rep[0][1]) == 30
+            assert len({d for _, d in rep}) == 1  # one calendar draw for all pairs in a period
+        assert seen[0][1] != seen[3][1]  # a fresh draw per period
+
+
+def test_shared_days_use_the_median_block(tmp_path: Path) -> None:
+    z = np.zeros(40)
+    paths = []
+    for i, block in enumerate((1e9, 1e9, 1.0)):  # median: one block per period
+        path = tmp_path / f"B{i}.npz"
+        lab.save_pool(path, mp.DayPool(z, z + 1.0, np.ones(40, dtype=np.int64), block))
+        paths.append(str(path))
+    for r in range(20):
+        days = lab.shared_days(paths, 25, np.random.default_rng([80, r]))
+        assert days is not None
+        assert ((np.diff(days) == 1) | (np.diff(days) == -39)).all()
+
+
+def test_shared_days_need_one_calendar(tmp_path: Path) -> None:
+    for n in (40, 41):
+        lab.save_pool(
+            tmp_path / f"C{n}.npz", mp.DayPool(np.zeros(n), np.ones(n), np.ones(n, dtype=np.int64), 2.0)
+        )
+    with pytest.raises(ValueError, match="same calendar days"):
+        lab.shared_days([str(tmp_path / "C40.npz"), str(tmp_path / "C41.npz")], 10, np.random.default_rng(1))

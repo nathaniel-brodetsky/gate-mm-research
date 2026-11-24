@@ -151,3 +151,46 @@ def simulate_days_empirical(
     num = np.bincount(day, weights=v * x, minlength=n_days)
     den = np.bincount(day, weights=v, minlength=n_days)
     return num, den, counts
+
+
+@dataclass(frozen=True)
+class DayPool:
+    """Calendar-day generator: the real days of one pair, shifted so that the truth is a chosen theta.
+
+    num_c = sum over the day of v (x - theta_hat), den = sum of v, counts = trades, for every calendar day
+    of the calibration period (zeros on days without trades); sum(num_c) = 0. A synthetic period draws
+    real days in blocks of consecutive days (mean length `block`) and returns num_c + theta den, so every
+    within-day structure (both sides of the book hedging each other, sizes, tails, empty days) is real
+    and the volume-weighted mean over the drawn days has expectation theta.
+    """
+
+    num_c: NDArray[np.float64]
+    den: NDArray[np.float64]
+    counts: NDArray[np.int64]
+    block: float
+
+
+def day_indices(n_src: int, n_days: int, block: float, rng: np.random.Generator) -> NDArray[np.int64]:
+    """Stationary-bootstrap draw of n_days indices into n_src calendar days (circular, mean block)."""
+    out = np.empty(n_days, dtype=np.int64)
+    if n_days == 0:
+        return out
+    out[0] = rng.integers(0, n_src)
+    jump = rng.random(n_days) < 1.0 / max(block, 1.0)
+    fresh = rng.integers(0, n_src, n_days)
+    for t in range(1, n_days):
+        out[t] = fresh[t] if jump[t] else (out[t - 1] + 1) % n_src
+    return out
+
+
+def simulate_days_calendar(
+    pool: DayPool,
+    theta: float,
+    n_days: int,
+    rng: np.random.Generator,
+    days: NDArray[np.int64] | None = None,
+) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.int64]]:
+    """Daily (sum v x, sum v, trade count) of real days; pass `days` to share the draw across pairs."""
+    idx = day_indices(pool.den.size, n_days, pool.block, rng) if days is None else days
+    den = pool.den[idx]
+    return pool.num_c[idx] + theta * den, den, pool.counts[idx]

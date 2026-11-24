@@ -41,15 +41,18 @@ import polars as pl
 from numpy.typing import NDArray
 
 from mmlab.evaluation.bootstrap import ratio_resamples, stationary_indices
-from mmlab.evaluation.day_tests import METHODS
+from mmlab.evaluation.day_tests import METHODS, politis_white_block
 from mmlab.evaluation.h003 import THRESHOLD_BP, eligible, states
 from mmlab.evaluation.multiple_testing import benjamini_hochberg, benjamini_yekutieli
 from mmlab.microstructure.markouts import in_period
 from mmlab.stochastic_models.markout_panel import (
+    DayPool,
     EmpiricalPool,
     PairProfile,
     ar1,
+    day_indices,
     simulate_days,
+    simulate_days_calendar,
     simulate_days_empirical,
 )
 
@@ -204,7 +207,7 @@ def profiles_for(subset: dict[str, Any], n_days: int) -> dict[str, tuple[Gen, fl
 
 # ---------------------------------------------------------------- empirical (resampling) generator
 
-Gen = PairProfile | str  # a parametric profile, or the path of a saved EmpiricalPool
+Gen = PairProfile | str  # a parametric profile, or the path of a saved EmpiricalPool or DayPool
 
 
 def build_pool(
@@ -239,15 +242,51 @@ def build_pool(
     return EmpiricalPool(vk, r, counts.astype(np.int64), day_sd, ar), theta
 
 
-def save_pool(path: Path, pool: EmpiricalPool) -> None:
+def build_daypool(
+    day: NDArray[np.int64], v: NDArray[np.float64], x: NDArray[np.float64], n_days: int
+) -> tuple[DayPool, float]:
+    """Calendar-day pool and volume-weighted theta of one pair (mean block: Politis-White on its days)."""
+    theta = float((v * x).sum() / v.sum()) if v.size else 0.0
+    den = np.bincount(day, weights=v, minlength=n_days)
+    num_c = np.bincount(day, weights=v * (x - theta), minlength=n_days)
+    counts = np.bincount(day, minlength=n_days).astype(np.int64)
+    mean_den = float(den.mean())
+    block = politis_white_block(num_c / mean_den) if mean_den > 0 and n_days > 10 else 1.0
+    return DayPool(num_c, den, counts, block), theta
+
+
+def save_pool(path: Path, pool: EmpiricalPool | DayPool) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    np.savez(path, v=pool.v, r=pool.r, day_counts=pool.day_counts, day_sd=pool.day_sd, day_ar=pool.day_ar)
+    if isinstance(pool, DayPool):
+        np.savez(path, kind="days", num_c=pool.num_c, den=pool.den, counts=pool.counts, block=pool.block)
+    else:
+        np.savez(
+            path,
+            kind="trades",
+            v=pool.v,
+            r=pool.r,
+            day_counts=pool.day_counts,
+            day_sd=pool.day_sd,
+            day_ar=pool.day_ar,
+        )
 
 
 @functools.lru_cache(maxsize=64)
-def load_pool(path: str) -> EmpiricalPool:
+def load_pool(path: str) -> EmpiricalPool | DayPool:
     with np.load(path) as z:
+        if "kind" in z and str(z["kind"]) == "days":
+            return DayPool(z["num_c"], z["den"], z["counts"], float(z["block"]))
         return EmpiricalPool(z["v"], z["r"], z["day_counts"], float(z["day_sd"]), float(z["day_ar"]))
+
+
+def shared_days(gens: Sequence[Gen], n_days: int, rng: np.random.Generator) -> NDArray[np.int64] | None:
+    """One draw of calendar days for every pair when the generators are day pools, else None."""
+    pools = [p for p in (load_pool(g) for g in gens if isinstance(g, str)) if isinstance(p, DayPool)]
+    if not pools:
+        return None
+    if len({p.den.size for p in pools}) > 1:
+        raise ValueError("day pools must cover the same calendar days to share them")
+    return day_indices(pools[0].den.size, n_days, float(statistics.median(p.block for p in pools)), rng)
 
 
 def simulate(
@@ -257,33 +296,48 @@ def simulate(
     rng: np.random.Generator,
     common: NDArray[np.float64] | None = None,
     rho: float = 0.0,
+    days: NDArray[np.int64] | None = None,
 ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.int64]]:
+    """One synthetic period. Day pools ignore common and rho: pairs share the calendar days instead."""
     if isinstance(gen, str):
-        return simulate_days_empirical(load_pool(gen), theta, n_days, rng, common, rho)
+        pool = load_pool(gen)
+        if isinstance(pool, DayPool):
+            return simulate_days_calendar(pool, theta, n_days, rng, days)
+        return simulate_days_empirical(pool, theta, n_days, rng, common, rho)
     return simulate_days(gen, theta, n_days, rng, common, rho)
 
 
-def pools_dataset(ds: Path, pairs: Sequence[str], start: str, end: str, out_dir: Path) -> dict[str, Any]:
-    """Build and save the pool of every pair and subset; returns a calibration-like summary."""
+def pools_dataset(
+    ds: Path, pairs: Sequence[str], start: str, end: str, out_dir: Path, kind: str = "trades"
+) -> dict[str, Any]:
+    """Build and save the pool ("trades": EmpiricalPool, "days": DayPool) of every pair and subset;
+    returns a calibration-like summary."""
     n_days = (date.fromisoformat(end) - date.fromisoformat(start)).days
-    out: dict[str, Any] = {"period": [start, end], "n_days": n_days, "generator": "empirical", "subsets": {}}
+    out: dict[str, Any] = {
+        "period": [start, end],
+        "n_days": n_days,
+        "generator": "empirical",
+        "kind": kind,
+        "subsets": {},
+    }
     per: dict[str, dict[str, Any]] = {"all": {}, "q80": {}}
     daily: dict[str, list[NDArray[np.float64]]] = {"all": [], "q80": []}
     for x in pairs:
         for name, (day, v, xs) in pair_trades(ds, x, start, end).items():
-            pool, theta = build_pool(day, v, xs, n_days)
             path = out_dir / name / f"{x}.npz"
-            save_pool(path, pool)
             n_active = len(set(day.tolist()))
-            per[name][x] = {
-                "trades": int(day.size),
-                "active_days": n_active,
-                "pool": str(path),
-                "pool_trades": int(pool.v.size),
-                "theta": theta,
-                "day_sd": pool.day_sd,
-                "day_ar": pool.day_ar,
-            }
+            entry: dict[str, Any] = {"trades": int(day.size), "active_days": n_active, "pool": str(path)}
+            if kind == "days":
+                dpool, theta = build_daypool(day, v, xs, n_days)
+                save_pool(path, dpool)
+                entry.update(theta=theta, block=dpool.block)
+            else:
+                pool, theta = build_pool(day, v, xs, n_days)
+                save_pool(path, pool)
+                entry.update(
+                    pool_trades=int(pool.v.size), theta=theta, day_sd=pool.day_sd, day_ar=pool.day_ar
+                )
+            per[name][x] = entry
             if day.size >= MIN_TRADES and n_active >= MIN_DAYS:
                 th = np.full(n_days, np.nan)
                 num = np.bincount(day, weights=v * xs, minlength=n_days)
@@ -291,7 +345,7 @@ def pools_dataset(ds: Path, pairs: Sequence[str], start: str, end: str, out_dir:
                 th[den > 0] = num[den > 0] / den[den > 0]
                 daily[name].append(th)
     for name in per:
-        ars = [e["day_ar"] for e in per[name].values() if _usable(e)]
+        ars = [e.get("day_ar", 0.0) for e in per[name].values() if _usable(e)]
         out["subsets"][name] = {
             "pairs": per[name],
             "rho": mean_pairwise_corr(daily[name]),
@@ -367,9 +421,10 @@ def bh_check(
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
         common = ar1(n_days, common_ar, rng)
+        days = shared_days(profiles, n_days, rng)
         ps = []
         for i, (p, t) in enumerate(zip(profiles, thetas, strict=True)):
-            num, den, _ = simulate(p, t, n_days, rng, common, rho)
+            num, den, _ = simulate(p, t, n_days, rng, common, rho, days)
             res = _day_test(num, den, resamples, seed * 100_003 + r * 101 + i)
             ps.append(1.0 if res is None else res[2])
         rej = np.array(benjamini_hochberg(ps, q))
@@ -427,9 +482,10 @@ def h003_check(
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
         common = ar1(n_days, common_ar, rng)
+        days = shared_days([g for g, _ in profiles.values()], n_days, rng)
         est = []
         for p, theta in profiles.values():
-            num, den, cnt = simulate(p, theta * scale, n_days, rng, common, rho)
+            num, den, cnt = simulate(p, theta * scale, n_days, rng, common, rho, days)
             if cnt.sum() >= MIN_TRADES and (cnt > 0).sum() >= MIN_DAYS:
                 est.append(num.sum() / den.sum())
         counted.append(len(est))
@@ -629,9 +685,10 @@ def bh_compare_check(
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
         common = ar1(n_days, common_ar, rng)
+        days = shared_days(profiles, n_days, rng)
         ps: dict[str, list[float]] = {m: [] for m in METHODS}
         for i, (p, t) in enumerate(zip(profiles, thetas, strict=True)):
-            num, den, _ = simulate(p, t, n_days, rng, common, rho)
+            num, den, _ = simulate(p, t, n_days, rng, common, rho, days)
             keep = den > 0
             for m, test in METHODS.items():
                 ps[m].append(
@@ -753,7 +810,22 @@ def summarize_compare(results: dict[str, dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def show_daypools(cal: dict[str, Any]) -> str:
+    lines = []
+    for name, sub in cal["subsets"].items():
+        lines.append(f"{name}: calendar days of {cal['n_days']}, shared by all pairs")
+        lines.append(f"  {'pair':14} {'trades':>8} {'active days':>11} {'mean block':>10} {'theta bp':>8}")
+        for pair, e in sub["pairs"].items():
+            lines.append(
+                f"  {pair:14} {e['trades']:8d} {e['active_days']:11d} {e['block']:10.2f}"
+                f" {e['theta'] * 1e4:8.1f}" + ("" if _usable(e) else "  (too thin to test on its own)")
+            )
+    return "\n".join(lines)
+
+
 def show_pools(cal: dict[str, Any]) -> str:
+    if cal.get("kind") == "days":
+        return show_daypools(cal)
     lines = []
     for name, sub in cal["subsets"].items():
         lines.append(f"{name}: cross-pair correlation {sub['rho']:.3f}, median day AR {sub['common_ar']:.3f}")
@@ -953,12 +1025,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     rl.add_argument("--seed", type=int, default=20261124)
     rl.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     rl.add_argument("--out", required=True)
-    po = sub.add_parser("pools", help="build the resampling generator: real trades of every pair")
+    po = sub.add_parser("pools", help="build a resampling generator: real trades or real days of every pair")
     po.add_argument("dataset")
     po.add_argument("--universe", default="configs/universe_U001.json")
     po.add_argument("--start", default="2026-08-01")
     po.add_argument("--end", default=EXPLORATION_END)
     po.add_argument("--dir", default="data/interim/lab_pools")
+    po.add_argument("--kind", choices=["trades", "days"], default="trades")
     po.add_argument("--out", required=True)
     sh = sub.add_parser("show", help="print a calibration")
     sh.add_argument("calibration")
@@ -976,7 +1049,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 2
         uni = json.loads(Path(a.universe).read_text())
         pairs = [x for s in sorted(uni["research"], key=int) for x in uni["research"][s]]
-        res = pools_dataset(Path(a.dataset), pairs, a.start, a.end, Path(a.dir))
+        res = pools_dataset(Path(a.dataset), pairs, a.start, a.end, Path(a.dir), a.kind)
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
         Path(a.out).write_text(json.dumps(res, indent=2) + "\n")
         print(show_pools(res))

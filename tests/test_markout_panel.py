@@ -120,3 +120,29 @@ def test_empirical_pool_day_effect_and_common_factor() -> None:
     common = mp.ar1(5000, 0.5, np.random.default_rng(23))
     num, den, _ = mp.simulate_days_empirical(pool, 0.0, 5000, np.random.default_rng(24), common, rho=1.0)
     assert num / den == pytest.approx(0.002 * common)  # rho = 1: the day effect is the common factor
+
+
+def test_day_indices_blocks_and_wrap() -> None:
+    rng = np.random.default_rng(31)
+    idx = np.concatenate([mp.day_indices(92, 61, 4.0, rng) for _ in range(400)])
+    assert idx.min() >= 0
+    assert idx.max() < 92
+    runs = np.concatenate([np.diff(mp.day_indices(92, 61, 4.0, rng)) for _ in range(400)])
+    assert ((runs == 1) | (runs == -91)).mean() == pytest.approx(1 - 1 / 4, abs=0.03)  # continue the block
+    short = mp.day_indices(3, 12, 1e9, np.random.default_rng(32))  # one block, wrapping around 3 days
+    assert ((np.diff(short) == 1) | (np.diff(short) == -2)).all()
+    assert mp.day_indices(5, 0, 2.0, rng).size == 0
+
+
+def test_calendar_days_shift_to_theta() -> None:
+    den = np.array([1.0, 2.0, 0.0, 4.0])
+    num_c = np.array([0.03, -0.05, 0.0, 0.01])
+    num_c = num_c - den * num_c.sum() / den.sum()  # centred: sum(num_c) = 0
+    pool = mp.DayPool(num_c, den, np.array([3, 5, 0, 9]), 2.0)
+    days = np.array([3, 0, 0, 2])
+    num, d, cnt = mp.simulate_days_calendar(pool, 0.002, 4, np.random.default_rng(33), days)
+    assert d == pytest.approx(den[days])
+    assert num == pytest.approx(num_c[days] + 0.002 * den[days])
+    assert (cnt == np.array([9, 3, 3, 0])).all()
+    num, d, _ = mp.simulate_days_calendar(pool, 0.002, 200_000, np.random.default_rng(34))
+    assert num.sum() / d.sum() == pytest.approx(0.002, abs=2e-4)
