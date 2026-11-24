@@ -145,6 +145,7 @@ def test_thin_pairs_borrow_the_median_profile() -> None:
     )
     out = lab.profiles_for(cal["subsets"]["all"], 92)  # type: ignore[index]
     thin, theta = out["T"]
+    assert isinstance(thin, mp.PairProfile)
     assert thin.trades_per_day == pytest.approx(9 / 92)
     assert thin.trade_sd == pytest.approx(0.02)  # median of 0.01 and 0.03
     assert thin.count_k is None
@@ -336,3 +337,116 @@ def test_realism_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None
     assert set(res) == {"all/A_USDT", "q80/A_USDT"}
     assert res["all/A_USDT"]["real"]["active_share"] == 1.0
     assert "median rank" in capsys.readouterr().out
+
+
+def test_build_pool_centres_residuals_and_estimates_the_day_effect() -> None:
+    day, v, x = mp.simulate_trades(TRUE, 0.001, 1500, np.random.default_rng(51))
+    pool, theta = lab.build_pool(day, v, x, 1500)
+    assert theta == pytest.approx(0.001, abs=3e-4)
+    assert float((pool.v * pool.r).sum()) == pytest.approx(0.0, abs=1e-9 * float(pool.v.sum()))
+    assert (pool.day_counts == np.bincount(day, minlength=1500)).all()
+    assert pool.day_sd == pytest.approx(0.002, rel=0.1)
+    assert pool.day_ar == pytest.approx(0.3, abs=0.06)
+    single = lab.build_pool(np.array([0, 1, 1]), np.array([5.0, 1.0, 3.0]), np.array([0.9, 0.01, -0.01]), 3)[
+        0
+    ]
+    assert single.v.size == 2  # the one-trade day 0 gives no residual
+    assert single.r == pytest.approx(np.array([0.01 + 0.005, -0.01 + 0.005]) * np.sqrt(2))
+
+
+def test_pool_roundtrip_and_dispatch(tmp_path: Path) -> None:
+    day, v, x = mp.simulate_trades(IID, 0.0, 60, np.random.default_rng(52))
+    pool, _ = lab.build_pool(day, v, x, 60)
+    path = tmp_path / "p" / "X.npz"
+    lab.save_pool(path, pool)
+    back = lab.load_pool(str(path))
+    assert (back.v == pool.v).all()
+    assert (back.r == pool.r).all()
+    assert (back.day_sd, back.day_ar) == (pool.day_sd, pool.day_ar)
+    assert lab.load_pool(str(path)) is back  # cached per process
+    a = lab.simulate(str(path), 0.001, 30, np.random.default_rng(53))
+    b = mp.simulate_days_empirical(pool, 0.001, 30, np.random.default_rng(53))
+    assert all((x1 == x2).all() for x1, x2 in zip(a, b, strict=True))
+    c = lab.simulate(IID, 0.001, 30, np.random.default_rng(53))
+    d = mp.simulate_days(IID, 0.001, 30, np.random.default_rng(53))
+    assert all((x1 == x2).all() for x1, x2 in zip(c, d, strict=True))
+
+
+def test_empirical_generator_passes_its_own_realism_check(tmp_path: Path) -> None:
+    p = mp.PairProfile(100.0, 1.0, 3.0, 1.5, 0.01, 4.0, 0.001, 0.3)  # heavy tails, uneven days
+    day, v, x = mp.simulate_trades(p, 0.0, 92, np.random.default_rng(54))
+    pool, theta = lab.build_pool(day, v, x, 92)
+    path = tmp_path / "X.npz"
+    lab.save_pool(path, pool)
+    res = lab.realism_check(day, v, x, 92, str(path), theta, reps=300, seed=55)
+    assert all(0.02 < r < 0.98 for r in res["rank"].values())
+
+
+def test_pools_cli_and_empirical_runs(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    uni = tmp_path / "u.json"
+    uni.write_text(json.dumps({"research": {"0": ["A_USDT", "B_USDT"]}, "holdout": {"0": ["H_USDT"]}}))
+    ds = _dataset(tmp_path, ["A_USDT", "B_USDT"], "2026-08-01T00", "2026-10-31T23", days=92)
+    pools = tmp_path / "lab" / "pools.json"
+    base = ["pools", str(ds), "--universe", str(uni), "--dir", str(tmp_path / "pools"), "--out", str(pools)]
+    assert lab.main([*base, "--end", "2026-11-02"]) == 2
+    assert lab.main(base) == 0
+    doc = json.loads(pools.read_text())
+    assert doc["generator"] == "empirical"
+    e = doc["subsets"]["q80"]["pairs"]["A_USDT"]
+    assert (e["trades"], e["pool_trades"]) == (184, 184)
+    assert Path(e["pool"]).exists()
+    assert "in pool" in capsys.readouterr().out
+    assert lab.main(["show", str(pools)]) == 0
+    assert "A_USDT" in capsys.readouterr().out
+    out = tmp_path / "lab" / "x.json"
+    assert (
+        lab.main(
+            ["run", str(pools), "--reps", "3", "--resamples", "100", "--workers", "1", "--out", str(out)]
+        )
+        == 0
+    )
+    assert json.loads(out.read_text())["results"]["h003/november/scale_1"]["mean_counted_pairs"] == 2
+    assert (
+        lab.main(
+            ["compare", str(pools), "--reps", "8", "--resamples", "100", "--workers", "1", "--out", str(out)]
+        )
+        == 0
+    )
+    assert (
+        lab.main(["realism", str(ds), str(pools), "--reps", "10", "--workers", "1", "--out", str(out)]) == 0
+    )
+    assert set(json.loads(out.read_text())["results"]) == {
+        "all/A_USDT",
+        "all/B_USDT",
+        "q80/A_USDT",
+        "q80/B_USDT",
+    }
+
+
+def test_thin_pools_are_not_tested_on_their_own() -> None:
+    def entry(trades: int, days: int) -> dict[str, object]:
+        return {
+            "trades": trades,
+            "active_days": days,
+            "pool": "x.npz",
+            "pool_trades": trades,
+            "theta": 0.0,
+            "day_sd": 0.0,
+            "day_ar": 0.0,
+        }
+
+    assert lab._usable(entry(30, 5))
+    assert not lab._usable(entry(29, 5))
+    assert not lab._usable(entry(30, 4))
+    sub = {"pairs": {"A": entry(400, 40), "T": entry(9, 2)}, "rho": 0.0, "common_ar": 0.0}
+    cal = {
+        "period": ["2026-08-01", "2026-11-01"],
+        "n_days": 92,
+        "generator": "empirical",
+        "subsets": {"all": sub, "q80": sub},
+    }
+    names = [n for n, _, _ in lab.compare_plan(cal, 8, 100, 1)]
+    assert any(n.endswith("/A") for n in names)
+    assert not any(n.endswith("/T") for n in names)
+    assert "(too thin to test on its own)" in lab.show(cal)
+    assert lab.profiles_for(sub, 92)["T"] == ("x.npz", 0.0)  # thin pairs still trade in multi-pair checks

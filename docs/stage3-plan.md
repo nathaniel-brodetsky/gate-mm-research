@@ -60,10 +60,22 @@ result. No orders, no keys: research on public data only.
      tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
      test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
      over pairs, which holds its size.
-2b. Realism of the generator *(this step)*: `python -m mmlab.evaluation.lab realism` ranks five real
-    statistics of each pair (daily theta spread, lag-1 correlation and tails, share of days with
-    trades, variation of daily counts) among 1,000 synthetic periods. Ranks piling up near 0 or 1
-    show what the lab gets wrong, and how far its conclusions can be trusted.
+2b. Realism of the generator *(done 2026-11-24, `results/lab/realism.json`)*: `python -m
+    mmlab.evaluation.lab realism` ranks five real statistics of each pair (daily theta spread, lag-1
+    correlation and tails, share of days with trades, variation of daily counts) among 1,000 synthetic
+    periods. Ranks piling up near 0 or 1 show what the lab gets wrong.
+    Findings: the parametric generator gets the lag-1 correlation (median rank 0.60) and the variation
+    of daily counts (0.61) right, but its daily theta is far more dispersed than the real one (median
+    rank 0.01; 13 of 24 pairs below 2.5%, 11 of 17 on wide-spread trades), it has too many days without
+    trades (9 pairs above 97.5%), and it gets the tails wrong in both directions (8 pairs low, 8 high).
+    The likely cause is its assumption that the markout noise of a trade does not depend on its size.
+    The lab's numbers above are therefore not yet a basis for a standard.
+2c. Resampling generator *(this step)*: `python -m mmlab.evaluation.lab pools` keeps, per pair, the real
+    trades as pairs (quote value, within-day residual) and the real daily trade counts; a synthetic
+    month draws days' counts from the real ones and trades with their real sizes and residuals, then
+    adds a known theta and an AR(1) daily effect estimated net of the trade noise. Within a day the
+    volume-weighted residuals sum to 0, so the truth is exactly theta. The realism check, the checks of
+    step 1 and the comparison of step 2 are rerun with it; if it fits, its numbers decide D-002.
 3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.

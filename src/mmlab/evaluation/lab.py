@@ -22,13 +22,14 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import math
 import multiprocessing
 import os
 import statistics
 import sys
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import asdict, fields
 from datetime import date
@@ -44,7 +45,13 @@ from mmlab.evaluation.day_tests import METHODS
 from mmlab.evaluation.h003 import THRESHOLD_BP, eligible, states
 from mmlab.evaluation.multiple_testing import benjamini_hochberg, benjamini_yekutieli
 from mmlab.microstructure.markouts import in_period
-from mmlab.stochastic_models.markout_panel import PairProfile, ar1, simulate_days
+from mmlab.stochastic_models.markout_panel import (
+    EmpiricalPool,
+    PairProfile,
+    ar1,
+    simulate_days,
+    simulate_days_empirical,
+)
 
 MAKER_FEE = 0.0010
 MEAN_BLOCK_DAYS = 3.0
@@ -169,8 +176,11 @@ def calibrate_dataset(ds: Path, pairs: Sequence[str], start: str, end: str) -> d
     return out
 
 
-def profiles_for(subset: dict[str, Any], n_days: int) -> dict[str, tuple[PairProfile, float]]:
-    """Profile and theta per pair; pairs too thin to calibrate borrow the median profile at their own rate."""
+def profiles_for(subset: dict[str, Any], n_days: int) -> dict[str, tuple[Gen, float]]:
+    """Generator and theta per pair. Parametric: pairs too thin to calibrate borrow the median profile at
+    their own rate. Empirical: every pair has its pool."""
+    if any("pool" in e for e in subset["pairs"].values()):
+        return {pair: (str(e["pool"]), float(e["theta"])) for pair, e in subset["pairs"].items()}
     known = {p: e for p, e in subset["pairs"].items() if e["profile"]}
     med = {
         f.name: statistics.median(
@@ -179,7 +189,7 @@ def profiles_for(subset: dict[str, Any], n_days: int) -> dict[str, tuple[PairPro
         for f in fields(PairProfile)
         if f.name != "count_k"
     }
-    out = {}
+    out: dict[str, tuple[Gen, float]] = {}
     for pair, e in subset["pairs"].items():
         if e["profile"]:
             out[pair] = (PairProfile(**e["profile"]), float(e["theta"]))
@@ -190,6 +200,111 @@ def profiles_for(subset: dict[str, Any], n_days: int) -> dict[str, tuple[PairPro
                 float(e["theta"] or 0.0),
             )
     return out
+
+
+# ---------------------------------------------------------------- empirical (resampling) generator
+
+Gen = PairProfile | str  # a parametric profile, or the path of a saved EmpiricalPool
+
+
+def build_pool(
+    day: NDArray[np.int64], v: NDArray[np.float64], x: NDArray[np.float64], n_days: int
+) -> tuple[EmpiricalPool, float]:
+    """Pool and volume-weighted theta of one pair; the daily effect is estimated net of trade noise."""
+    counts = np.bincount(day, minlength=n_days)
+    theta = float((v * x).sum() / v.sum()) if v.size else 0.0
+    num = np.bincount(day, weights=v * x, minlength=n_days)
+    den = np.bincount(day, weights=v, minlength=n_days)
+    th = np.full(n_days, np.nan)
+    multi = counts >= 2
+    th[den > 0] = num[den > 0] / den[den > 0]
+    keep = multi[day]
+    n_d = counts[day[keep]].astype(float)
+    r = (x[keep] - th[day[keep]]) * np.sqrt(n_d / (n_d - 1))
+    vk = v[keep]
+    noise = np.bincount(day[keep], weights=vk * vk * r * r, minlength=n_days)[multi] / den[multi] ** 2
+    obs = th[multi]
+    day_var = float(obs.var(ddof=1)) if obs.size > 1 else 0.0
+    day_sd = math.sqrt(max(0.0, day_var - float(noise.mean()))) if obs.size > 1 else 0.0
+    noise_scale = float(np.sqrt(np.mean(r * r))) if r.size else 0.0
+    if day_sd <= 1e-9 * (abs(theta) + noise_scale) + 1e-15:  # below float precision: no day effect
+        day_sd = 0.0
+    ar = 0.0
+    both = multi[1:] & multi[:-1]
+    if day_sd > 0 and both.sum() >= 3:
+        a, b = th[1:][both] - obs.mean(), th[:-1][both] - obs.mean()
+        scale = math.sqrt((a * a).sum() * (b * b).sum())
+        if scale > 0:
+            ar = float(np.clip((a * b).sum() / scale * day_var / day_sd**2, -0.9, 0.9))
+    return EmpiricalPool(vk, r, counts.astype(np.int64), day_sd, ar), theta
+
+
+def save_pool(path: Path, pool: EmpiricalPool) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez(path, v=pool.v, r=pool.r, day_counts=pool.day_counts, day_sd=pool.day_sd, day_ar=pool.day_ar)
+
+
+@functools.lru_cache(maxsize=64)
+def load_pool(path: str) -> EmpiricalPool:
+    with np.load(path) as z:
+        return EmpiricalPool(z["v"], z["r"], z["day_counts"], float(z["day_sd"]), float(z["day_ar"]))
+
+
+def simulate(
+    gen: Gen,
+    theta: float,
+    n_days: int,
+    rng: np.random.Generator,
+    common: NDArray[np.float64] | None = None,
+    rho: float = 0.0,
+) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.int64]]:
+    if isinstance(gen, str):
+        return simulate_days_empirical(load_pool(gen), theta, n_days, rng, common, rho)
+    return simulate_days(gen, theta, n_days, rng, common, rho)
+
+
+def pools_dataset(ds: Path, pairs: Sequence[str], start: str, end: str, out_dir: Path) -> dict[str, Any]:
+    """Build and save the pool of every pair and subset; returns a calibration-like summary."""
+    n_days = (date.fromisoformat(end) - date.fromisoformat(start)).days
+    out: dict[str, Any] = {"period": [start, end], "n_days": n_days, "generator": "empirical", "subsets": {}}
+    per: dict[str, dict[str, Any]] = {"all": {}, "q80": {}}
+    daily: dict[str, list[NDArray[np.float64]]] = {"all": [], "q80": []}
+    for x in pairs:
+        for name, (day, v, xs) in pair_trades(ds, x, start, end).items():
+            pool, theta = build_pool(day, v, xs, n_days)
+            path = out_dir / name / f"{x}.npz"
+            save_pool(path, pool)
+            n_active = len(set(day.tolist()))
+            per[name][x] = {
+                "trades": int(day.size),
+                "active_days": n_active,
+                "pool": str(path),
+                "pool_trades": int(pool.v.size),
+                "theta": theta,
+                "day_sd": pool.day_sd,
+                "day_ar": pool.day_ar,
+            }
+            if day.size >= MIN_TRADES and n_active >= MIN_DAYS:
+                th = np.full(n_days, np.nan)
+                num = np.bincount(day, weights=v * xs, minlength=n_days)
+                den = np.bincount(day, weights=v, minlength=n_days)
+                th[den > 0] = num[den > 0] / den[den > 0]
+                daily[name].append(th)
+    for name in per:
+        ars = [e["day_ar"] for e in per[name].values() if _usable(e)]
+        out["subsets"][name] = {
+            "pairs": per[name],
+            "rho": mean_pairwise_corr(daily[name]),
+            "common_ar": float(statistics.median(ars)) if ars else 0.0,
+        }
+    return out
+
+
+def _usable(e: dict[str, Any]) -> bool:
+    """A pair the lab tests on its own: calibrated (parametric) or with enough trades (empirical)."""
+    if "pool" in e:
+        return bool(e["trades"] >= MIN_TRADES and e["active_days"] >= MIN_DAYS)
+    return bool(e["profile"])
 
 
 # ---------------------------------------------------------------- checks
@@ -215,12 +330,12 @@ def _rate(k: int, n: int) -> dict[str, float]:
 
 
 def day_bootstrap_check(
-    p: PairProfile, theta: float, n_days: int, reps: int, resamples: int, seed: int, alpha: float = 0.05
+    p: Gen, theta: float, n_days: int, reps: int, resamples: int, seed: int, alpha: float = 0.05
 ) -> dict[str, Any]:
     cover = reject = used = 0
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
-        num, den, _ = simulate_days(p, theta, n_days, rng)
+        num, den, _ = simulate(p, theta, n_days, rng)
         res = _day_test(num, den, resamples, seed * 100_003 + r)
         if res is None:
             continue
@@ -237,7 +352,7 @@ def day_bootstrap_check(
 
 
 def bh_check(
-    profiles: Sequence[PairProfile],
+    profiles: Sequence[Gen],
     thetas: Sequence[float],
     n_days: int,
     rho: float,
@@ -254,7 +369,7 @@ def bh_check(
         common = ar1(n_days, common_ar, rng)
         ps = []
         for i, (p, t) in enumerate(zip(profiles, thetas, strict=True)):
-            num, den, _ = simulate_days(p, t, n_days, rng, common, rho)
+            num, den, _ = simulate(p, t, n_days, rng, common, rho)
             res = _day_test(num, den, resamples, seed * 100_003 + r * 101 + i)
             ps.append(1.0 if res is None else res[2])
         rej = np.array(benjamini_hochberg(ps, q))
@@ -296,7 +411,7 @@ def median_ci_check(
 
 
 def h003_check(
-    profiles: dict[str, tuple[PairProfile, float]],
+    profiles: Mapping[str, tuple[Gen, float]],
     scale: float,
     n_days: int,
     rho: float,
@@ -314,7 +429,7 @@ def h003_check(
         common = ar1(n_days, common_ar, rng)
         est = []
         for p, theta in profiles.values():
-            num, den, cnt = simulate_days(p, theta * scale, n_days, rng, common, rho)
+            num, den, cnt = simulate(p, theta * scale, n_days, rng, common, rho)
             if cnt.sum() >= MIN_TRADES and (cnt > 0).sum() >= MIN_DAYS:
                 est.append(num.sum() / den.sum())
         counted.append(len(est))
@@ -382,7 +497,7 @@ def realism_check(
     v: NDArray[np.float64],
     x: NDArray[np.float64],
     n_days: int,
-    profile: PairProfile,
+    profile: Gen,
     theta: float,
     reps: int,
     seed: int,
@@ -399,7 +514,7 @@ def realism_check(
     )
     sims: dict[str, list[float]] = {k: [] for k in REALISM_STATS}
     for r in range(reps):
-        st = day_stats(*simulate_days(profile, theta, n_days, np.random.default_rng([seed, r])))
+        st = day_stats(*simulate(profile, theta, n_days, np.random.default_rng([seed, r])))
         for k in REALISM_STATS:
             if not math.isnan(st[k]):
                 sims[k].append(st[k])
@@ -418,11 +533,10 @@ def _realism_pair(ds: Path, cal: dict[str, Any], pair: str, reps: int, seed: int
     out = {}
     for name in ("all", "q80"):
         e = cal["subsets"][name]["pairs"][pair]
-        if e["profile"]:
+        if _usable(e):
+            gen: Gen = str(e["pool"]) if "pool" in e else PairProfile(**e["profile"])
             day, v, x = trades[name]
-            out[f"{name}/{pair}"] = realism_check(
-                day, v, x, n_days, PairProfile(**e["profile"]), float(e["theta"]), reps, seed
-            )
+            out[f"{name}/{pair}"] = realism_check(day, v, x, n_days, gen, float(e["theta"]), reps, seed)
     return out
 
 
@@ -467,7 +581,7 @@ def summarize_realism(res: dict[str, Any]) -> str:
 
 
 def comparison_check(
-    p: PairProfile, theta: float, n_days: int, reps: int, resamples: int, seed: int, alpha: float = 0.05
+    p: Gen, theta: float, n_days: int, reps: int, resamples: int, seed: int, alpha: float = 0.05
 ) -> dict[str, Any]:
     """Every method of day_tests on the same synthetic months: coverage and rejection rate at alpha."""
     cover = dict.fromkeys(METHODS, 0)
@@ -475,7 +589,7 @@ def comparison_check(
     used = 0
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
-        num, den, _ = simulate_days(p, theta, n_days, rng)
+        num, den, _ = simulate(p, theta, n_days, rng)
         keep = den > 0
         if keep.sum() < MIN_DAYS:
             continue
@@ -493,7 +607,7 @@ def comparison_check(
 
 
 def bh_compare_check(
-    profiles: Sequence[PairProfile],
+    profiles: Sequence[Gen],
     thetas: Sequence[float],
     n_days: int,
     rho: float,
@@ -517,7 +631,7 @@ def bh_compare_check(
         common = ar1(n_days, common_ar, rng)
         ps: dict[str, list[float]] = {m: [] for m in METHODS}
         for i, (p, t) in enumerate(zip(profiles, thetas, strict=True)):
-            num, den, _ = simulate_days(p, t, n_days, rng, common, rho)
+            num, den, _ = simulate(p, t, n_days, rng, common, rho)
             keep = den > 0
             for m, test in METHODS.items():
                 ps[m].append(
@@ -564,7 +678,7 @@ def compare_plan(
     q80 = profiles_for(cal["subsets"]["q80"], n_cal)
     tasks: list[tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]] = []
     for subset, profs, horizons in (("all", allp, (30, 61)), ("q80", q80, (30,))):
-        calibrated = [k for k, e in cal["subsets"][subset]["pairs"].items() if e["profile"]]
+        calibrated = [k for k, e in cal["subsets"][subset]["pairs"].items() if _usable(e)]
         for n_days in horizons:
             for theta, label in ((0.0, "size"), (BH_ALTERNATIVE, "power")):
                 for pair in calibrated:
@@ -639,7 +753,26 @@ def summarize_compare(results: dict[str, dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def show_pools(cal: dict[str, Any]) -> str:
+    lines = []
+    for name, sub in cal["subsets"].items():
+        lines.append(f"{name}: cross-pair correlation {sub['rho']:.3f}, median day AR {sub['common_ar']:.3f}")
+        lines.append(
+            f"  {'pair':14} {'trades':>8} {'in pool':>8} {'active days':>11} {'day sd bp':>9} {'day AR':>6}"
+            f" {'theta bp':>8}"
+        )
+        for pair, e in sub["pairs"].items():
+            lines.append(
+                f"  {pair:14} {e['trades']:8d} {e['pool_trades']:8d} {e['active_days']:11d}"
+                f" {e['day_sd'] * 1e4:9.2f} {e['day_ar']:6.2f} {e['theta'] * 1e4:8.1f}"
+                + ("" if _usable(e) else "  (too thin to test on its own)")
+            )
+    return "\n".join(lines)
+
+
 def show(cal: dict[str, Any]) -> str:
+    if cal.get("generator") == "empirical":
+        return show_pools(cal)
     lines = []
     for name, sub in cal["subsets"].items():
         lines.append(f"{name}: cross-pair correlation {sub['rho']:.3f}, median day AR {sub['common_ar']:.3f}")
@@ -674,7 +807,7 @@ def plan(
     q80 = profiles_for(cal["subsets"]["q80"], n_cal)
     tasks: list[tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]] = []
     for subset, profs, horizons in (("all", allp, (30, 61)), ("q80", q80, (30,))):
-        calibrated = [k for k, e in cal["subsets"][subset]["pairs"].items() if e["profile"]]
+        calibrated = [k for k, e in cal["subsets"][subset]["pairs"].items() if _usable(e)]
         for n_days in horizons:
             for i, pair in enumerate(calibrated):
                 tasks.append(
@@ -715,9 +848,7 @@ def plan(
                 )
             )
     # spread of pair thetas as observed in the exploration period (pairs that could be calibrated)
-    q80_thetas = np.array(
-        [float(e["theta"]) for e in cal["subsets"]["q80"]["pairs"].values() if e["profile"]]
-    )
+    q80_thetas = np.array([float(e["theta"]) for e in cal["subsets"]["q80"]["pairs"].values() if _usable(e)])
     tau = float(np.std(q80_thetas, ddof=1)) if q80_thetas.size > 1 else 0.0
     for n_pairs in (8, 12, 17, 24):
         tasks.append(
@@ -822,6 +953,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     rl.add_argument("--seed", type=int, default=20261124)
     rl.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     rl.add_argument("--out", required=True)
+    po = sub.add_parser("pools", help="build the resampling generator: real trades of every pair")
+    po.add_argument("dataset")
+    po.add_argument("--universe", default="configs/universe_U001.json")
+    po.add_argument("--start", default="2026-08-01")
+    po.add_argument("--end", default=EXPLORATION_END)
+    po.add_argument("--dir", default="data/interim/lab_pools")
+    po.add_argument("--out", required=True)
     sh = sub.add_parser("show", help="print a calibration")
     sh.add_argument("calibration")
     cm = sub.add_parser("compare", help="compare the day tests of day_tests.METHODS")
@@ -832,6 +970,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     cm.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     cm.add_argument("--out", required=True)
     a = p.parse_args(argv)
+    if a.cmd == "pools":
+        if a.end > EXPLORATION_END:
+            print(f"refused: pools stay on exploration data (end <= {EXPLORATION_END})")
+            return 2
+        uni = json.loads(Path(a.universe).read_text())
+        pairs = [x for s in sorted(uni["research"], key=int) for x in uni["research"][s]]
+        res = pools_dataset(Path(a.dataset), pairs, a.start, a.end, Path(a.dir))
+        Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.out).write_text(json.dumps(res, indent=2) + "\n")
+        print(show_pools(res))
+        return 0
     if a.cmd == "realism":
         cal = json.loads(Path(a.calibration).read_text())
         res = realism_dataset(Path(a.dataset), cal, a.reps, a.seed, a.workers)

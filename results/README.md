@@ -23,6 +23,10 @@ changes between runs. Two runs of the development evaluation differed by at most
 
 `h003/exploration_dry_run.json` is `python -m mmlab.evaluation.h003 data/processed/U001 --period exploration`: the H-003 test run on the data used to pick its threshold, to check the code before November; it decides nothing.
 
+`lab/pools.json`, `lab/realism_empirical.json`, `lab/checks_empirical.json` and
+`lab/compare_empirical.json` repeat the lab with the resampling generator (`python -m
+mmlab.evaluation.lab pools`; the pools themselves stay in `data/interim/lab_pools/`).
+
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.
 

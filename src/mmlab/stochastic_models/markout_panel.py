@@ -109,3 +109,45 @@ def simulate_trades(
     v = rng.lognormal(p.logv_mean, p.logv_sd, day.size)
     x = theta + u[day] + _noise(day.size, p, rng)
     return day, v, x
+
+
+@dataclass(frozen=True)
+class EmpiricalPool:
+    """Resampling generator: real trades of one pair, with the truth set by construction.
+
+    v, r: quote value and within-day residual (markout minus the day's volume-weighted mean, scaled by
+    sqrt(n / (n - 1)) for a day with n trades) of every trade on days with at least two trades. Within a
+    day the volume-weighted residuals sum to 0, so over the pool sum(v r) = 0 and the volume-weighted
+    mean of theta + u_d + r is theta. day_counts: real trade counts of every calendar day (zeros
+    included). day_sd, day_ar: the daily effect, estimated net of the trade noise.
+    """
+
+    v: NDArray[np.float64]
+    r: NDArray[np.float64]
+    day_counts: NDArray[np.int64]
+    day_sd: float
+    day_ar: float
+
+
+def simulate_days_empirical(
+    pool: EmpiricalPool,
+    theta: float,
+    n_days: int,
+    rng: np.random.Generator,
+    common: NDArray[np.float64] | None = None,
+    rho: float = 0.0,
+) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.int64]]:
+    """Daily (sum v x, sum v, trade count): counts drawn from the real days, trades drawn with their size."""
+    own = ar1(n_days, pool.day_ar, rng)
+    unit = own if common is None else np.sqrt(rho) * common + np.sqrt(1 - rho) * own
+    u = pool.day_sd * unit
+    counts = rng.choice(pool.day_counts, n_days).astype(np.int64)
+    if pool.v.size == 0:
+        counts[:] = 0
+    day = np.repeat(np.arange(n_days), counts)
+    idx = rng.integers(0, max(pool.v.size, 1), day.size)
+    v = pool.v[idx] if pool.v.size else np.zeros(0)
+    x = theta + u[day] + (pool.r[idx] if pool.r.size else np.zeros(0))
+    num = np.bincount(day, weights=v * x, minlength=n_days)
+    den = np.bincount(day, weights=v, minlength=n_days)
+    return num, den, counts

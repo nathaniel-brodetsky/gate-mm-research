@@ -95,3 +95,28 @@ def test_simulate_trades_matches_days() -> None:
     assert (np.diff(day) >= 0).all()
     assert int(np.max(day)) < 50
     assert (v > 0).all()
+
+
+def test_empirical_pool_reproduces_theta_and_counts() -> None:
+    pool = mp.EmpiricalPool(
+        v=np.array([1.0, 3.0, 2.0, 2.0]),
+        r=np.array([0.03, -0.01, 0.02, -0.02]),  # sum(v r) = 0.03 - 0.03 + 0.04 - 0.04 = 0
+        day_counts=np.array([0, 2, 5, 1]),
+        day_sd=0.0,
+        day_ar=0.0,
+    )
+    num, den, cnt = mp.simulate_days_empirical(pool, 0.004, 20_000, np.random.default_rng(21))
+    assert set(np.unique(cnt)) == {0, 1, 2, 5}
+    assert (cnt == 0).mean() == pytest.approx(0.25, abs=0.01)
+    assert num.sum() / den.sum() == pytest.approx(0.004, abs=2e-4)
+    empty = mp.EmpiricalPool(np.zeros(0), np.zeros(0), np.array([3, 4]), 0.0, 0.0)
+    num, den, cnt = mp.simulate_days_empirical(empty, 0.0, 10, np.random.default_rng(22))
+    assert (cnt == 0).all()
+    assert (den == 0).all()
+
+
+def test_empirical_pool_day_effect_and_common_factor() -> None:
+    pool = mp.EmpiricalPool(np.ones(10), np.zeros(10), np.array([50]), 0.002, 0.5)
+    common = mp.ar1(5000, 0.5, np.random.default_rng(23))
+    num, den, _ = mp.simulate_days_empirical(pool, 0.0, 5000, np.random.default_rng(24), common, rho=1.0)
+    assert num / den == pytest.approx(0.002 * common)  # rho = 1: the day effect is the common factor
