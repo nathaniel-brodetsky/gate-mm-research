@@ -1,0 +1,6467 @@
+{
+  "calibration": "results/lab/daypools.json",
+  "reps": 400,
+  "resamples": 2000,
+  "seed": 20261124,
+  "methods": [
+    "percentile",
+    "percentile_pw",
+    "student",
+    "student_pw",
+    "hac"
+  ],
+  "results": {
+    "compare/all/30d/size/SUKU_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7775,
+          "mc_se": 0.020796258677944938
+        },
+        "percentile_pw": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "student": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "student_pw": {
+          "rate": 0.7975,
+          "mc_se": 0.02009314248692822
+        },
+        "hac": {
+          "rate": 0.7625,
+          "mc_se": 0.021277555663186502
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.225,
+          "mc_se": 0.02087911636061258
+        },
+        "percentile_pw": {
+          "rate": 0.225,
+          "mc_se": 0.02087911636061258
+        },
+        "student": {
+          "rate": 0.1925,
+          "mc_se": 0.019713177699194007
+        },
+        "student_pw": {
+          "rate": 0.2025,
+          "mc_se": 0.02009314248692822
+        },
+        "hac": {
+          "rate": 0.255,
+          "mc_se": 0.02179306082219751
+        }
+      }
+    },
+    "compare/all/30d/size/BAND_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7175,
+          "mc_se": 0.02251076131542423
+        },
+        "percentile_pw": {
+          "rate": 0.73,
+          "mc_se": 0.022197972880423113
+        },
+        "student": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        },
+        "student_pw": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        },
+        "hac": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.315,
+          "mc_se": 0.023225793850803037
+        },
+        "percentile_pw": {
+          "rate": 0.31,
+          "mc_se": 0.023124662159694356
+        },
+        "student": {
+          "rate": 0.2,
+          "mc_se": 0.02
+        },
+        "student_pw": {
+          "rate": 0.2,
+          "mc_se": 0.02
+        },
+        "hac": {
+          "rate": 0.2575,
+          "mc_se": 0.021862853770722612
+        }
+      }
+    },
+    "compare/all/30d/size/NAVX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.775,
+          "mc_se": 0.02087911636061258
+        },
+        "percentile_pw": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "student": {
+          "rate": 0.82,
+          "mc_se": 0.01920937271229855
+        },
+        "student_pw": {
+          "rate": 0.825,
+          "mc_se": 0.018998355191963332
+        },
+        "hac": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0275,
+          "mc_se": 0.008176758220713145
+        },
+        "percentile_pw": {
+          "rate": 0.0225,
+          "mc_se": 0.007415144974981945
+        },
+        "student": {
+          "rate": 0.0375,
+          "mc_se": 0.009499177595981664
+        },
+        "student_pw": {
+          "rate": 0.04,
+          "mc_se": 0.009797958971132711
+        },
+        "hac": {
+          "rate": 0.045,
+          "mc_se": 0.01036520622081394
+        }
+      }
+    },
+    "compare/all/30d/size/TEVA_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.715,
+          "mc_se": 0.02257072218605333
+        },
+        "percentile_pw": {
+          "rate": 0.7625,
+          "mc_se": 0.021277555663186502
+        },
+        "student": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.7225,
+          "mc_se": 0.02238826422481207
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.345,
+          "mc_se": 0.023768413914268656
+        },
+        "percentile_pw": {
+          "rate": 0.3175,
+          "mc_se": 0.023275187969165792
+        },
+        "student": {
+          "rate": 0.21,
+          "mc_se": 0.0203654118544163
+        },
+        "student_pw": {
+          "rate": 0.245,
+          "mc_se": 0.02150436002302789
+        },
+        "hac": {
+          "rate": 0.3475,
+          "mc_se": 0.023808808769024966
+        }
+      }
+    },
+    "compare/all/30d/size/PEOPLEFB_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.515,
+          "mc_se": 0.024988747467610296
+        },
+        "percentile_pw": {
+          "rate": 0.515,
+          "mc_se": 0.024988747467610296
+        },
+        "student": {
+          "rate": 0.5025,
+          "mc_se": 0.02499968749804685
+        },
+        "student_pw": {
+          "rate": 0.51,
+          "mc_se": 0.024994999499899976
+        },
+        "hac": {
+          "rate": 0.4675,
+          "mc_se": 0.024947131598642758
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.0275,
+          "mc_se": 0.008176758220713145
+        },
+        "student_pw": {
+          "rate": 0.0325,
+          "mc_se": 0.008866192813152667
+        },
+        "hac": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        }
+      }
+    },
+    "compare/all/30d/size/ZIX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "percentile_pw": {
+          "rate": 0.8425,
+          "mc_se": 0.018213576666871335
+        },
+        "student": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "student_pw": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "hac": {
+          "rate": 0.8475,
+          "mc_se": 0.01797524339195439
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.145,
+          "mc_se": 0.017605041891458253
+        },
+        "percentile_pw": {
+          "rate": 0.1475,
+          "mc_se": 0.017730182599172518
+        },
+        "student": {
+          "rate": 0.1525,
+          "mc_se": 0.01797524339195439
+        },
+        "student_pw": {
+          "rate": 0.15,
+          "mc_se": 0.017853571071357127
+        },
+        "hac": {
+          "rate": 0.155,
+          "mc_se": 0.01809523417919757
+        }
+      }
+    },
+    "compare/all/30d/size/GMX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "percentile_pw": {
+          "rate": 0.8825,
+          "mc_se": 0.016100756969782512
+        },
+        "student": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        },
+        "student_pw": {
+          "rate": 0.9025,
+          "mc_se": 0.014831870246196198
+        },
+        "hac": {
+          "rate": 0.92,
+          "mc_se": 0.013564659966250532
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0975,
+          "mc_se": 0.014831870246196196
+        },
+        "percentile_pw": {
+          "rate": 0.1175,
+          "mc_se": 0.01610075696978251
+        },
+        "student": {
+          "rate": 0.0875,
+          "mc_se": 0.014128318194321643
+        },
+        "student_pw": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "hac": {
+          "rate": 0.0975,
+          "mc_se": 0.014831870246196196
+        }
+      }
+    },
+    "compare/all/30d/size/AIDOGE_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "percentile_pw": {
+          "rate": 0.885,
+          "mc_se": 0.01595109714094927
+        },
+        "student": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "student_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "hac": {
+          "rate": 0.915,
+          "mc_se": 0.013944084767384337
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1425,
+          "mc_se": 0.017478111311008408
+        },
+        "percentile_pw": {
+          "rate": 0.14,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.1425,
+          "mc_se": 0.017478111311008408
+        },
+        "student_pw": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "hac": {
+          "rate": 0.145,
+          "mc_se": 0.017605041891458253
+        }
+      }
+    },
+    "compare/all/30d/size/SUPER_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "percentile_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "student": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "student_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "hac": {
+          "rate": 0.7925,
+          "mc_se": 0.02027583228871259
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0775,
+          "mc_se": 0.013369157602481915
+        },
+        "percentile_pw": {
+          "rate": 0.095,
+          "mc_se": 0.01466074691139575
+        },
+        "student": {
+          "rate": 0.0675,
+          "mc_se": 0.0125442965127583
+        },
+        "student_pw": {
+          "rate": 0.0725,
+          "mc_se": 0.012965699942540702
+        },
+        "hac": {
+          "rate": 0.13,
+          "mc_se": 0.016815171720800236
+        }
+      }
+    },
+    "compare/all/30d/size/BOS_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "percentile_pw": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "student": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "student_pw": {
+          "rate": 0.8925,
+          "mc_se": 0.01548739406743433
+        },
+        "hac": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "percentile_pw": {
+          "rate": 0.095,
+          "mc_se": 0.01466074691139575
+        },
+        "student": {
+          "rate": 0.085,
+          "mc_se": 0.013944084767384343
+        },
+        "student_pw": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "hac": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        }
+      }
+    },
+    "compare/all/30d/size/IMU_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.67,
+          "mc_se": 0.023510635891017494
+        },
+        "percentile_pw": {
+          "rate": 0.6525,
+          "mc_se": 0.023808808769024966
+        },
+        "student": {
+          "rate": 0.715,
+          "mc_se": 0.02257072218605333
+        },
+        "student_pw": {
+          "rate": 0.645,
+          "mc_se": 0.02392566613492715
+        },
+        "hac": {
+          "rate": 0.5875,
+          "mc_se": 0.02461421083439402
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.3625,
+          "mc_se": 0.024036105653786763
+        },
+        "percentile_pw": {
+          "rate": 0.3775,
+          "mc_se": 0.024238076965799084
+        },
+        "student": {
+          "rate": 0.3,
+          "mc_se": 0.0229128784747792
+        },
+        "student_pw": {
+          "rate": 0.3075,
+          "mc_se": 0.02307291431527452
+        },
+        "hac": {
+          "rate": 0.385,
+          "mc_se": 0.02432976572020372
+        }
+      }
+    },
+    "compare/all/30d/size/MLN_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        },
+        "percentile_pw": {
+          "rate": 0.7925,
+          "mc_se": 0.02027583228871259
+        },
+        "student": {
+          "rate": 0.8225,
+          "mc_se": 0.019104564245226847
+        },
+        "student_pw": {
+          "rate": 0.835,
+          "mc_se": 0.018559027452967464
+        },
+        "hac": {
+          "rate": 0.75,
+          "mc_se": 0.021650635094610966
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2675,
+          "mc_se": 0.02213276699827656
+        },
+        "percentile_pw": {
+          "rate": 0.265,
+          "mc_se": 0.02206666037260736
+        },
+        "student": {
+          "rate": 0.1425,
+          "mc_se": 0.017478111311008408
+        },
+        "student_pw": {
+          "rate": 0.1325,
+          "mc_se": 0.01695167764559013
+        },
+        "hac": {
+          "rate": 0.21,
+          "mc_se": 0.0203654118544163
+        }
+      }
+    },
+    "compare/all/30d/size/ORCA_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "percentile_pw": {
+          "rate": 0.78,
+          "mc_se": 0.020712315177207976
+        },
+        "student": {
+          "rate": 0.7825,
+          "mc_se": 0.02062727260206739
+        },
+        "student_pw": {
+          "rate": 0.7725,
+          "mc_se": 0.02096090110181335
+        },
+        "hac": {
+          "rate": 0.72,
+          "mc_se": 0.02244994432064365
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.04,
+          "mc_se": 0.009797958971132711
+        },
+        "percentile_pw": {
+          "rate": 0.065,
+          "mc_se": 0.01232629303562105
+        },
+        "student": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        },
+        "student_pw": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        },
+        "hac": {
+          "rate": 0.115,
+          "mc_se": 0.01595109714094927
+        }
+      }
+    },
+    "compare/all/30d/size/PINGO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.56,
+          "mc_se": 0.02481934729198171
+        },
+        "percentile_pw": {
+          "rate": 0.58,
+          "mc_se": 0.024677925358506134
+        },
+        "student": {
+          "rate": 0.6825,
+          "mc_se": 0.023275187969165792
+        },
+        "student_pw": {
+          "rate": 0.6925,
+          "mc_se": 0.02307291431527452
+        },
+        "hac": {
+          "rate": 0.5825,
+          "mc_se": 0.024657339171127123
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.455,
+          "mc_se": 0.024898544134145675
+        },
+        "percentile_pw": {
+          "rate": 0.45,
+          "mc_se": 0.0248746859276655
+        },
+        "student": {
+          "rate": 0.35,
+          "mc_se": 0.023848480035423638
+        },
+        "student_pw": {
+          "rate": 0.345,
+          "mc_se": 0.023768413914268656
+        },
+        "hac": {
+          "rate": 0.455,
+          "mc_se": 0.024898544134145675
+        }
+      }
+    },
+    "compare/all/30d/size/CREO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        },
+        "percentile_pw": {
+          "rate": 0.7775,
+          "mc_se": 0.020796258677944938
+        },
+        "student": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "student_pw": {
+          "rate": 0.8025,
+          "mc_se": 0.019905636764494625
+        },
+        "hac": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2275,
+          "mc_se": 0.020960901101813346
+        },
+        "percentile_pw": {
+          "rate": 0.24,
+          "mc_se": 0.021354156504062624
+        },
+        "student": {
+          "rate": 0.2075,
+          "mc_se": 0.02027583228871259
+        },
+        "student_pw": {
+          "rate": 0.215,
+          "mc_se": 0.020541117301646473
+        },
+        "hac": {
+          "rate": 0.2175,
+          "mc_se": 0.02062727260206739
+        }
+      }
+    },
+    "compare/all/30d/size/FIS_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "percentile_pw": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "student": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        },
+        "student_pw": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "hac": {
+          "rate": 0.83,
+          "mc_se": 0.018781639970992952
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0625,
+          "mc_se": 0.012103072956898178
+        },
+        "percentile_pw": {
+          "rate": 0.0575,
+          "mc_se": 0.011639775556255371
+        },
+        "student": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "student_pw": {
+          "rate": 0.09,
+          "mc_se": 0.014309088021254185
+        },
+        "hac": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        }
+      }
+    },
+    "compare/all/30d/size/ANON_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.615,
+          "mc_se": 0.02432976572020372
+        },
+        "percentile_pw": {
+          "rate": 0.6275,
+          "mc_se": 0.02417352632530058
+        },
+        "student": {
+          "rate": 0.6975,
+          "mc_se": 0.02296702799667384
+        },
+        "student_pw": {
+          "rate": 0.7,
+          "mc_se": 0.022912878474779203
+        },
+        "hac": {
+          "rate": 0.61,
+          "mc_se": 0.024387496796514398
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.4625,
+          "mc_se": 0.02492958834397391
+        },
+        "percentile_pw": {
+          "rate": 0.4375,
+          "mc_se": 0.024803918541230537
+        },
+        "student": {
+          "rate": 0.3175,
+          "mc_se": 0.023275187969165792
+        },
+        "student_pw": {
+          "rate": 0.32,
+          "mc_se": 0.0233238075793812
+        },
+        "hac": {
+          "rate": 0.435,
+          "mc_se": 0.024787849846245234
+        }
+      }
+    },
+    "compare/all/30d/size/CKB_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "percentile_pw": {
+          "rate": 0.8825,
+          "mc_se": 0.016100756969782512
+        },
+        "student": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "student_pw": {
+          "rate": 0.9325,
+          "mc_se": 0.0125442965127583
+        },
+        "hac": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.16,
+          "mc_se": 0.01833030277982336
+        },
+        "percentile_pw": {
+          "rate": 0.165,
+          "mc_se": 0.018559027452967464
+        },
+        "student": {
+          "rate": 0.115,
+          "mc_se": 0.01595109714094927
+        },
+        "student_pw": {
+          "rate": 0.1075,
+          "mc_se": 0.015487394067434327
+        },
+        "hac": {
+          "rate": 0.1675,
+          "mc_se": 0.018671083926756905
+        }
+      }
+    },
+    "compare/all/30d/size/DEEP_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "percentile_pw": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "student": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "student_pw": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "hac": {
+          "rate": 0.81,
+          "mc_se": 0.01961504524593303
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0675,
+          "mc_se": 0.0125442965127583
+        },
+        "percentile_pw": {
+          "rate": 0.065,
+          "mc_se": 0.01232629303562105
+        },
+        "student": {
+          "rate": 0.0375,
+          "mc_se": 0.009499177595981664
+        },
+        "student_pw": {
+          "rate": 0.04,
+          "mc_se": 0.009797958971132711
+        },
+        "hac": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        }
+      }
+    },
+    "compare/all/30d/size/XT_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5925,
+          "mc_se": 0.024568463016639848
+        },
+        "percentile_pw": {
+          "rate": 0.595,
+          "mc_se": 0.024544602257930356
+        },
+        "student": {
+          "rate": 0.665,
+          "mc_se": 0.023599523300270285
+        },
+        "student_pw": {
+          "rate": 0.6725,
+          "mc_se": 0.023465067121148406
+        },
+        "hac": {
+          "rate": 0.6075,
+          "mc_se": 0.024415351215987043
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.4575,
+          "mc_se": 0.024909523781076182
+        },
+        "percentile_pw": {
+          "rate": 0.455,
+          "mc_se": 0.024898544134145675
+        },
+        "student": {
+          "rate": 0.3825,
+          "mc_se": 0.02429988425898362
+        },
+        "student_pw": {
+          "rate": 0.3775,
+          "mc_se": 0.024238076965799084
+        },
+        "hac": {
+          "rate": 0.445,
+          "mc_se": 0.02484828967957352
+        }
+      }
+    },
+    "compare/all/30d/size/FLOCK_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        },
+        "percentile_pw": {
+          "rate": 0.825,
+          "mc_se": 0.018998355191963332
+        },
+        "student": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        },
+        "student_pw": {
+          "rate": 0.84,
+          "mc_se": 0.018330302779823362
+        },
+        "hac": {
+          "rate": 0.84,
+          "mc_se": 0.018330302779823362
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.195,
+          "mc_se": 0.01981003533565753
+        },
+        "percentile_pw": {
+          "rate": 0.185,
+          "mc_se": 0.019414878315353924
+        },
+        "student": {
+          "rate": 0.1675,
+          "mc_se": 0.018671083926756905
+        },
+        "student_pw": {
+          "rate": 0.165,
+          "mc_se": 0.018559027452967464
+        },
+        "hac": {
+          "rate": 0.1925,
+          "mc_se": 0.019713177699194007
+        }
+      }
+    },
+    "compare/all/30d/size/TITN_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "percentile_pw": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "student": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "hac": {
+          "rate": 0.93,
+          "mc_se": 0.01275735082217307
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0975,
+          "mc_se": 0.014831870246196196
+        },
+        "percentile_pw": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "student": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "student_pw": {
+          "rate": 0.0975,
+          "mc_se": 0.014831870246196196
+        },
+        "hac": {
+          "rate": 0.0475,
+          "mc_se": 0.010635289135702893
+        }
+      }
+    },
+    "compare/all/30d/size/SAITO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5475,
+          "mc_se": 0.02488693181169587
+        },
+        "percentile_pw": {
+          "rate": 0.5675,
+          "mc_se": 0.02477113996165699
+        },
+        "student": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "student_pw": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        },
+        "hac": {
+          "rate": 0.5875,
+          "mc_se": 0.02461421083439402
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.515,
+          "mc_se": 0.024988747467610296
+        },
+        "percentile_pw": {
+          "rate": 0.505,
+          "mc_se": 0.02499874996874844
+        },
+        "student": {
+          "rate": 0.2925,
+          "mc_se": 0.022745535276181124
+        },
+        "student_pw": {
+          "rate": 0.29,
+          "mc_se": 0.022688102609076853
+        },
+        "hac": {
+          "rate": 0.475,
+          "mc_se": 0.02496873044429772
+        }
+      }
+    },
+    "compare/all/30d/size/SPYX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "percentile_pw": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "student": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "student_pw": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "hac": {
+          "rate": 0.8675,
+          "mc_se": 0.016951677645590125
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "percentile_pw": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "student": {
+          "rate": 0.1,
+          "mc_se": 0.015000000000000001
+        },
+        "student_pw": {
+          "rate": 0.1125,
+          "mc_se": 0.015799030824705674
+        },
+        "hac": {
+          "rate": 0.11,
+          "mc_se": 0.015644487847162016
+        }
+      }
+    },
+    "compare/all/30d/power/SUKU_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8,
+          "mc_se": 0.02
+        },
+        "percentile_pw": {
+          "rate": 0.8075,
+          "mc_se": 0.019713177699194007
+        },
+        "student": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "student_pw": {
+          "rate": 0.8125,
+          "mc_se": 0.019515618744994995
+        },
+        "hac": {
+          "rate": 0.7475,
+          "mc_se": 0.021722324346165167
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.4575,
+          "mc_se": 0.024909523781076182
+        },
+        "percentile_pw": {
+          "rate": 0.4525,
+          "mc_se": 0.02488693181169587
+        },
+        "student": {
+          "rate": 0.345,
+          "mc_se": 0.023768413914268656
+        },
+        "student_pw": {
+          "rate": 0.36,
+          "mc_se": 0.024
+        },
+        "hac": {
+          "rate": 0.4625,
+          "mc_se": 0.02492958834397391
+        }
+      }
+    },
+    "compare/all/30d/power/BAND_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7925,
+          "mc_se": 0.02027583228871259
+        },
+        "percentile_pw": {
+          "rate": 0.795,
+          "mc_se": 0.020185081124434453
+        },
+        "student": {
+          "rate": 0.8675,
+          "mc_se": 0.016951677645590125
+        },
+        "student_pw": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "hac": {
+          "rate": 0.825,
+          "mc_se": 0.018998355191963332
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.795,
+          "mc_se": 0.020185081124434453
+        },
+        "student_pw": {
+          "rate": 0.795,
+          "mc_se": 0.020185081124434453
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/30d/power/NAVX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.825,
+          "mc_se": 0.018998355191963332
+        },
+        "percentile_pw": {
+          "rate": 0.82,
+          "mc_se": 0.01920937271229855
+        },
+        "student": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "student_pw": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "hac": {
+          "rate": 0.8125,
+          "mc_se": 0.019515618744994995
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.485,
+          "mc_se": 0.024988747467610296
+        },
+        "percentile_pw": {
+          "rate": 0.4625,
+          "mc_se": 0.02492958834397391
+        },
+        "student": {
+          "rate": 0.44,
+          "mc_se": 0.024819347291981715
+        },
+        "student_pw": {
+          "rate": 0.425,
+          "mc_se": 0.024717149916606486
+        },
+        "hac": {
+          "rate": 0.4725,
+          "mc_se": 0.02496215886096393
+        }
+      }
+    },
+    "compare/all/30d/power/TEVA_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6675,
+          "mc_se": 0.023555453190291203
+        },
+        "percentile_pw": {
+          "rate": 0.7275,
+          "mc_se": 0.02226228593383887
+        },
+        "student": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student_pw": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        },
+        "hac": {
+          "rate": 0.69,
+          "mc_se": 0.023124662159694356
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.64,
+          "mc_se": 0.024
+        },
+        "percentile_pw": {
+          "rate": 0.6325,
+          "mc_se": 0.024106210299422844
+        },
+        "student": {
+          "rate": 0.4025,
+          "mc_se": 0.024520081056146614
+        },
+        "student_pw": {
+          "rate": 0.4075,
+          "mc_se": 0.024568463016639848
+        },
+        "hac": {
+          "rate": 0.6225,
+          "mc_se": 0.02423807696579908
+        }
+      }
+    },
+    "compare/all/30d/power/PEOPLEFB_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.4725,
+          "mc_se": 0.02496215886096393
+        },
+        "percentile_pw": {
+          "rate": 0.475,
+          "mc_se": 0.02496873044429772
+        },
+        "student": {
+          "rate": 0.46,
+          "mc_se": 0.024919871588754226
+        },
+        "student_pw": {
+          "rate": 0.48,
+          "mc_se": 0.024979991993593593
+        },
+        "hac": {
+          "rate": 0.435,
+          "mc_se": 0.024787849846245234
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.01,
+          "mc_se": 0.0049749371855331
+        },
+        "percentile_pw": {
+          "rate": 0.005,
+          "mc_se": 0.0035266839949164713
+        },
+        "student": {
+          "rate": 0.0375,
+          "mc_se": 0.009499177595981664
+        },
+        "student_pw": {
+          "rate": 0.035,
+          "mc_se": 0.009188987974744553
+        },
+        "hac": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        }
+      }
+    },
+    "compare/all/30d/power/ZIX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "percentile_pw": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "student": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "student_pw": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        },
+        "hac": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.3575,
+          "mc_se": 0.023963187913965036
+        },
+        "percentile_pw": {
+          "rate": 0.3625,
+          "mc_se": 0.024036105653786763
+        },
+        "student": {
+          "rate": 0.3375,
+          "mc_se": 0.023642850399222173
+        },
+        "student_pw": {
+          "rate": 0.32,
+          "mc_se": 0.0233238075793812
+        },
+        "hac": {
+          "rate": 0.365,
+          "mc_se": 0.024071508054129054
+        }
+      }
+    },
+    "compare/all/30d/power/GMX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.93,
+          "mc_se": 0.01275735082217307
+        },
+        "percentile_pw": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student": {
+          "rate": 0.94,
+          "mc_se": 0.011874342087037922
+        },
+        "student_pw": {
+          "rate": 0.925,
+          "mc_se": 0.01316956719106592
+        },
+        "hac": {
+          "rate": 0.945,
+          "mc_se": 0.011399013115178002
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.9875,
+          "mc_se": 0.005555121510822233
+        },
+        "percentile_pw": {
+          "rate": 0.9825,
+          "mc_se": 0.006556247020971671
+        },
+        "student": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "student_pw": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        },
+        "hac": {
+          "rate": 0.985,
+          "mc_se": 0.006077622890571612
+        }
+      }
+    },
+    "compare/all/30d/power/AIDOGE_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "percentile_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "student": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.8825,
+          "mc_se": 0.016100756969782512
+        },
+        "hac": {
+          "rate": 0.9025,
+          "mc_se": 0.014831870246196198
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        },
+        "percentile_pw": {
+          "rate": 0.7625,
+          "mc_se": 0.021277555663186502
+        },
+        "student": {
+          "rate": 0.715,
+          "mc_se": 0.02257072218605333
+        },
+        "student_pw": {
+          "rate": 0.72,
+          "mc_se": 0.02244994432064365
+        },
+        "hac": {
+          "rate": 0.77,
+          "mc_se": 0.021041625412500813
+        }
+      }
+    },
+    "compare/all/30d/power/SUPER_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "percentile_pw": {
+          "rate": 0.885,
+          "mc_se": 0.01595109714094927
+        },
+        "student": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "student_pw": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "hac": {
+          "rate": 0.8275,
+          "mc_se": 0.018890721929031722
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.96,
+          "mc_se": 0.009797958971132717
+        },
+        "percentile_pw": {
+          "rate": 0.9525,
+          "mc_se": 0.010635289135702893
+        },
+        "student": {
+          "rate": 0.67,
+          "mc_se": 0.023510635891017494
+        },
+        "student_pw": {
+          "rate": 0.68,
+          "mc_se": 0.0233238075793812
+        },
+        "hac": {
+          "rate": 0.935,
+          "mc_se": 0.012326293035621046
+        }
+      }
+    },
+    "compare/all/30d/power/BOS_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "percentile_pw": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "student": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "student_pw": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "hac": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.49,
+          "mc_se": 0.024994999499899976
+        },
+        "percentile_pw": {
+          "rate": 0.48,
+          "mc_se": 0.024979991993593593
+        },
+        "student": {
+          "rate": 0.425,
+          "mc_se": 0.024717149916606486
+        },
+        "student_pw": {
+          "rate": 0.4225,
+          "mc_se": 0.02469786174955233
+        },
+        "hac": {
+          "rate": 0.4775,
+          "mc_se": 0.024974674672555795
+        }
+      }
+    },
+    "compare/all/30d/power/IMU_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.63,
+          "mc_se": 0.024140215409146622
+        },
+        "percentile_pw": {
+          "rate": 0.6075,
+          "mc_se": 0.024415351215987043
+        },
+        "student": {
+          "rate": 0.6825,
+          "mc_se": 0.023275187969165792
+        },
+        "student_pw": {
+          "rate": 0.6125,
+          "mc_se": 0.024358969087381346
+        },
+        "hac": {
+          "rate": 0.5575,
+          "mc_se": 0.024834137291236836
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.98,
+          "mc_se": 0.007000000000000003
+        },
+        "percentile_pw": {
+          "rate": 0.9775,
+          "mc_se": 0.00741514497498194
+        },
+        "student": {
+          "rate": 0.5525,
+          "mc_se": 0.02486180554585688
+        },
+        "student_pw": {
+          "rate": 0.5775,
+          "mc_se": 0.02469786174955233
+        },
+        "hac": {
+          "rate": 0.935,
+          "mc_se": 0.012326293035621046
+        }
+      }
+    },
+    "compare/all/30d/power/MLN_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        },
+        "percentile_pw": {
+          "rate": 0.7775,
+          "mc_se": 0.020796258677944938
+        },
+        "student": {
+          "rate": 0.8275,
+          "mc_se": 0.018890721929031722
+        },
+        "student_pw": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        },
+        "hac": {
+          "rate": 0.7525,
+          "mc_se": 0.021577983571223702
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.94,
+          "mc_se": 0.011874342087037922
+        },
+        "percentile_pw": {
+          "rate": 0.9525,
+          "mc_se": 0.010635289135702893
+        },
+        "student": {
+          "rate": 0.725,
+          "mc_se": 0.02232571387436469
+        },
+        "student_pw": {
+          "rate": 0.74,
+          "mc_se": 0.02193171219946131
+        },
+        "hac": {
+          "rate": 0.9625,
+          "mc_se": 0.009499177595981663
+        }
+      }
+    },
+    "compare/all/30d/power/ORCA_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "percentile_pw": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "student": {
+          "rate": 0.78,
+          "mc_se": 0.020712315177207976
+        },
+        "student_pw": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "hac": {
+          "rate": 0.72,
+          "mc_se": 0.02244994432064365
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "percentile_pw": {
+          "rate": 0.995,
+          "mc_se": 0.0035266839949164726
+        },
+        "student": {
+          "rate": 0.9725,
+          "mc_se": 0.00817675822071314
+        },
+        "student_pw": {
+          "rate": 0.9725,
+          "mc_se": 0.00817675822071314
+        },
+        "hac": {
+          "rate": 0.9925,
+          "mc_se": 0.004313858481684336
+        }
+      }
+    },
+    "compare/all/30d/power/PINGO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5675,
+          "mc_se": 0.02477113996165699
+        },
+        "percentile_pw": {
+          "rate": 0.58,
+          "mc_se": 0.024677925358506134
+        },
+        "student": {
+          "rate": 0.685,
+          "mc_se": 0.02322579385080303
+        },
+        "student_pw": {
+          "rate": 0.695,
+          "mc_se": 0.023020371413163602
+        },
+        "hac": {
+          "rate": 0.5675,
+          "mc_se": 0.02477113996165699
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.6175,
+          "mc_se": 0.02429988425898362
+        },
+        "percentile_pw": {
+          "rate": 0.6025,
+          "mc_se": 0.02446904932767107
+        },
+        "student": {
+          "rate": 0.47,
+          "mc_se": 0.02495495942693556
+        },
+        "student_pw": {
+          "rate": 0.46,
+          "mc_se": 0.024919871588754226
+        },
+        "hac": {
+          "rate": 0.62,
+          "mc_se": 0.024269322199023193
+        }
+      }
+    },
+    "compare/all/30d/power/CREO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7725,
+          "mc_se": 0.02096090110181335
+        },
+        "percentile_pw": {
+          "rate": 0.78,
+          "mc_se": 0.020712315177207976
+        },
+        "student": {
+          "rate": 0.8075,
+          "mc_se": 0.019713177699194007
+        },
+        "student_pw": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "hac": {
+          "rate": 0.7825,
+          "mc_se": 0.02062727260206739
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "student": {
+          "rate": 0.705,
+          "mc_se": 0.022802138057647137
+        },
+        "student_pw": {
+          "rate": 0.7075,
+          "mc_se": 0.022745535276181124
+        },
+        "hac": {
+          "rate": 0.9925,
+          "mc_se": 0.004313858481684336
+        }
+      }
+    },
+    "compare/all/30d/power/FIS_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8675,
+          "mc_se": 0.016951677645590125
+        },
+        "percentile_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "student": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "student_pw": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "hac": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.265,
+          "mc_se": 0.02206666037260736
+        },
+        "percentile_pw": {
+          "rate": 0.26,
+          "mc_se": 0.02193171219946131
+        },
+        "student": {
+          "rate": 0.295,
+          "mc_se": 0.022802138057647137
+        },
+        "student_pw": {
+          "rate": 0.28,
+          "mc_se": 0.02244994432064365
+        },
+        "hac": {
+          "rate": 0.355,
+          "mc_se": 0.02392566613492715
+        }
+      }
+    },
+    "compare/all/30d/power/ANON_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5725,
+          "mc_se": 0.02473579137606072
+        },
+        "percentile_pw": {
+          "rate": 0.575,
+          "mc_se": 0.024717149916606486
+        },
+        "student": {
+          "rate": 0.6575,
+          "mc_se": 0.023727291775506112
+        },
+        "student_pw": {
+          "rate": 0.6625,
+          "mc_se": 0.023642850399222173
+        },
+        "hac": {
+          "rate": 0.565,
+          "mc_se": 0.024787849846245234
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.685,
+          "mc_se": 0.02322579385080303
+        },
+        "percentile_pw": {
+          "rate": 0.6775,
+          "mc_se": 0.023371657515033034
+        },
+        "student": {
+          "rate": 0.585,
+          "mc_se": 0.024636101558485266
+        },
+        "student_pw": {
+          "rate": 0.575,
+          "mc_se": 0.024717149916606486
+        },
+        "hac": {
+          "rate": 0.6825,
+          "mc_se": 0.023275187969165792
+        }
+      }
+    },
+    "compare/all/30d/power/CKB_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "percentile_pw": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "student": {
+          "rate": 0.925,
+          "mc_se": 0.01316956719106592
+        },
+        "student_pw": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        },
+        "hac": {
+          "rate": 0.885,
+          "mc_se": 0.01595109714094927
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.9875,
+          "mc_se": 0.005555121510822233
+        },
+        "percentile_pw": {
+          "rate": 0.9675,
+          "mc_se": 0.008866192813152663
+        },
+        "student": {
+          "rate": 0.8075,
+          "mc_se": 0.019713177699194007
+        },
+        "student_pw": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "hac": {
+          "rate": 0.99,
+          "mc_se": 0.004974937185533102
+        }
+      }
+    },
+    "compare/all/30d/power/DEEP_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.795,
+          "mc_se": 0.020185081124434453
+        },
+        "percentile_pw": {
+          "rate": 0.7775,
+          "mc_se": 0.020796258677944938
+        },
+        "student": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "student_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "hac": {
+          "rate": 0.8,
+          "mc_se": 0.02
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/30d/power/XT_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.58,
+          "mc_se": 0.024677925358506134
+        },
+        "percentile_pw": {
+          "rate": 0.5975,
+          "mc_se": 0.024520081056146614
+        },
+        "student": {
+          "rate": 0.6775,
+          "mc_se": 0.023371657515033034
+        },
+        "student_pw": {
+          "rate": 0.6875,
+          "mc_se": 0.023175620272173948
+        },
+        "hac": {
+          "rate": 0.6,
+          "mc_se": 0.02449489742783178
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.765,
+          "mc_se": 0.021199941037653856
+        },
+        "student_pw": {
+          "rate": 0.7575,
+          "mc_se": 0.021429754431630803
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/30d/power/FLOCK_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "percentile_pw": {
+          "rate": 0.8125,
+          "mc_se": 0.019515618744994995
+        },
+        "student": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "student_pw": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "hac": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.96,
+          "mc_se": 0.009797958971132717
+        },
+        "student_pw": {
+          "rate": 0.9575,
+          "mc_se": 0.010086345968684594
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/30d/power/TITN_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "percentile_pw": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "student": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "student_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.925,
+          "mc_se": 0.01316956719106592
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.985,
+          "mc_se": 0.006077622890571612
+        },
+        "percentile_pw": {
+          "rate": 0.9825,
+          "mc_se": 0.006556247020971671
+        },
+        "student": {
+          "rate": 0.935,
+          "mc_se": 0.012326293035621046
+        },
+        "student_pw": {
+          "rate": 0.9325,
+          "mc_se": 0.0125442965127583
+        },
+        "hac": {
+          "rate": 0.985,
+          "mc_se": 0.006077622890571612
+        }
+      }
+    },
+    "compare/all/30d/power/SAITO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5275,
+          "mc_se": 0.02496215886096393
+        },
+        "percentile_pw": {
+          "rate": 0.555,
+          "mc_se": 0.02484828967957352
+        },
+        "student": {
+          "rate": 0.725,
+          "mc_se": 0.02232571387436469
+        },
+        "student_pw": {
+          "rate": 0.7625,
+          "mc_se": 0.021277555663186502
+        },
+        "hac": {
+          "rate": 0.5475,
+          "mc_se": 0.02488693181169587
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.7275,
+          "mc_se": 0.02226228593383887
+        },
+        "percentile_pw": {
+          "rate": 0.725,
+          "mc_se": 0.02232571387436469
+        },
+        "student": {
+          "rate": 0.6125,
+          "mc_se": 0.024358969087381346
+        },
+        "student_pw": {
+          "rate": 0.61,
+          "mc_se": 0.024387496796514398
+        },
+        "hac": {
+          "rate": 0.725,
+          "mc_se": 0.02232571387436469
+        }
+      }
+    },
+    "compare/all/30d/power/SPYX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        },
+        "percentile_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "student_pw": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "hac": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/size/SUKU_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "percentile_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "student_pw": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "hac": {
+          "rate": 0.8275,
+          "mc_se": 0.018890721929031722
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.17,
+          "mc_se": 0.01878163997099295
+        },
+        "percentile_pw": {
+          "rate": 0.17,
+          "mc_se": 0.01878163997099295
+        },
+        "student": {
+          "rate": 0.1275,
+          "mc_se": 0.016676611616272652
+        },
+        "student_pw": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "hac": {
+          "rate": 0.18,
+          "mc_se": 0.019209372712298545
+        }
+      }
+    },
+    "compare/all/61d/size/BAND_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "percentile_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student_pw": {
+          "rate": 0.9025,
+          "mc_se": 0.014831870246196198
+        },
+        "hac": {
+          "rate": 0.8825,
+          "mc_se": 0.016100756969782512
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.15,
+          "mc_se": 0.017853571071357127
+        },
+        "percentile_pw": {
+          "rate": 0.155,
+          "mc_se": 0.01809523417919757
+        },
+        "student": {
+          "rate": 0.11,
+          "mc_se": 0.015644487847162016
+        },
+        "student_pw": {
+          "rate": 0.1125,
+          "mc_se": 0.015799030824705674
+        },
+        "hac": {
+          "rate": 0.1275,
+          "mc_se": 0.016676611616272652
+        }
+      }
+    },
+    "compare/all/61d/size/NAVX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "percentile_pw": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "student": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "student_pw": {
+          "rate": 0.8825,
+          "mc_se": 0.016100756969782512
+        },
+        "hac": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.03,
+          "mc_se": 0.00852936105461599
+        },
+        "percentile_pw": {
+          "rate": 0.03,
+          "mc_se": 0.00852936105461599
+        },
+        "student": {
+          "rate": 0.045,
+          "mc_se": 0.01036520622081394
+        },
+        "student_pw": {
+          "rate": 0.04,
+          "mc_se": 0.009797958971132711
+        },
+        "hac": {
+          "rate": 0.035,
+          "mc_se": 0.009188987974744553
+        }
+      }
+    },
+    "compare/all/61d/size/TEVA_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6625,
+          "mc_se": 0.023642850399222173
+        },
+        "percentile_pw": {
+          "rate": 0.695,
+          "mc_se": 0.023020371413163602
+        },
+        "student": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student_pw": {
+          "rate": 0.84,
+          "mc_se": 0.018330302779823362
+        },
+        "hac": {
+          "rate": 0.6675,
+          "mc_se": 0.023555453190291203
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.375,
+          "mc_se": 0.024206145913796356
+        },
+        "percentile_pw": {
+          "rate": 0.365,
+          "mc_se": 0.024071508054129054
+        },
+        "student": {
+          "rate": 0.2475,
+          "mc_se": 0.021577983571223702
+        },
+        "student_pw": {
+          "rate": 0.2575,
+          "mc_se": 0.021862853770722612
+        },
+        "hac": {
+          "rate": 0.37,
+          "mc_se": 0.024140215409146622
+        }
+      }
+    },
+    "compare/all/61d/size/PEOPLEFB_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.645,
+          "mc_se": 0.02392566613492715
+        },
+        "percentile_pw": {
+          "rate": 0.665,
+          "mc_se": 0.023599523300270285
+        },
+        "student": {
+          "rate": 0.69,
+          "mc_se": 0.023124662159694356
+        },
+        "student_pw": {
+          "rate": 0.695,
+          "mc_se": 0.023020371413163602
+        },
+        "hac": {
+          "rate": 0.62,
+          "mc_se": 0.024269322199023193
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.025,
+          "mc_se": 0.007806247497997998
+        },
+        "percentile_pw": {
+          "rate": 0.02,
+          "mc_se": 0.007
+        },
+        "student": {
+          "rate": 0.04,
+          "mc_se": 0.009797958971132711
+        },
+        "student_pw": {
+          "rate": 0.0375,
+          "mc_se": 0.009499177595981664
+        },
+        "hac": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        }
+      }
+    },
+    "compare/all/61d/size/ZIX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8425,
+          "mc_se": 0.018213576666871335
+        },
+        "percentile_pw": {
+          "rate": 0.835,
+          "mc_se": 0.018559027452967464
+        },
+        "student": {
+          "rate": 0.8475,
+          "mc_se": 0.01797524339195439
+        },
+        "student_pw": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "hac": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.155,
+          "mc_se": 0.01809523417919757
+        },
+        "percentile_pw": {
+          "rate": 0.15,
+          "mc_se": 0.017853571071357127
+        },
+        "student": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.145,
+          "mc_se": 0.017605041891458253
+        },
+        "hac": {
+          "rate": 0.165,
+          "mc_se": 0.018559027452967464
+        }
+      }
+    },
+    "compare/all/61d/size/GMX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9375,
+          "mc_se": 0.012103072956898178
+        },
+        "percentile_pw": {
+          "rate": 0.9225,
+          "mc_se": 0.013369157602481916
+        },
+        "student": {
+          "rate": 0.9425,
+          "mc_se": 0.01163977555625537
+        },
+        "student_pw": {
+          "rate": 0.9225,
+          "mc_se": 0.013369157602481916
+        },
+        "hac": {
+          "rate": 0.9425,
+          "mc_se": 0.01163977555625537
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0875,
+          "mc_se": 0.014128318194321643
+        },
+        "percentile_pw": {
+          "rate": 0.105,
+          "mc_se": 0.015327671055969333
+        },
+        "student": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        },
+        "student_pw": {
+          "rate": 0.095,
+          "mc_se": 0.01466074691139575
+        },
+        "hac": {
+          "rate": 0.085,
+          "mc_se": 0.013944084767384343
+        }
+      }
+    },
+    "compare/all/61d/size/AIDOGE_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "percentile_pw": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "student": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "student_pw": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "hac": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1075,
+          "mc_se": 0.015487394067434327
+        },
+        "percentile_pw": {
+          "rate": 0.105,
+          "mc_se": 0.015327671055969333
+        },
+        "student": {
+          "rate": 0.115,
+          "mc_se": 0.01595109714094927
+        },
+        "student_pw": {
+          "rate": 0.11,
+          "mc_se": 0.015644487847162016
+        },
+        "hac": {
+          "rate": 0.1125,
+          "mc_se": 0.015799030824705674
+        }
+      }
+    },
+    "compare/all/61d/size/SUPER_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "percentile_pw": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "student_pw": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "hac": {
+          "rate": 0.8475,
+          "mc_se": 0.01797524339195439
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.065,
+          "mc_se": 0.01232629303562105
+        },
+        "percentile_pw": {
+          "rate": 0.0725,
+          "mc_se": 0.012965699942540702
+        },
+        "student": {
+          "rate": 0.055,
+          "mc_se": 0.011399013115177999
+        },
+        "student_pw": {
+          "rate": 0.0575,
+          "mc_se": 0.011639775556255371
+        },
+        "hac": {
+          "rate": 0.0975,
+          "mc_se": 0.014831870246196196
+        }
+      }
+    },
+    "compare/all/61d/size/BOS_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "percentile_pw": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "student": {
+          "rate": 0.9025,
+          "mc_se": 0.014831870246196198
+        },
+        "student_pw": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "hac": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1,
+          "mc_se": 0.015000000000000001
+        },
+        "percentile_pw": {
+          "rate": 0.1,
+          "mc_se": 0.015000000000000001
+        },
+        "student": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "student_pw": {
+          "rate": 0.0975,
+          "mc_se": 0.014831870246196196
+        },
+        "hac": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        }
+      }
+    },
+    "compare/all/61d/size/IMU_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.705,
+          "mc_se": 0.022802138057647137
+        },
+        "percentile_pw": {
+          "rate": 0.685,
+          "mc_se": 0.02322579385080303
+        },
+        "student": {
+          "rate": 0.7375,
+          "mc_se": 0.02199964488349755
+        },
+        "student_pw": {
+          "rate": 0.7075,
+          "mc_se": 0.022745535276181124
+        },
+        "hac": {
+          "rate": 0.69,
+          "mc_se": 0.023124662159694356
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2975,
+          "mc_se": 0.022857917118582788
+        },
+        "percentile_pw": {
+          "rate": 0.3025,
+          "mc_se": 0.02296702799667384
+        },
+        "student": {
+          "rate": 0.2375,
+          "mc_se": 0.0212775556631865
+        },
+        "student_pw": {
+          "rate": 0.245,
+          "mc_se": 0.02150436002302789
+        },
+        "hac": {
+          "rate": 0.2825,
+          "mc_se": 0.02251076131542423
+        }
+      }
+    },
+    "compare/all/61d/size/MLN_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8025,
+          "mc_se": 0.019905636764494625
+        },
+        "percentile_pw": {
+          "rate": 0.8025,
+          "mc_se": 0.019905636764494625
+        },
+        "student": {
+          "rate": 0.8425,
+          "mc_se": 0.018213576666871335
+        },
+        "student_pw": {
+          "rate": 0.84,
+          "mc_se": 0.018330302779823362
+        },
+        "hac": {
+          "rate": 0.7625,
+          "mc_se": 0.021277555663186502
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2325,
+          "mc_se": 0.02112130145137842
+        },
+        "percentile_pw": {
+          "rate": 0.2275,
+          "mc_se": 0.020960901101813346
+        },
+        "student": {
+          "rate": 0.1325,
+          "mc_se": 0.01695167764559013
+        },
+        "student_pw": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "hac": {
+          "rate": 0.185,
+          "mc_se": 0.019414878315353924
+        }
+      }
+    },
+    "compare/all/61d/size/ORCA_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "percentile_pw": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        },
+        "student": {
+          "rate": 0.8675,
+          "mc_se": 0.016951677645590125
+        },
+        "student_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.82,
+          "mc_se": 0.01920937271229855
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0525,
+          "mc_se": 0.01115165346484547
+        },
+        "percentile_pw": {
+          "rate": 0.075,
+          "mc_se": 0.013169567191065924
+        },
+        "student": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        },
+        "student_pw": {
+          "rate": 0.0775,
+          "mc_se": 0.013369157602481915
+        },
+        "hac": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        }
+      }
+    },
+    "compare/all/61d/size/PINGO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.685,
+          "mc_se": 0.02322579385080303
+        },
+        "percentile_pw": {
+          "rate": 0.695,
+          "mc_se": 0.023020371413163602
+        },
+        "student": {
+          "rate": 0.7375,
+          "mc_se": 0.02199964488349755
+        },
+        "student_pw": {
+          "rate": 0.74,
+          "mc_se": 0.02193171219946131
+        },
+        "hac": {
+          "rate": 0.685,
+          "mc_se": 0.02322579385080303
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.3625,
+          "mc_se": 0.024036105653786763
+        },
+        "percentile_pw": {
+          "rate": 0.36,
+          "mc_se": 0.024
+        },
+        "student": {
+          "rate": 0.2825,
+          "mc_se": 0.02251076131542423
+        },
+        "student_pw": {
+          "rate": 0.2775,
+          "mc_se": 0.02238826422481207
+        },
+        "hac": {
+          "rate": 0.375,
+          "mc_se": 0.024206145913796356
+        }
+      }
+    },
+    "compare/all/61d/size/CREO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8175,
+          "mc_se": 0.019312803395675107
+        },
+        "percentile_pw": {
+          "rate": 0.8025,
+          "mc_se": 0.019905636764494625
+        },
+        "student": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        },
+        "student_pw": {
+          "rate": 0.835,
+          "mc_se": 0.018559027452967464
+        },
+        "hac": {
+          "rate": 0.8225,
+          "mc_se": 0.019104564245226847
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.16,
+          "mc_se": 0.01833030277982336
+        },
+        "percentile_pw": {
+          "rate": 0.1775,
+          "mc_se": 0.019104564245226847
+        },
+        "student": {
+          "rate": 0.1475,
+          "mc_se": 0.017730182599172518
+        },
+        "student_pw": {
+          "rate": 0.16,
+          "mc_se": 0.01833030277982336
+        },
+        "hac": {
+          "rate": 0.1625,
+          "mc_se": 0.018445443204217135
+        }
+      }
+    },
+    "compare/all/61d/size/FIS_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "percentile_pw": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "student": {
+          "rate": 0.9225,
+          "mc_se": 0.013369157602481916
+        },
+        "student_pw": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "hac": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.045,
+          "mc_se": 0.01036520622081394
+        },
+        "percentile_pw": {
+          "rate": 0.0425,
+          "mc_se": 0.010086345968684596
+        },
+        "student": {
+          "rate": 0.045,
+          "mc_se": 0.01036520622081394
+        },
+        "student_pw": {
+          "rate": 0.0475,
+          "mc_se": 0.010635289135702893
+        },
+        "hac": {
+          "rate": 0.0575,
+          "mc_se": 0.011639775556255371
+        }
+      }
+    },
+    "compare/all/61d/size/ANON_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6225,
+          "mc_se": 0.02423807696579908
+        },
+        "percentile_pw": {
+          "rate": 0.62,
+          "mc_se": 0.024269322199023193
+        },
+        "student": {
+          "rate": 0.7125,
+          "mc_se": 0.022629833737789592
+        },
+        "student_pw": {
+          "rate": 0.7225,
+          "mc_se": 0.02238826422481207
+        },
+        "hac": {
+          "rate": 0.6025,
+          "mc_se": 0.02446904932767107
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.425,
+          "mc_se": 0.024717149916606486
+        },
+        "percentile_pw": {
+          "rate": 0.4225,
+          "mc_se": 0.02469786174955233
+        },
+        "student": {
+          "rate": 0.325,
+          "mc_se": 0.023418742493993994
+        },
+        "student_pw": {
+          "rate": 0.3325,
+          "mc_se": 0.023555453190291203
+        },
+        "hac": {
+          "rate": 0.4175,
+          "mc_se": 0.024657339171127123
+        }
+      }
+    },
+    "compare/all/61d/size/CKB_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9375,
+          "mc_se": 0.012103072956898178
+        },
+        "percentile_pw": {
+          "rate": 0.9325,
+          "mc_se": 0.0125442965127583
+        },
+        "student": {
+          "rate": 0.9575,
+          "mc_se": 0.010086345968684594
+        },
+        "student_pw": {
+          "rate": 0.945,
+          "mc_se": 0.011399013115178002
+        },
+        "hac": {
+          "rate": 0.9325,
+          "mc_se": 0.0125442965127583
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.09,
+          "mc_se": 0.014309088021254185
+        },
+        "percentile_pw": {
+          "rate": 0.1175,
+          "mc_se": 0.01610075696978251
+        },
+        "student": {
+          "rate": 0.0775,
+          "mc_se": 0.013369157602481915
+        },
+        "student_pw": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "hac": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        }
+      }
+    },
+    "compare/all/61d/size/DEEP_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        },
+        "percentile_pw": {
+          "rate": 0.8475,
+          "mc_se": 0.01797524339195439
+        },
+        "student": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "student_pw": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "hac": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        },
+        "percentile_pw": {
+          "rate": 0.055,
+          "mc_se": 0.011399013115177999
+        },
+        "student": {
+          "rate": 0.04,
+          "mc_se": 0.009797958971132711
+        },
+        "student_pw": {
+          "rate": 0.0375,
+          "mc_se": 0.009499177595981664
+        },
+        "hac": {
+          "rate": 0.055,
+          "mc_se": 0.011399013115177999
+        }
+      }
+    },
+    "compare/all/61d/size/XT_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6225,
+          "mc_se": 0.02423807696579908
+        },
+        "percentile_pw": {
+          "rate": 0.6125,
+          "mc_se": 0.024358969087381346
+        },
+        "student": {
+          "rate": 0.645,
+          "mc_se": 0.02392566613492715
+        },
+        "student_pw": {
+          "rate": 0.655,
+          "mc_se": 0.023768413914268656
+        },
+        "hac": {
+          "rate": 0.6225,
+          "mc_se": 0.02423807696579908
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.425,
+          "mc_se": 0.024717149916606486
+        },
+        "percentile_pw": {
+          "rate": 0.4175,
+          "mc_se": 0.024657339171127123
+        },
+        "student": {
+          "rate": 0.36,
+          "mc_se": 0.024
+        },
+        "student_pw": {
+          "rate": 0.3525,
+          "mc_se": 0.02388743131858258
+        },
+        "hac": {
+          "rate": 0.4275,
+          "mc_se": 0.02473579137606072
+        }
+      }
+    },
+    "compare/all/61d/size/FLOCK_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "percentile_pw": {
+          "rate": 0.9025,
+          "mc_se": 0.014831870246196198
+        },
+        "student": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "student_pw": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        },
+        "hac": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1125,
+          "mc_se": 0.015799030824705674
+        },
+        "percentile_pw": {
+          "rate": 0.11,
+          "mc_se": 0.015644487847162016
+        },
+        "student": {
+          "rate": 0.09,
+          "mc_se": 0.014309088021254185
+        },
+        "student_pw": {
+          "rate": 0.095,
+          "mc_se": 0.01466074691139575
+        },
+        "hac": {
+          "rate": 0.125,
+          "mc_se": 0.016535945694153693
+        }
+      }
+    },
+    "compare/all/61d/size/TITN_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "percentile_pw": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        },
+        "student": {
+          "rate": 0.8925,
+          "mc_se": 0.01548739406743433
+        },
+        "student_pw": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "hac": {
+          "rate": 0.9575,
+          "mc_se": 0.010086345968684594
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        },
+        "percentile_pw": {
+          "rate": 0.08,
+          "mc_se": 0.013564659966250536
+        },
+        "student": {
+          "rate": 0.105,
+          "mc_se": 0.015327671055969333
+        },
+        "student_pw": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "hac": {
+          "rate": 0.0625,
+          "mc_se": 0.012103072956898178
+        }
+      }
+    },
+    "compare/all/61d/size/SAITO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5525,
+          "mc_se": 0.02486180554585688
+        },
+        "percentile_pw": {
+          "rate": 0.565,
+          "mc_se": 0.024787849846245234
+        },
+        "student": {
+          "rate": 0.6825,
+          "mc_se": 0.023275187969165792
+        },
+        "student_pw": {
+          "rate": 0.6875,
+          "mc_se": 0.023175620272173948
+        },
+        "hac": {
+          "rate": 0.575,
+          "mc_se": 0.024717149916606486
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.49,
+          "mc_se": 0.024994999499899976
+        },
+        "percentile_pw": {
+          "rate": 0.48,
+          "mc_se": 0.024979991993593593
+        },
+        "student": {
+          "rate": 0.41,
+          "mc_se": 0.024591665254715876
+        },
+        "student_pw": {
+          "rate": 0.39,
+          "mc_se": 0.024387496796514398
+        },
+        "hac": {
+          "rate": 0.48,
+          "mc_se": 0.024979991993593593
+        }
+      }
+    },
+    "compare/all/61d/size/SPYX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "percentile_pw": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        },
+        "student": {
+          "rate": 0.9275,
+          "mc_se": 0.012965699942540704
+        },
+        "student_pw": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        },
+        "hac": {
+          "rate": 0.8925,
+          "mc_se": 0.01548739406743433
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.085,
+          "mc_se": 0.013944084767384343
+        },
+        "percentile_pw": {
+          "rate": 0.0775,
+          "mc_se": 0.013369157602481915
+        },
+        "student": {
+          "rate": 0.0775,
+          "mc_se": 0.013369157602481915
+        },
+        "student_pw": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        },
+        "hac": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        }
+      }
+    },
+    "compare/all/61d/power/SUKU_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "percentile_pw": {
+          "rate": 0.84,
+          "mc_se": 0.018330302779823362
+        },
+        "student": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        },
+        "student_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "hac": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.5,
+          "mc_se": 0.025
+        },
+        "percentile_pw": {
+          "rate": 0.4975,
+          "mc_se": 0.02499968749804685
+        },
+        "student": {
+          "rate": 0.345,
+          "mc_se": 0.023768413914268656
+        },
+        "student_pw": {
+          "rate": 0.3725,
+          "mc_se": 0.024173526325300575
+        },
+        "hac": {
+          "rate": 0.505,
+          "mc_se": 0.02499874996874844
+        }
+      }
+    },
+    "compare/all/61d/power/BAND_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8,
+          "mc_se": 0.02
+        },
+        "percentile_pw": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "student": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "hac": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.99,
+          "mc_se": 0.004974937185533102
+        },
+        "student_pw": {
+          "rate": 0.9825,
+          "mc_se": 0.006556247020971671
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/NAVX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "percentile_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "student_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.6575,
+          "mc_se": 0.023727291775506112
+        },
+        "percentile_pw": {
+          "rate": 0.6575,
+          "mc_se": 0.023727291775506112
+        },
+        "student": {
+          "rate": 0.6675,
+          "mc_se": 0.023555453190291203
+        },
+        "student_pw": {
+          "rate": 0.6625,
+          "mc_se": 0.023642850399222173
+        },
+        "hac": {
+          "rate": 0.645,
+          "mc_se": 0.02392566613492715
+        }
+      }
+    },
+    "compare/all/61d/power/TEVA_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6675,
+          "mc_se": 0.023555453190291203
+        },
+        "percentile_pw": {
+          "rate": 0.705,
+          "mc_se": 0.022802138057647137
+        },
+        "student": {
+          "rate": 0.8475,
+          "mc_se": 0.01797524339195439
+        },
+        "student_pw": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "hac": {
+          "rate": 0.6975,
+          "mc_se": 0.02296702799667384
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        },
+        "percentile_pw": {
+          "rate": 0.7,
+          "mc_se": 0.022912878474779203
+        },
+        "student": {
+          "rate": 0.4225,
+          "mc_se": 0.02469786174955233
+        },
+        "student_pw": {
+          "rate": 0.4475,
+          "mc_se": 0.02486180554585688
+        },
+        "hac": {
+          "rate": 0.4775,
+          "mc_se": 0.024974674672555795
+        }
+      }
+    },
+    "compare/all/61d/power/PEOPLEFB_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6475,
+          "mc_se": 0.023887431318582585
+        },
+        "percentile_pw": {
+          "rate": 0.665,
+          "mc_se": 0.023599523300270285
+        },
+        "student": {
+          "rate": 0.6975,
+          "mc_se": 0.02296702799667384
+        },
+        "student_pw": {
+          "rate": 0.6975,
+          "mc_se": 0.02296702799667384
+        },
+        "hac": {
+          "rate": 0.645,
+          "mc_se": 0.02392566613492715
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.02,
+          "mc_se": 0.007
+        },
+        "percentile_pw": {
+          "rate": 0.02,
+          "mc_se": 0.007
+        },
+        "student": {
+          "rate": 0.0475,
+          "mc_se": 0.010635289135702893
+        },
+        "student_pw": {
+          "rate": 0.0475,
+          "mc_se": 0.010635289135702893
+        },
+        "hac": {
+          "rate": 0.085,
+          "mc_se": 0.013944084767384343
+        }
+      }
+    },
+    "compare/all/61d/power/ZIX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        },
+        "percentile_pw": {
+          "rate": 0.8675,
+          "mc_se": 0.016951677645590125
+        },
+        "student": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.3825,
+          "mc_se": 0.02429988425898362
+        },
+        "percentile_pw": {
+          "rate": 0.39,
+          "mc_se": 0.024387496796514398
+        },
+        "student": {
+          "rate": 0.3725,
+          "mc_se": 0.024173526325300575
+        },
+        "student_pw": {
+          "rate": 0.375,
+          "mc_se": 0.024206145913796356
+        },
+        "hac": {
+          "rate": 0.3875,
+          "mc_se": 0.024358969087381346
+        }
+      }
+    },
+    "compare/all/61d/power/GMX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9225,
+          "mc_se": 0.013369157602481916
+        },
+        "percentile_pw": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        },
+        "student": {
+          "rate": 0.9325,
+          "mc_se": 0.0125442965127583
+        },
+        "student_pw": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        },
+        "hac": {
+          "rate": 0.9375,
+          "mc_se": 0.012103072956898178
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/AIDOGE_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        },
+        "percentile_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        },
+        "student_pw": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        },
+        "hac": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "percentile_pw": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "student": {
+          "rate": 0.7325,
+          "mc_se": 0.02213276699827656
+        },
+        "student_pw": {
+          "rate": 0.7275,
+          "mc_se": 0.02226228593383887
+        },
+        "hac": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        }
+      }
+    },
+    "compare/all/61d/power/SUPER_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "percentile_pw": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "student": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "student_pw": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "hac": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.995,
+          "mc_se": 0.0035266839949164726
+        },
+        "percentile_pw": {
+          "rate": 0.995,
+          "mc_se": 0.0035266839949164726
+        },
+        "student": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "student_pw": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "hac": {
+          "rate": 0.9925,
+          "mc_se": 0.004313858481684336
+        }
+      }
+    },
+    "compare/all/61d/power/BOS_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.93,
+          "mc_se": 0.01275735082217307
+        },
+        "percentile_pw": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        },
+        "student": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "student_pw": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        },
+        "hac": {
+          "rate": 0.92,
+          "mc_se": 0.013564659966250532
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.6475,
+          "mc_se": 0.023887431318582585
+        },
+        "percentile_pw": {
+          "rate": 0.6475,
+          "mc_se": 0.023887431318582585
+        },
+        "student": {
+          "rate": 0.5225,
+          "mc_se": 0.024974674672555798
+        },
+        "student_pw": {
+          "rate": 0.5275,
+          "mc_se": 0.02496215886096393
+        },
+        "hac": {
+          "rate": 0.6175,
+          "mc_se": 0.02429988425898362
+        }
+      }
+    },
+    "compare/all/61d/power/IMU_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7075,
+          "mc_se": 0.022745535276181124
+        },
+        "percentile_pw": {
+          "rate": 0.69,
+          "mc_se": 0.023124662159694356
+        },
+        "student": {
+          "rate": 0.7175,
+          "mc_se": 0.02251076131542423
+        },
+        "student_pw": {
+          "rate": 0.6875,
+          "mc_se": 0.023175620272173948
+        },
+        "hac": {
+          "rate": 0.6625,
+          "mc_se": 0.023642850399222173
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.6625,
+          "mc_se": 0.023642850399222173
+        },
+        "student_pw": {
+          "rate": 0.6675,
+          "mc_se": 0.023555453190291203
+        },
+        "hac": {
+          "rate": 0.975,
+          "mc_se": 0.007806247497998001
+        }
+      }
+    },
+    "compare/all/61d/power/MLN_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.825,
+          "mc_se": 0.018998355191963332
+        },
+        "percentile_pw": {
+          "rate": 0.8225,
+          "mc_se": 0.019104564245226847
+        },
+        "student": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        },
+        "student_pw": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        },
+        "hac": {
+          "rate": 0.755,
+          "mc_se": 0.02150436002302789
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.995,
+          "mc_se": 0.0035266839949164726
+        },
+        "percentile_pw": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "student": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        },
+        "student_pw": {
+          "rate": 0.8425,
+          "mc_se": 0.018213576666871335
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/ORCA_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "percentile_pw": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "student_pw": {
+          "rate": 0.8675,
+          "mc_se": 0.016951677645590125
+        },
+        "hac": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.995,
+          "mc_se": 0.0035266839949164726
+        },
+        "student_pw": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/PINGO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.725,
+          "mc_se": 0.02232571387436469
+        },
+        "percentile_pw": {
+          "rate": 0.73,
+          "mc_se": 0.022197972880423113
+        },
+        "student": {
+          "rate": 0.7825,
+          "mc_se": 0.02062727260206739
+        },
+        "student_pw": {
+          "rate": 0.7725,
+          "mc_se": 0.02096090110181335
+        },
+        "hac": {
+          "rate": 0.7075,
+          "mc_se": 0.022745535276181124
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.4825,
+          "mc_se": 0.024984682807672385
+        },
+        "percentile_pw": {
+          "rate": 0.48,
+          "mc_se": 0.024979991993593593
+        },
+        "student": {
+          "rate": 0.4025,
+          "mc_se": 0.024520081056146614
+        },
+        "student_pw": {
+          "rate": 0.39,
+          "mc_se": 0.024387496796514398
+        },
+        "hac": {
+          "rate": 0.485,
+          "mc_se": 0.024988747467610296
+        }
+      }
+    },
+    "compare/all/61d/power/CREO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "percentile_pw": {
+          "rate": 0.8425,
+          "mc_se": 0.018213576666871335
+        },
+        "student": {
+          "rate": 0.8525,
+          "mc_se": 0.017730182599172518
+        },
+        "student_pw": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "hac": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.955,
+          "mc_se": 0.010365206220813944
+        },
+        "student_pw": {
+          "rate": 0.9625,
+          "mc_se": 0.009499177595981663
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/FIS_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9025,
+          "mc_se": 0.014831870246196198
+        },
+        "percentile_pw": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "student": {
+          "rate": 0.9425,
+          "mc_se": 0.01163977555625537
+        },
+        "student_pw": {
+          "rate": 0.9425,
+          "mc_se": 0.01163977555625537
+        },
+        "hac": {
+          "rate": 0.9175,
+          "mc_se": 0.013756248580190752
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.3475,
+          "mc_se": 0.023808808769024966
+        },
+        "percentile_pw": {
+          "rate": 0.34,
+          "mc_se": 0.02368543856465402
+        },
+        "student": {
+          "rate": 0.375,
+          "mc_se": 0.024206145913796356
+        },
+        "student_pw": {
+          "rate": 0.385,
+          "mc_se": 0.02432976572020372
+        },
+        "hac": {
+          "rate": 0.445,
+          "mc_se": 0.02484828967957352
+        }
+      }
+    },
+    "compare/all/61d/power/ANON_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6375,
+          "mc_se": 0.024036105653786763
+        },
+        "percentile_pw": {
+          "rate": 0.6375,
+          "mc_se": 0.024036105653786763
+        },
+        "student": {
+          "rate": 0.725,
+          "mc_se": 0.02232571387436469
+        },
+        "student_pw": {
+          "rate": 0.7175,
+          "mc_se": 0.02251076131542423
+        },
+        "hac": {
+          "rate": 0.615,
+          "mc_se": 0.02432976572020372
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.47,
+          "mc_se": 0.02495495942693556
+        },
+        "percentile_pw": {
+          "rate": 0.47,
+          "mc_se": 0.02495495942693556
+        },
+        "student": {
+          "rate": 0.4675,
+          "mc_se": 0.024947131598642758
+        },
+        "student_pw": {
+          "rate": 0.4675,
+          "mc_se": 0.024947131598642758
+        },
+        "hac": {
+          "rate": 0.47,
+          "mc_se": 0.02495495942693556
+        }
+      }
+    },
+    "compare/all/61d/power/CKB_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9225,
+          "mc_se": 0.013369157602481916
+        },
+        "percentile_pw": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        },
+        "student": {
+          "rate": 0.9375,
+          "mc_se": 0.012103072956898178
+        },
+        "student_pw": {
+          "rate": 0.9425,
+          "mc_se": 0.01163977555625537
+        },
+        "hac": {
+          "rate": 0.92,
+          "mc_se": 0.013564659966250532
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.9875,
+          "mc_se": 0.005555121510822233
+        },
+        "student_pw": {
+          "rate": 0.99,
+          "mc_se": 0.004974937185533102
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/DEEP_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8225,
+          "mc_se": 0.019104564245226847
+        },
+        "percentile_pw": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "student": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        },
+        "hac": {
+          "rate": 0.8125,
+          "mc_se": 0.019515618744994995
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/XT_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.655,
+          "mc_se": 0.023768413914268656
+        },
+        "percentile_pw": {
+          "rate": 0.6575,
+          "mc_se": 0.023727291775506112
+        },
+        "student": {
+          "rate": 0.7,
+          "mc_se": 0.022912878474779203
+        },
+        "student_pw": {
+          "rate": 0.6975,
+          "mc_se": 0.02296702799667384
+        },
+        "hac": {
+          "rate": 0.66,
+          "mc_se": 0.02368543856465402
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "student_pw": {
+          "rate": 0.8925,
+          "mc_se": 0.01548739406743433
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/FLOCK_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "percentile_pw": {
+          "rate": 0.8925,
+          "mc_se": 0.01548739406743433
+        },
+        "student": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "student_pw": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "hac": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/TITN_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "percentile_pw": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "student": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "student_pw": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        },
+        "hac": {
+          "rate": 0.9325,
+          "mc_se": 0.0125442965127583
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.9975,
+          "mc_se": 0.002496873044429746
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/all/61d/power/SAITO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6,
+          "mc_se": 0.02449489742783178
+        },
+        "percentile_pw": {
+          "rate": 0.5975,
+          "mc_se": 0.024520081056146614
+        },
+        "student": {
+          "rate": 0.6725,
+          "mc_se": 0.023465067121148406
+        },
+        "student_pw": {
+          "rate": 0.675,
+          "mc_se": 0.023418742493993994
+        },
+        "hac": {
+          "rate": 0.6075,
+          "mc_se": 0.024415351215987043
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        },
+        "percentile_pw": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        },
+        "student": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        },
+        "student_pw": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        },
+        "hac": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        }
+      }
+    },
+    "compare/all/61d/power/SPYX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "percentile_pw": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "student_pw": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "hac": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/q80/30d/size/SUKU_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "percentile_pw": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        },
+        "student": {
+          "rate": 0.8775,
+          "mc_se": 0.016393119745795798
+        },
+        "student_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "hac": {
+          "rate": 0.7575,
+          "mc_se": 0.021429754431630803
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.15,
+          "mc_se": 0.017853571071357127
+        },
+        "percentile_pw": {
+          "rate": 0.1375,
+          "mc_se": 0.01721872164244489
+        },
+        "student": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "student_pw": {
+          "rate": 0.13,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.21,
+          "mc_se": 0.0203654118544163
+        }
+      }
+    },
+    "compare/q80/30d/size/NAVX_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.655,
+          "mc_se": 0.023768413914268656
+        },
+        "percentile_pw": {
+          "rate": 0.6625,
+          "mc_se": 0.023642850399222173
+        },
+        "student": {
+          "rate": 0.7525,
+          "mc_se": 0.021577983571223702
+        },
+        "student_pw": {
+          "rate": 0.755,
+          "mc_se": 0.02150436002302789
+        },
+        "hac": {
+          "rate": 0.62,
+          "mc_se": 0.024269322199023193
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.01,
+          "mc_se": 0.0049749371855331
+        },
+        "percentile_pw": {
+          "rate": 0.0075,
+          "mc_se": 0.00431385848168435
+        },
+        "student": {
+          "rate": 0.0225,
+          "mc_se": 0.007415144974981945
+        },
+        "student_pw": {
+          "rate": 0.0225,
+          "mc_se": 0.007415144974981945
+        },
+        "hac": {
+          "rate": 0.0575,
+          "mc_se": 0.011639775556255371
+        }
+      }
+    },
+    "compare/q80/30d/size/TEVA_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9,
+          "mc_se": 0.015
+        },
+        "percentile_pw": {
+          "rate": 0.8975,
+          "mc_se": 0.015165235738358969
+        },
+        "student": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "student_pw": {
+          "rate": 0.885,
+          "mc_se": 0.01595109714094927
+        },
+        "hac": {
+          "rate": 0.8125,
+          "mc_se": 0.019515618744994995
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0875,
+          "mc_se": 0.014128318194321643
+        },
+        "percentile_pw": {
+          "rate": 0.09,
+          "mc_se": 0.014309088021254185
+        },
+        "student": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        },
+        "student_pw": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        },
+        "hac": {
+          "rate": 0.14,
+          "mc_se": 0.01734935157289747
+        }
+      }
+    },
+    "compare/q80/30d/size/PEOPLEFB_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.555,
+          "mc_se": 0.02484828967957352
+        },
+        "percentile_pw": {
+          "rate": 0.5425,
+          "mc_se": 0.024909523781076182
+        },
+        "student": {
+          "rate": 0.5725,
+          "mc_se": 0.02473579137606072
+        },
+        "student_pw": {
+          "rate": 0.5825,
+          "mc_se": 0.024657339171127123
+        },
+        "hac": {
+          "rate": 0.4875,
+          "mc_se": 0.024992186278915255
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0175,
+          "mc_se": 0.006556247020971678
+        },
+        "percentile_pw": {
+          "rate": 0.02,
+          "mc_se": 0.007
+        },
+        "student": {
+          "rate": 0.065,
+          "mc_se": 0.01232629303562105
+        },
+        "student_pw": {
+          "rate": 0.065,
+          "mc_se": 0.01232629303562105
+        },
+        "hac": {
+          "rate": 0.105,
+          "mc_se": 0.015327671055969333
+        }
+      }
+    },
+    "compare/q80/30d/size/ZIX_USDT": {
+      "reps": 395,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7544303797468355,
+          "mc_se": 0.021657002952059683
+        },
+        "percentile_pw": {
+          "rate": 0.7721518987341772,
+          "mc_se": 0.02110452252302852
+        },
+        "student": {
+          "rate": 0.8354430379746836,
+          "mc_se": 0.018655977307610108
+        },
+        "student_pw": {
+          "rate": 0.830379746835443,
+          "mc_se": 0.018883334215413577
+        },
+        "hac": {
+          "rate": 0.7822784810126582,
+          "mc_se": 0.02076504238396991
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2936708860759494,
+          "mc_se": 0.02291582266631984
+        },
+        "percentile_pw": {
+          "rate": 0.3012658227848101,
+          "mc_se": 0.023085132856538956
+        },
+        "student": {
+          "rate": 0.24556962025316456,
+          "mc_se": 0.021657002952059683
+        },
+        "student_pw": {
+          "rate": 0.23544303797468355,
+          "mc_se": 0.021347612076694934
+        },
+        "hac": {
+          "rate": 0.28607594936708863,
+          "mc_se": 0.02273883092420349
+        }
+      }
+    },
+    "compare/q80/30d/size/AIDOGE_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "percentile_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "student": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "student_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "hac": {
+          "rate": 0.875,
+          "mc_se": 0.016535945694153693
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1275,
+          "mc_se": 0.016676611616272652
+        },
+        "percentile_pw": {
+          "rate": 0.115,
+          "mc_se": 0.01595109714094927
+        },
+        "student": {
+          "rate": 0.125,
+          "mc_se": 0.016535945694153693
+        },
+        "student_pw": {
+          "rate": 0.1225,
+          "mc_se": 0.016393119745795794
+        },
+        "hac": {
+          "rate": 0.1175,
+          "mc_se": 0.01610075696978251
+        }
+      }
+    },
+    "compare/q80/30d/size/BOS_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "percentile_pw": {
+          "rate": 0.885,
+          "mc_se": 0.01595109714094927
+        },
+        "student": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        },
+        "student_pw": {
+          "rate": 0.83,
+          "mc_se": 0.018781639970992952
+        },
+        "hac": {
+          "rate": 0.825,
+          "mc_se": 0.018998355191963332
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        },
+        "percentile_pw": {
+          "rate": 0.0925,
+          "mc_se": 0.014486523910172517
+        },
+        "student": {
+          "rate": 0.1075,
+          "mc_se": 0.015487394067434327
+        },
+        "student_pw": {
+          "rate": 0.125,
+          "mc_se": 0.016535945694153693
+        },
+        "hac": {
+          "rate": 0.12,
+          "mc_se": 0.01624807680927192
+        }
+      }
+    },
+    "compare/q80/30d/size/IMU_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "percentile_pw": {
+          "rate": 0.775,
+          "mc_se": 0.02087911636061258
+        },
+        "student": {
+          "rate": 0.81,
+          "mc_se": 0.01961504524593303
+        },
+        "student_pw": {
+          "rate": 0.79,
+          "mc_se": 0.0203654118544163
+        },
+        "hac": {
+          "rate": 0.695,
+          "mc_se": 0.023020371413163602
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.035,
+          "mc_se": 0.009188987974744553
+        },
+        "percentile_pw": {
+          "rate": 0.035,
+          "mc_se": 0.009188987974744553
+        },
+        "student": {
+          "rate": 0.115,
+          "mc_se": 0.01595109714094927
+        },
+        "student_pw": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "hac": {
+          "rate": 0.1525,
+          "mc_se": 0.01797524339195439
+        }
+      }
+    },
+    "compare/q80/30d/size/MLN_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6975,
+          "mc_se": 0.02296702799667384
+        },
+        "percentile_pw": {
+          "rate": 0.695,
+          "mc_se": 0.023020371413163602
+        },
+        "student": {
+          "rate": 0.8275,
+          "mc_se": 0.018890721929031722
+        },
+        "student_pw": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "hac": {
+          "rate": 0.78,
+          "mc_se": 0.020712315177207976
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.02,
+          "mc_se": 0.007
+        },
+        "percentile_pw": {
+          "rate": 0.0225,
+          "mc_se": 0.007415144974981945
+        },
+        "student": {
+          "rate": 0.055,
+          "mc_se": 0.011399013115177999
+        },
+        "student_pw": {
+          "rate": 0.05,
+          "mc_se": 0.010897247358851683
+        },
+        "hac": {
+          "rate": 0.0625,
+          "mc_se": 0.012103072956898178
+        }
+      }
+    },
+    "compare/q80/30d/size/PINGO_USDT": {
+      "reps": 399,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.681704260651629,
+          "mc_se": 0.02331991531456124
+        },
+        "percentile_pw": {
+          "rate": 0.7393483709273183,
+          "mc_se": 0.021976996251688124
+        },
+        "student": {
+          "rate": 0.7218045112781954,
+          "mc_se": 0.022433569925238796
+        },
+        "student_pw": {
+          "rate": 0.7593984962406015,
+          "mc_se": 0.021399202439176764
+        },
+        "hac": {
+          "rate": 0.5263157894736842,
+          "mc_se": 0.02499661527084093
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.042606516290726815,
+          "mc_se": 0.010111062585963965
+        },
+        "percentile_pw": {
+          "rate": 0.03759398496240601,
+          "mc_se": 0.009522520103177496
+        },
+        "student": {
+          "rate": 0.06516290726817042,
+          "mc_se": 0.012356109442811375
+        },
+        "student_pw": {
+          "rate": 0.05764411027568922,
+          "mc_se": 0.011668055788357976
+        },
+        "hac": {
+          "rate": 0.15288220551378445,
+          "mc_se": 0.018016230273303995
+        }
+      }
+    },
+    "compare/q80/30d/size/CREO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "percentile_pw": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        },
+        "student": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "student_pw": {
+          "rate": 0.85,
+          "mc_se": 0.017853571071357127
+        },
+        "hac": {
+          "rate": 0.7975,
+          "mc_se": 0.02009314248692822
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1725,
+          "mc_se": 0.018890721929031722
+        },
+        "percentile_pw": {
+          "rate": 0.14,
+          "mc_se": 0.01734935157289747
+        },
+        "student": {
+          "rate": 0.13,
+          "mc_se": 0.016815171720800236
+        },
+        "student_pw": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "hac": {
+          "rate": 0.16,
+          "mc_se": 0.01833030277982336
+        }
+      }
+    },
+    "compare/q80/30d/size/FIS_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7825,
+          "mc_se": 0.02062727260206739
+        },
+        "percentile_pw": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "student": {
+          "rate": 0.7925,
+          "mc_se": 0.02027583228871259
+        },
+        "student_pw": {
+          "rate": 0.7975,
+          "mc_se": 0.02009314248692822
+        },
+        "hac": {
+          "rate": 0.745,
+          "mc_se": 0.02179306082219751
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.03,
+          "mc_se": 0.00852936105461599
+        },
+        "percentile_pw": {
+          "rate": 0.03,
+          "mc_se": 0.00852936105461599
+        },
+        "student": {
+          "rate": 0.0475,
+          "mc_se": 0.010635289135702893
+        },
+        "student_pw": {
+          "rate": 0.05,
+          "mc_se": 0.010897247358851683
+        },
+        "hac": {
+          "rate": 0.0875,
+          "mc_se": 0.014128318194321643
+        }
+      }
+    },
+    "compare/q80/30d/size/ANON_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        },
+        "percentile_pw": {
+          "rate": 0.7875,
+          "mc_se": 0.020453835214941967
+        },
+        "student": {
+          "rate": 0.86,
+          "mc_se": 0.01734935157289747
+        },
+        "student_pw": {
+          "rate": 0.87,
+          "mc_se": 0.016815171720800236
+        },
+        "hac": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0375,
+          "mc_se": 0.009499177595981664
+        },
+        "percentile_pw": {
+          "rate": 0.0325,
+          "mc_se": 0.008866192813152667
+        },
+        "student": {
+          "rate": 0.045,
+          "mc_se": 0.01036520622081394
+        },
+        "student_pw": {
+          "rate": 0.045,
+          "mc_se": 0.01036520622081394
+        },
+        "hac": {
+          "rate": 0.015,
+          "mc_se": 0.006077622890571609
+        }
+      }
+    },
+    "compare/q80/30d/size/CKB_USDT": {
+      "reps": 7,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5714285714285714,
+          "mc_se": 0.1870439059165649
+        },
+        "percentile_pw": {
+          "rate": 0.5714285714285714,
+          "mc_se": 0.1870439059165649
+        },
+        "student": {
+          "rate": 0.8571428571428571,
+          "mc_se": 0.13226001425322165
+        },
+        "student_pw": {
+          "rate": 0.8571428571428571,
+          "mc_se": 0.13226001425322165
+        },
+        "hac": {
+          "rate": 0.5714285714285714,
+          "mc_se": 0.1870439059165649
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "percentile_pw": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "student": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/q80/30d/size/FLOCK_USDT": {
+      "reps": 252,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7738095238095238,
+          "mc_se": 0.02635444788453023
+        },
+        "percentile_pw": {
+          "rate": 0.8492063492063492,
+          "mc_se": 0.022542281760287965
+        },
+        "student": {
+          "rate": 0.8611111111111112,
+          "mc_se": 0.021785276576720372
+        },
+        "student_pw": {
+          "rate": 0.9206349206349206,
+          "mc_se": 0.01702778582928014
+        },
+        "hac": {
+          "rate": 0.8293650793650794,
+          "mc_se": 0.023697719776352984
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.14285714285714285,
+          "mc_se": 0.022043335708870272
+        },
+        "percentile_pw": {
+          "rate": 0.10317460317460317,
+          "mc_se": 0.0191619667565113
+        },
+        "student": {
+          "rate": 0.12698412698412698,
+          "mc_se": 0.02097420548074317
+        },
+        "student_pw": {
+          "rate": 0.0992063492063492,
+          "mc_se": 0.018831378900221796
+        },
+        "hac": {
+          "rate": 0.12301587301587301,
+          "mc_se": 0.020690747107850273
+        }
+      }
+    },
+    "compare/q80/30d/size/TITN_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8025,
+          "mc_se": 0.019905636764494625
+        },
+        "percentile_pw": {
+          "rate": 0.815,
+          "mc_se": 0.019414878315353924
+        },
+        "student": {
+          "rate": 0.815,
+          "mc_se": 0.019414878315353924
+        },
+        "student_pw": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "hac": {
+          "rate": 0.7675,
+          "mc_se": 0.02112130145137842
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.065,
+          "mc_se": 0.01232629303562105
+        },
+        "percentile_pw": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        },
+        "student": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        },
+        "student_pw": {
+          "rate": 0.0525,
+          "mc_se": 0.01115165346484547
+        },
+        "hac": {
+          "rate": 0.0875,
+          "mc_se": 0.014128318194321643
+        }
+      }
+    },
+    "compare/q80/30d/size/SAITO_USDT": {
+      "reps": 400,
+      "theta": 0.0,
+      "coverage": {
+        "percentile": {
+          "rate": 0.895,
+          "mc_se": 0.015327671055969331
+        },
+        "percentile_pw": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "student": {
+          "rate": 0.91,
+          "mc_se": 0.014309088021254182
+        },
+        "student_pw": {
+          "rate": 0.9075,
+          "mc_se": 0.014486523910172518
+        },
+        "hac": {
+          "rate": 0.8575,
+          "mc_se": 0.017478111311008404
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        },
+        "percentile_pw": {
+          "rate": 0.0725,
+          "mc_se": 0.012965699942540702
+        },
+        "student": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        },
+        "student_pw": {
+          "rate": 0.0525,
+          "mc_se": 0.01115165346484547
+        },
+        "hac": {
+          "rate": 0.075,
+          "mc_se": 0.013169567191065924
+        }
+      }
+    },
+    "compare/q80/30d/power/SUKU_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        },
+        "percentile_pw": {
+          "rate": 0.8175,
+          "mc_se": 0.019312803395675107
+        },
+        "student": {
+          "rate": 0.815,
+          "mc_se": 0.019414878315353924
+        },
+        "student_pw": {
+          "rate": 0.835,
+          "mc_se": 0.018559027452967464
+        },
+        "hac": {
+          "rate": 0.7275,
+          "mc_se": 0.02226228593383887
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.295,
+          "mc_se": 0.022802138057647137
+        },
+        "percentile_pw": {
+          "rate": 0.275,
+          "mc_se": 0.02232571387436469
+        },
+        "student": {
+          "rate": 0.265,
+          "mc_se": 0.02206666037260736
+        },
+        "student_pw": {
+          "rate": 0.2625,
+          "mc_se": 0.02199964488349755
+        },
+        "hac": {
+          "rate": 0.3575,
+          "mc_se": 0.023963187913965036
+        }
+      }
+    },
+    "compare/q80/30d/power/NAVX_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.625,
+          "mc_se": 0.024206145913796356
+        },
+        "percentile_pw": {
+          "rate": 0.625,
+          "mc_se": 0.024206145913796356
+        },
+        "student": {
+          "rate": 0.73,
+          "mc_se": 0.022197972880423113
+        },
+        "student_pw": {
+          "rate": 0.7325,
+          "mc_se": 0.02213276699827656
+        },
+        "hac": {
+          "rate": 0.595,
+          "mc_se": 0.024544602257930356
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.06,
+          "mc_se": 0.011874342087037916
+        },
+        "percentile_pw": {
+          "rate": 0.0525,
+          "mc_se": 0.01115165346484547
+        },
+        "student": {
+          "rate": 0.07,
+          "mc_se": 0.012757350822173075
+        },
+        "student_pw": {
+          "rate": 0.0725,
+          "mc_se": 0.012965699942540702
+        },
+        "hac": {
+          "rate": 0.14,
+          "mc_se": 0.01734935157289747
+        }
+      }
+    },
+    "compare/q80/30d/power/TEVA_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8375,
+          "mc_se": 0.01844544320421713
+        },
+        "percentile_pw": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "student": {
+          "rate": 0.8475,
+          "mc_se": 0.01797524339195439
+        },
+        "student_pw": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "hac": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2975,
+          "mc_se": 0.022857917118582788
+        },
+        "percentile_pw": {
+          "rate": 0.3125,
+          "mc_se": 0.023175620272173948
+        },
+        "student": {
+          "rate": 0.2275,
+          "mc_se": 0.020960901101813346
+        },
+        "student_pw": {
+          "rate": 0.2225,
+          "mc_se": 0.020796258677944934
+        },
+        "hac": {
+          "rate": 0.355,
+          "mc_se": 0.02392566613492715
+        }
+      }
+    },
+    "compare/q80/30d/power/PEOPLEFB_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5675,
+          "mc_se": 0.02477113996165699
+        },
+        "percentile_pw": {
+          "rate": 0.565,
+          "mc_se": 0.024787849846245234
+        },
+        "student": {
+          "rate": 0.6075,
+          "mc_se": 0.024415351215987043
+        },
+        "student_pw": {
+          "rate": 0.605,
+          "mc_se": 0.024442534647617867
+        },
+        "hac": {
+          "rate": 0.4975,
+          "mc_se": 0.02499968749804685
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.015,
+          "mc_se": 0.006077622890571609
+        },
+        "percentile_pw": {
+          "rate": 0.0175,
+          "mc_se": 0.006556247020971678
+        },
+        "student": {
+          "rate": 0.085,
+          "mc_se": 0.013944084767384343
+        },
+        "student_pw": {
+          "rate": 0.0825,
+          "mc_se": 0.01375624858019075
+        },
+        "hac": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        }
+      }
+    },
+    "compare/q80/30d/power/ZIX_USDT": {
+      "reps": 398,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7562814070351759,
+          "mc_se": 0.021520110987276523
+        },
+        "percentile_pw": {
+          "rate": 0.7487437185929648,
+          "mc_se": 0.021741200637895922
+        },
+        "student": {
+          "rate": 0.8115577889447236,
+          "mc_se": 0.019602311430973438
+        },
+        "student_pw": {
+          "rate": 0.8266331658291457,
+          "mc_se": 0.01897570351980215
+        },
+        "hac": {
+          "rate": 0.7613065326633166,
+          "mc_se": 0.021367735974408893
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.40954773869346733,
+          "mc_se": 0.024649216833682694
+        },
+        "percentile_pw": {
+          "rate": 0.40703517587939697,
+          "mc_se": 0.024625717930826026
+        },
+        "student": {
+          "rate": 0.31909547738693467,
+          "mc_se": 0.023364790850826413
+        },
+        "student_pw": {
+          "rate": 0.30402010050251255,
+          "mc_se": 0.02305727405650919
+        },
+        "hac": {
+          "rate": 0.4020100502512563,
+          "mc_se": 0.02457671661079718
+        }
+      }
+    },
+    "compare/q80/30d/power/AIDOGE_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.855,
+          "mc_se": 0.017605041891458256
+        },
+        "percentile_pw": {
+          "rate": 0.8625,
+          "mc_se": 0.017218721642444885
+        },
+        "student": {
+          "rate": 0.8725,
+          "mc_se": 0.016676611616272652
+        },
+        "student_pw": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        },
+        "hac": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.27,
+          "mc_se": 0.022197972880423113
+        },
+        "percentile_pw": {
+          "rate": 0.25,
+          "mc_se": 0.021650635094610966
+        },
+        "student": {
+          "rate": 0.255,
+          "mc_se": 0.02179306082219751
+        },
+        "student_pw": {
+          "rate": 0.235,
+          "mc_se": 0.021199941037653856
+        },
+        "hac": {
+          "rate": 0.2625,
+          "mc_se": 0.02199964488349755
+        }
+      }
+    },
+    "compare/q80/30d/power/BOS_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.9275,
+          "mc_se": 0.012965699942540704
+        },
+        "percentile_pw": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "student": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "student_pw": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        },
+        "hac": {
+          "rate": 0.8875,
+          "mc_se": 0.015799030824705677
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2975,
+          "mc_se": 0.022857917118582788
+        },
+        "percentile_pw": {
+          "rate": 0.35,
+          "mc_se": 0.023848480035423638
+        },
+        "student": {
+          "rate": 0.345,
+          "mc_se": 0.023768413914268656
+        },
+        "student_pw": {
+          "rate": 0.39,
+          "mc_se": 0.024387496796514398
+        },
+        "hac": {
+          "rate": 0.365,
+          "mc_se": 0.024071508054129054
+        }
+      }
+    },
+    "compare/q80/30d/power/IMU_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.795,
+          "mc_se": 0.020185081124434453
+        },
+        "percentile_pw": {
+          "rate": 0.8,
+          "mc_se": 0.02
+        },
+        "student": {
+          "rate": 0.7825,
+          "mc_se": 0.02062727260206739
+        },
+        "student_pw": {
+          "rate": 0.78,
+          "mc_se": 0.020712315177207976
+        },
+        "hac": {
+          "rate": 0.6725,
+          "mc_se": 0.023465067121148406
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1175,
+          "mc_se": 0.01610075696978251
+        },
+        "percentile_pw": {
+          "rate": 0.1225,
+          "mc_se": 0.016393119745795794
+        },
+        "student": {
+          "rate": 0.23,
+          "mc_se": 0.021041625412500813
+        },
+        "student_pw": {
+          "rate": 0.2275,
+          "mc_se": 0.020960901101813346
+        },
+        "hac": {
+          "rate": 0.3,
+          "mc_se": 0.0229128784747792
+        }
+      }
+    },
+    "compare/q80/30d/power/MLN_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.735,
+          "mc_se": 0.02206666037260736
+        },
+        "percentile_pw": {
+          "rate": 0.74,
+          "mc_se": 0.02193171219946131
+        },
+        "student": {
+          "rate": 0.805,
+          "mc_se": 0.01981003533565753
+        },
+        "student_pw": {
+          "rate": 0.81,
+          "mc_se": 0.01961504524593303
+        },
+        "hac": {
+          "rate": 0.7425,
+          "mc_se": 0.021862853770722612
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.16,
+          "mc_se": 0.01833030277982336
+        },
+        "percentile_pw": {
+          "rate": 0.17,
+          "mc_se": 0.01878163997099295
+        },
+        "student": {
+          "rate": 0.27,
+          "mc_se": 0.022197972880423113
+        },
+        "student_pw": {
+          "rate": 0.275,
+          "mc_se": 0.02232571387436469
+        },
+        "hac": {
+          "rate": 0.335,
+          "mc_se": 0.023599523300270285
+        }
+      }
+    },
+    "compare/q80/30d/power/PINGO_USDT": {
+      "reps": 399,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.6491228070175439,
+          "mc_se": 0.023892112792766502
+        },
+        "percentile_pw": {
+          "rate": 0.6741854636591479,
+          "mc_se": 0.023463266456455627
+        },
+        "student": {
+          "rate": 0.6892230576441103,
+          "mc_se": 0.02316956317637418
+        },
+        "student_pw": {
+          "rate": 0.7117794486215538,
+          "mc_se": 0.022675075755223827
+        },
+        "hac": {
+          "rate": 0.43859649122807015,
+          "mc_se": 0.024841835979115393
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.06516290726817042,
+          "mc_se": 0.012356109442811375
+        },
+        "percentile_pw": {
+          "rate": 0.05764411027568922,
+          "mc_se": 0.011668055788357976
+        },
+        "student": {
+          "rate": 0.08270676691729323,
+          "mc_se": 0.013789171373813417
+        },
+        "student_pw": {
+          "rate": 0.08020050125313283,
+          "mc_se": 0.013597174707628496
+        },
+        "hac": {
+          "rate": 0.19799498746867167,
+          "mc_se": 0.01994937027705406
+        }
+      }
+    },
+    "compare/q80/30d/power/CREO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.835,
+          "mc_se": 0.018559027452967464
+        },
+        "percentile_pw": {
+          "rate": 0.845,
+          "mc_se": 0.01809523417919757
+        },
+        "student": {
+          "rate": 0.835,
+          "mc_se": 0.018559027452967464
+        },
+        "student_pw": {
+          "rate": 0.8425,
+          "mc_se": 0.018213576666871335
+        },
+        "hac": {
+          "rate": 0.7825,
+          "mc_se": 0.02062727260206739
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.275,
+          "mc_se": 0.02232571387436469
+        },
+        "percentile_pw": {
+          "rate": 0.245,
+          "mc_se": 0.02150436002302789
+        },
+        "student": {
+          "rate": 0.235,
+          "mc_se": 0.021199941037653856
+        },
+        "student_pw": {
+          "rate": 0.2175,
+          "mc_se": 0.02062727260206739
+        },
+        "hac": {
+          "rate": 0.2725,
+          "mc_se": 0.02226228593383887
+        }
+      }
+    },
+    "compare/q80/30d/power/FIS_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7775,
+          "mc_se": 0.020796258677944938
+        },
+        "percentile_pw": {
+          "rate": 0.785,
+          "mc_se": 0.02054111730164647
+        },
+        "student": {
+          "rate": 0.7925,
+          "mc_se": 0.02027583228871259
+        },
+        "student_pw": {
+          "rate": 0.7925,
+          "mc_se": 0.02027583228871259
+        },
+        "hac": {
+          "rate": 0.7625,
+          "mc_se": 0.021277555663186502
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.1275,
+          "mc_se": 0.016676611616272652
+        },
+        "percentile_pw": {
+          "rate": 0.11,
+          "mc_se": 0.015644487847162016
+        },
+        "student": {
+          "rate": 0.12,
+          "mc_se": 0.01624807680927192
+        },
+        "student_pw": {
+          "rate": 0.1175,
+          "mc_se": 0.01610075696978251
+        },
+        "hac": {
+          "rate": 0.195,
+          "mc_se": 0.01981003533565753
+        }
+      }
+    },
+    "compare/q80/30d/power/ANON_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8075,
+          "mc_se": 0.019713177699194007
+        },
+        "percentile_pw": {
+          "rate": 0.8075,
+          "mc_se": 0.019713177699194007
+        },
+        "student": {
+          "rate": 0.8825,
+          "mc_se": 0.016100756969782512
+        },
+        "student_pw": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "hac": {
+          "rate": 0.865,
+          "mc_se": 0.017086178624841776
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.17,
+          "mc_se": 0.01878163997099295
+        },
+        "percentile_pw": {
+          "rate": 0.1475,
+          "mc_se": 0.017730182599172518
+        },
+        "student": {
+          "rate": 0.255,
+          "mc_se": 0.02179306082219751
+        },
+        "student_pw": {
+          "rate": 0.265,
+          "mc_se": 0.02206666037260736
+        },
+        "hac": {
+          "rate": 0.195,
+          "mc_se": 0.01981003533565753
+        }
+      }
+    },
+    "compare/q80/30d/power/CKB_USDT": {
+      "reps": 7,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.5714285714285714,
+          "mc_se": 0.1870439059165649
+        },
+        "percentile_pw": {
+          "rate": 0.5714285714285714,
+          "mc_se": 0.1870439059165649
+        },
+        "student": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "student_pw": {
+          "rate": 1.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 0.7142857142857143,
+          "mc_se": 0.17074694419062766
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.2857142857142857,
+          "mc_se": 0.17074694419062766
+        },
+        "percentile_pw": {
+          "rate": 0.14285714285714285,
+          "mc_se": 0.13226001425322165
+        },
+        "student": {
+          "rate": 0.14285714285714285,
+          "mc_se": 0.13226001425322165
+        },
+        "student_pw": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        },
+        "hac": {
+          "rate": 0.0,
+          "mc_se": 0.0
+        }
+      }
+    },
+    "compare/q80/30d/power/FLOCK_USDT": {
+      "reps": 243,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.7983539094650206,
+          "mc_se": 0.025738871078403818
+        },
+        "percentile_pw": {
+          "rate": 0.8518518518518519,
+          "mc_se": 0.022789091530639436
+        },
+        "student": {
+          "rate": 0.8806584362139918,
+          "mc_se": 0.02079679808165302
+        },
+        "student_pw": {
+          "rate": 0.9135802469135802,
+          "mc_se": 0.018025060214382285
+        },
+        "hac": {
+          "rate": 0.8930041152263375,
+          "mc_se": 0.019829288457250252
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.24279835390946503,
+          "mc_se": 0.02750587765457846
+        },
+        "percentile_pw": {
+          "rate": 0.19753086419753085,
+          "mc_se": 0.025540448182476343
+        },
+        "student": {
+          "rate": 0.205761316872428,
+          "mc_se": 0.02593308874740673
+        },
+        "student_pw": {
+          "rate": 0.14814814814814814,
+          "mc_se": 0.022789091530639436
+        },
+        "hac": {
+          "rate": 0.2345679012345679,
+          "mc_se": 0.027182192862737722
+        }
+      }
+    },
+    "compare/q80/30d/power/TITN_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.8275,
+          "mc_se": 0.018890721929031722
+        },
+        "percentile_pw": {
+          "rate": 0.84,
+          "mc_se": 0.018330302779823362
+        },
+        "student": {
+          "rate": 0.8225,
+          "mc_se": 0.019104564245226847
+        },
+        "student_pw": {
+          "rate": 0.8325,
+          "mc_se": 0.018671083926756902
+        },
+        "hac": {
+          "rate": 0.795,
+          "mc_se": 0.020185081124434453
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.11,
+          "mc_se": 0.015644487847162016
+        },
+        "percentile_pw": {
+          "rate": 0.1075,
+          "mc_se": 0.015487394067434327
+        },
+        "student": {
+          "rate": 0.085,
+          "mc_se": 0.013944084767384343
+        },
+        "student_pw": {
+          "rate": 0.1075,
+          "mc_se": 0.015487394067434327
+        },
+        "hac": {
+          "rate": 0.1325,
+          "mc_se": 0.01695167764559013
+        }
+      }
+    },
+    "compare/q80/30d/power/SAITO_USDT": {
+      "reps": 400,
+      "theta": 0.001,
+      "coverage": {
+        "percentile": {
+          "rate": 0.89,
+          "mc_se": 0.015644487847162013
+        },
+        "percentile_pw": {
+          "rate": 0.905,
+          "mc_se": 0.014660746911395748
+        },
+        "student": {
+          "rate": 0.9125,
+          "mc_se": 0.014128318194321646
+        },
+        "student_pw": {
+          "rate": 0.915,
+          "mc_se": 0.013944084767384337
+        },
+        "hac": {
+          "rate": 0.88,
+          "mc_se": 0.01624807680927192
+        }
+      },
+      "reject_at_alpha": {
+        "percentile": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "percentile_pw": {
+          "rate": 0.135,
+          "mc_se": 0.017086178624841776
+        },
+        "student": {
+          "rate": 0.1025,
+          "mc_se": 0.015165235738358965
+        },
+        "student_pw": {
+          "rate": 0.105,
+          "mc_se": 0.015327671055969333
+        },
+        "hac": {
+          "rate": 0.13,
+          "mc_se": 0.016815171720800236
+        }
+      }
+    },
+    "bhcmp/all/30d/all_null": {
+      "reps": 400,
+      "percentile/bh": {
+        "fdr": 0.9425,
+        "any_false": 0.9425,
+        "power": null
+      },
+      "percentile/by": {
+        "fdr": 0.865,
+        "any_false": 0.865,
+        "power": null
+      },
+      "percentile_pw/bh": {
+        "fdr": 0.945,
+        "any_false": 0.945,
+        "power": null
+      },
+      "percentile_pw/by": {
+        "fdr": 0.845,
+        "any_false": 0.845,
+        "power": null
+      },
+      "student/bh": {
+        "fdr": 0.7475,
+        "any_false": 0.7475,
+        "power": null
+      },
+      "student/by": {
+        "fdr": 0.5475,
+        "any_false": 0.5475,
+        "power": null
+      },
+      "student_pw/bh": {
+        "fdr": 0.735,
+        "any_false": 0.735,
+        "power": null
+      },
+      "student_pw/by": {
+        "fdr": 0.535,
+        "any_false": 0.535,
+        "power": null
+      },
+      "hac/bh": {
+        "fdr": 0.9375,
+        "any_false": 0.9375,
+        "power": null
+      },
+      "hac/by": {
+        "fdr": 0.85,
+        "any_false": 0.85,
+        "power": null
+      }
+    },
+    "bhcmp/all/30d/half_at_plus10bp": {
+      "reps": 400,
+      "percentile/bh": {
+        "fdr": 0.19176633374795135,
+        "any_false": 0.915,
+        "power": 0.728125
+      },
+      "percentile/by": {
+        "fdr": 0.14038093156843157,
+        "any_false": 0.78,
+        "power": 0.6554166666666668
+      },
+      "percentile_pw/bh": {
+        "fdr": 0.18995547446834204,
+        "any_false": 0.91,
+        "power": 0.724375
+      },
+      "percentile_pw/by": {
+        "fdr": 0.1360016719391719,
+        "any_false": 0.7675,
+        "power": 0.653125
+      },
+      "student/bh": {
+        "fdr": 0.1681306401931402,
+        "any_false": 0.78,
+        "power": 0.5847916666666666
+      },
+      "student/by": {
+        "fdr": 0.11233542846042846,
+        "any_false": 0.5575,
+        "power": 0.47458333333333336
+      },
+      "student_pw/bh": {
+        "fdr": 0.16850884532134533,
+        "any_false": 0.79,
+        "power": 0.5866666666666667
+      },
+      "student_pw/by": {
+        "fdr": 0.11058137001887003,
+        "any_false": 0.55,
+        "power": 0.47
+      },
+      "hac/bh": {
+        "fdr": 0.199917898686281,
+        "any_false": 0.925,
+        "power": 0.7370833333333333
+      },
+      "hac/by": {
+        "fdr": 0.14278149628149625,
+        "any_false": 0.7875,
+        "power": 0.65875
+      }
+    },
+    "bhcmp/all/61d/all_null": {
+      "reps": 400,
+      "percentile/bh": {
+        "fdr": 0.87,
+        "any_false": 0.87,
+        "power": null
+      },
+      "percentile/by": {
+        "fdr": 0.7775,
+        "any_false": 0.7775,
+        "power": null
+      },
+      "percentile_pw/bh": {
+        "fdr": 0.8775,
+        "any_false": 0.8775,
+        "power": null
+      },
+      "percentile_pw/by": {
+        "fdr": 0.785,
+        "any_false": 0.785,
+        "power": null
+      },
+      "student/bh": {
+        "fdr": 0.7225,
+        "any_false": 0.7225,
+        "power": null
+      },
+      "student/by": {
+        "fdr": 0.5325,
+        "any_false": 0.5325,
+        "power": null
+      },
+      "student_pw/bh": {
+        "fdr": 0.7125,
+        "any_false": 0.7125,
+        "power": null
+      },
+      "student_pw/by": {
+        "fdr": 0.5325,
+        "any_false": 0.5325,
+        "power": null
+      },
+      "hac/bh": {
+        "fdr": 0.865,
+        "any_false": 0.865,
+        "power": null
+      },
+      "hac/by": {
+        "fdr": 0.745,
+        "any_false": 0.745,
+        "power": null
+      }
+    },
+    "bhcmp/all/61d/half_at_plus10bp": {
+      "reps": 400,
+      "percentile/bh": {
+        "fdr": 0.15434562577944927,
+        "any_false": 0.8625,
+        "power": 0.7608333333333335
+      },
+      "percentile/by": {
+        "fdr": 0.11477315658198009,
+        "any_false": 0.71,
+        "power": 0.691875
+      },
+      "percentile_pw/bh": {
+        "fdr": 0.15373997877122872,
+        "any_false": 0.855,
+        "power": 0.7627083333333334
+      },
+      "percentile_pw/by": {
+        "fdr": 0.11395441282573633,
+        "any_false": 0.705,
+        "power": 0.6883333333333335
+      },
+      "student/bh": {
+        "fdr": 0.1449105408480408,
+        "any_false": 0.7625,
+        "power": 0.6589583333333333
+      },
+      "student/by": {
+        "fdr": 0.09504127122877122,
+        "any_false": 0.525,
+        "power": 0.5308333333333333
+      },
+      "student_pw/bh": {
+        "fdr": 0.14353678266178263,
+        "any_false": 0.7625,
+        "power": 0.6614583333333333
+      },
+      "student_pw/by": {
+        "fdr": 0.092687388999889,
+        "any_false": 0.5175,
+        "power": 0.5364583333333334
+      },
+      "hac/bh": {
+        "fdr": 0.1661901839990075,
+        "any_false": 0.8725,
+        "power": 0.7697916666666668
+      },
+      "hac/by": {
+        "fdr": 0.12002529415029413,
+        "any_false": 0.74,
+        "power": 0.7035416666666667
+      }
+    }
+  }
+}
