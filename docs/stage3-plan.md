@@ -204,6 +204,17 @@ result. No orders, no keys: research on public data only.
 3. After step 2e the question is concrete: can the days of extreme prices of a token be recognised
    from as-of data early enough to stop quoting, and what is lost before that? Rolling volatility,
    price range, volume and trade flow are the baselines.
+   3a. Quote pauses *(this step)*: `python -m mmlab.microstructure.quote_pause` evaluates, on the
+       exploration period and the research pairs only, 24 rules that stop quoting while the mid's
+       range or the number of trades over the last 60, 300 or 1,800 s is more than 2, 3, 5 or 10 times
+       its mean over the previous 7 days (`mmlab.feature_engineering.asof_activity`: one-second grid,
+       a signal is used 1 s after it was known; the archive's books count from their availability).
+       A paused maker takes no part in the trades during the pause and earns, on the others, what the
+       liquidity that traded earned (volume-weighted RS(60 s) minus the fee). Per pair: volume kept,
+       theta kept and paused, the change of theta, the share of the worst day paused; the theta
+       without the three worst days as an ex-post bound. Exploration only: 24 rules on the same data
+       select candidates, and a candidate goes into the H-004 batch only with its own lab levels under
+       D-002 (day pools built for the paused statistic), tested on December.
    Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.

@@ -38,6 +38,9 @@ are `python -m mmlab.evaluation.lab pooled` on `lab/calibration.json`, `lab/pool
 and `lab/daypools.json`: the same with the random-pairs null and the p-value of every period, for the
 calibrated level.
 
+`h004_explore/quote_pause.json` is `python -m mmlab.microstructure.quote_pause data/processed/U001`:
+quote pauses on unusual prices or trading, exploration period, research pairs (stage 3, step 3a).
+
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.
 
