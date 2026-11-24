@@ -56,7 +56,7 @@ result. No orders, no keys: research on public data only.
    - The calibration behind these numbers: trade-level noise has very heavy tails (fitted Student df
      4.0–4.7 on all trades, up to 9.4 on wide-spread trades); daily trade counts are strongly over-dispersed (gamma shape 0.03–3.4, except XT_USDT and
      SAITO_USDT); SUKU_USDT and DEEP_USDT hit the AR limit of 0.9, which produces the worst cases.
-   - Proposed standard, to be fixed in decision D-002 after steps 2b–2d check the generator: per-pair
+   - Proposed standard, to be fixed in decision D-002 after steps 2b–2e check the generator: per-pair
      tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
      test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
      over pairs, which holds its size.
@@ -90,19 +90,49 @@ result. No orders, no keys: research on public data only.
     the one who sold loses what the one who bought gains), so trade residuals within a day are
     negatively correlated. Drawing trades one by one breaks that and makes days noisier than real.
     The unit of resampling has to be the day.
-2d. Calendar-day generator *(this step)*: `python -m mmlab.evaluation.lab pools --kind days` keeps, per
-    pair, every calendar day of the calibration period as it was (volume-weighted markout sum centred on
-    the pair's theta, volume, trade count; zeros on days without trades). A synthetic period draws real
-    days in blocks of consecutive days (stationary bootstrap, mean block by Politis–White on the pair's
-    days) and adds a known theta times the day's volume, so the truth is exactly theta and everything
-    within a day, including the hedging between sides, sizes, tails and empty days, is real. In checks
-    with several pairs, all pairs take the same calendar days, which keeps their real dependence
-    (pairs then share the median block; the AR(1) common factor of the other generators is not used).
+2d. Calendar-day generator *(done 2026-11-24, `results/lab/*_days.json`)*: `python -m
+    mmlab.evaluation.lab pools --kind days` keeps, per pair, every calendar day of the calibration
+    period as it was (volume-weighted markout sum centred on the pair's theta, volume, trade count;
+    zeros on days without trades). A synthetic period draws real days in blocks of consecutive days
+    (stationary bootstrap, mean block by Politis–White on the pair's days) and adds a known theta times
+    the day's volume, so the truth is exactly theta and everything within a day, including the hedging
+    between sides, sizes, tails and empty days, is real. In checks with several pairs, all pairs take
+    the same calendar days, which keeps their real dependence (pairs then share the median block; the
+    AR(1) common factor of the other generators is not used).
     Limits: there are only 92 source days, so synthetic periods overlap with each other and repeat
     August–October; tails and regimes not seen then are missing; and there is no dependence beyond a
-    block, so a test that resamples with similar blocks may look better here than it is. The parametric
-    generator errs the other way (days too dispersed). D-002 takes the method that holds its size
-    under both: the calendar-day numbers as the optimistic bound, the others as the pessimistic one.
+    block.
+    Findings (400 synthetic periods per check; realism 1,000):
+    - It is the only generator that passes the realism check: median ranks 0.48–0.68, one miss in 24
+      pairs and five statistics (lag-1 correlation of PINGO_USDT on all trades, higher in reality).
+      Mean blocks range from 1.00 to 28.08 days (TEVA_USDT 28.08, CKB_USDT 19.30, ORCA_USDT 9.62,
+      IMU_USDT 6.47).
+    - Per-pair day tests break far more than with the other generators. The registered day bootstrap
+      rejects a true 0 in 15.8% of 30-day months for the median pair (worst 51.5%, PINGO_USDT) and in
+      13.4% over 61 days (worst 47.5%, SAITO_USDT); its 95% interval covers the truth in 79.4% and
+      85.6%. The best candidate, the bootstrap-t with the Politis–White block, rejects in 13.4% (worst
+      37.8%) and 10.4% (worst 39.0%), with power at +10 bp of 69.4% and 78.5%. On wide-spread trades the
+      median size is 6.0–6.5% (HAC 11.7%) but coverage only 78–85%.
+    - Across 24 pairs with no effect anywhere, Benjamini–Hochberg on the registered p-values finds
+      something in 93.5% of 30-day months and 88.2% of 61-day periods; Benjamini–Yekutieli on
+      bootstrap-t p-values in 53.5% and 53.2%.
+    - What holds under all three generators: the bootstrap over pairs of the median (coverage
+      93.0–94.8%, lower end above 0 under a true median of 0 in 2.4–3.9% of cases, nominal 2.5%) and
+      the registered H-003 rule built on it (accepts in 45.3% / 23.6% / 1.9% of Novembers if the
+      effect persists / halves / is absent).
+    - The expectation recorded with the generator before the run ("Add a calendar-day generator to the
+      synthetic lab"), that it would be the optimistic bound, was wrong: it is the most realistic one
+      and the hardest on per-pair tests. Its numbers take precedence, unless step 2e finds that the days
+      driving them are data errors.
+2e. Heaviest days *(this step)*: `python -m mmlab.evaluation.tails` reads the day pools and the
+    comparison and reports, per pair, how lopsided the days are (skewness, excess kurtosis, share of
+    the three heaviest days against normal days), the worst days with their dates, how much theta moves
+    without each, their share of volume, the day's price range and its hours with data problems, and
+    across pairs whether the size of the bootstrap-t follows lopsidedness or block length (Spearman,
+    descriptive) and which dates are among the worst of several pairs. This decides whether the per-pair
+    failures come from rare heavy days (then a window of 30–61 days cannot measure a pair's theta, and
+    D-002 restricts claims to pooled statistics or adds a tail charge from longer history), from slow
+    regimes (long blocks), or from errors in the data.
 3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.
