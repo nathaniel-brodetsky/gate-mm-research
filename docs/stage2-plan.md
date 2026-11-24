@@ -57,7 +57,18 @@ Status: started 2026-11-23. No trading strategy in this stage.
    for H-001, H-002 and H-003 together and stay unseen by H-003 until its test. *(done: only quoted
    half-spreads of at least 80 bp show a positive median θ in both periods; H-003 registered
    2026-11-24)*
-9. Implement the test of H-003 before November is published (2026-12-01).
+9. Implement the test of H-003 before November is published (2026-12-01). *(done:
+   `mmlab.evaluation.h003`; dry run on the exploration period in `results/h003/`)*
+10. Once November is published (monthly deals appear on the 1st of the next month at about
+    04:30–04:50 UTC, stage 1):
+    - build the research pairs for November: `python -m mmlab.market_data.build_dataset
+      configs/universe_U001.json data/processed/U001_2026-11 --start 2026-11-01 --end 2026-12-01
+      --open-time-holdout`;
+    - decide H-003: `python -m mmlab.evaluation.h003 data/processed/U001_2026-11 --period test
+      --out results/h003/test.json` (it refuses a dataset without trades in every month of the
+      period, e.g. one built before the deals file was published);
+    - then estimate H-001 and H-002 on November and open the holdout pairs once. Both still need
+      code: the H-001/H-002 evaluation refuses November and the builder refuses holdout pairs.
 
 Results are reported as a function of latency (1, 10, 100, 400 ms) wherever latency matters.
 

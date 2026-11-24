@@ -15,6 +15,8 @@ Evaluation code (`mmlab.evaluation`, `mmlab.microstructure`) is the same at 3544
 
 `h003_explore/explore.csv` is the output of `python -m mmlab.microstructure.conditional data/processed/U001` (exploration for H-003, periods before 2026-11-01 only).
 
+`h003/exploration_dry_run.json` is `python -m mmlab.evaluation.h003 data/processed/U001 --period exploration`: the H-003 test run on the data used to pick its threshold, to check the code before November; it decides nothing.
+
 `ws_probe/probe-20261123T220212Z.txt` is the output of `python -m mmlab.data_ingestion.gate_ws_probe
 summarize` on the 10-minute recording of 2026-11-23 (code at 58e6296); the raw recording stays in
 `data/raw/ws_probe/`.
