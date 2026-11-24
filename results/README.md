@@ -33,7 +33,10 @@ pools stay in `data/interim/lab_daypools/`). `lab/tails_days.json` is `python -m
 results/lab/daypools.json --compare results/lab/compare_days.json --dataset data/processed/U001`: the
 heaviest days of every pair. `lab/pooled.json`, `lab/pooled_empirical.json` and `lab/pooled_days.json`
 are `python -m mmlab.evaluation.lab pooled` on `lab/calibration.json`, `lab/pools.json` and
-`lab/daypools.json`: the pooled median rule of H-003 under several truths.
+`lab/daypools.json`: the pooled median rule of H-003 under several truths. `lab/levels.json` and
+`lab/levels_days.json` are `python -m mmlab.evaluation.lab pooled --reps 4000` on `lab/calibration.json`
+and `lab/daypools.json`: the same with the random-pairs null and the p-value of every period, for the
+calibrated level.
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.

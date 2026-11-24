@@ -447,8 +447,20 @@ def bh_check(
     }
 
 
+def _median_boot(
+    values: NDArray[np.float64], resamples: int, rng: np.random.Generator
+) -> NDArray[np.float64]:
+    """Medians of `resamples` bootstrap draws of the pairs."""
+    return np.asarray(np.median(values[rng.integers(0, values.size, (resamples, values.size))], axis=1))
+
+
+def median_p_value(meds: NDArray[np.float64]) -> float:
+    """One-sided bootstrap p-value of H0: median <= 0, (1 + #{medians <= 0}) / (resamples + 1)."""
+    return float((1 + np.sum(meds <= 0)) / (meds.size + 1))
+
+
 def _median_ci(values: NDArray[np.float64], resamples: int, rng: np.random.Generator) -> tuple[float, float]:
-    meds = np.median(values[rng.integers(0, values.size, (resamples, values.size))], axis=1)
+    meds = _median_boot(values, resamples, rng)
     return float(np.percentile(meds, 2.5)), float(np.percentile(meds, 97.5))
 
 
@@ -475,17 +487,30 @@ def h003_check(
     resamples: int,
     seed: int,
     min_pairs: int = 8,
+    resample_thetas: bool = False,
 ) -> dict[str, Any]:
-    """The registered H-003 rule on synthetic months where every pair's theta is `scale` times its own."""
+    """The registered H-003 rule on synthetic months where every pair's theta is `scale` times its own.
+
+    With resample_thetas, each period gives every pair a theta drawn with replacement from the thetas of
+    `profiles`: pairs as a random sample from a population whose thetas are those values.
+
+    Besides the decision at the registered level, every decided period keeps the bootstrap p-value of the
+    median, (1 + #{bootstrap medians <= 0}) / (resamples + 1), so that other levels can be read off.
+    """
     outcomes = {"accept": 0, "reject": 0, "extend": 0}
     counted = []
     truth = []  # true cross-pair median of the pairs counted in a period
+    pvals = []  # bootstrap p-value of the median in each decided period
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
         common = ar1(n_days, common_ar, rng)
         days = shared_days([g for g, _ in profiles.values()], n_days, rng)
+        gens = [g for g, _ in profiles.values()]
+        thetas = [t for _, t in profiles.values()]
+        if resample_thetas:
+            thetas = [float(t) for t in rng.choice(np.asarray(thetas), len(thetas))]
         est, true = [], []
-        for p, theta in profiles.values():
+        for p, theta in zip(gens, thetas, strict=True):
             num, den, cnt = simulate(p, theta * scale, n_days, rng, common, rho, days)
             if cnt.sum() >= MIN_TRADES and (cnt > 0).sum() >= MIN_DAYS:
                 est.append(num.sum() / den.sum())
@@ -495,14 +520,16 @@ def h003_check(
             outcomes["extend"] += 1
             continue
         truth.append(float(np.median(true)))
-        lo, _ = _median_ci(np.asarray(est), resamples, rng)
-        outcomes["accept" if lo > 0 else "reject"] += 1
+        meds = _median_boot(np.asarray(est), resamples, rng)
+        pvals.append(median_p_value(meds))
+        outcomes["accept" if float(np.percentile(meds, 2.5)) > 0 else "reject"] += 1
     return {
         "reps": reps,
         "scale": scale,
         **{k: _rate(v, reps) for k, v in outcomes.items()},
         "mean_counted_pairs": float(np.mean(counted)),
         "mean_true_median": float(np.mean(truth)) if truth else None,
+        "p_values": pvals,
     }
 
 
@@ -964,21 +991,22 @@ def plan(
     return [(name, fn, {**kw, "seed": seed * 10_000 + i}) for i, (name, fn, kw) in enumerate(tasks)]
 
 
-POOLED_TRUTHS = ("zero", "centred", "centred_plus10bp", "explored")
+POOLED_TRUTHS = ("zero", "centred", "centred_random", "centred_plus10bp", "explored")
 
 
 def pooled_profiles(profiles: Mapping[str, tuple[Gen, float]], truth: str) -> dict[str, tuple[Gen, float]]:
     """Pair thetas for a check of the pooled median rule.
 
     zero: every pair 0. centred: the exploration thetas minus their median, so the true cross-pair median
-    is 0 and the pairs differ as they really do. centred_plus10bp: the same plus 10 bp. explored: the
+    is 0 and the pairs differ as they really do; centred_random: the same values, which pooled_plan
+    redraws for the pairs in every period. centred_plus10bp: centred plus 10 bp. explored: the
     exploration thetas as they are.
     """
     if truth == "zero":
         return {p: (g, 0.0) for p, (g, _) in profiles.items()}
     if truth == "explored":
         return dict(profiles)
-    if truth not in ("centred", "centred_plus10bp"):
+    if truth not in ("centred", "centred_random", "centred_plus10bp"):
         raise ValueError(f"unknown truth {truth!r}")
     med = float(np.median([t for _, t in profiles.values()]))
     add = BH_ALTERNATIVE if truth == "centred_plus10bp" else 0.0
@@ -1010,10 +1038,64 @@ def pooled_plan(
                             "common_ar": sub["common_ar"],
                             "reps": reps,
                             "resamples": resamples,
+                            "resample_thetas": truth == "centred_random",
                         },
                     )
                 )
     return [(name, fn, {**kw, "seed": seed * 10_000 + 7_000 + i}) for i, (name, fn, kw) in enumerate(tasks)]
+
+
+ALPHAS = (0.001, 0.0025, 0.005, 0.01, 0.015, 0.02, 0.025, 0.05)
+NULL_TRUTHS = ("zero", "centred", "centred_random")
+TARGET_SIZE = 0.025
+
+
+def accept_rate(res: Mapping[str, Any], alpha: float) -> float:
+    """Share of all periods (extended ones count as not accepted) whose bootstrap p-value is <= alpha."""
+    return float(sum(p <= alpha for p in res["p_values"]) / res["reps"])
+
+
+def calibrated_alpha(group: Mapping[str, Mapping[str, Any]], target: float = TARGET_SIZE) -> float | None:
+    """Largest alpha of ALPHAS whose acceptance rate under every null truth is at most `target`."""
+    ok = [a for a in ALPHAS if all(accept_rate(group[t], a) <= target for t in NULL_TRUTHS if t in group)]
+    return max(ok) if ok else None
+
+
+def summarize_pooled(results: Mapping[str, Mapping[str, Any]]) -> str:
+    """Acceptance of the pooled median rule by level; size under the null truths, power under the others."""
+    groups: dict[str, dict[str, Mapping[str, Any]]] = {}
+    for name, res in results.items():
+        if name.startswith("pooled/") and "p_values" in res:
+            _, subset, days, truth = name.split("/")
+            groups.setdefault(f"{subset}/{days}", {})[truth] = res
+    if not groups:
+        return ""
+    lines = [
+        "pooled median rule: share of periods accepted when the bootstrap p-value of the median <= alpha; "
+        f"size under {', '.join(NULL_TRUTHS)}, power under the others"
+    ]
+    for g in sorted(groups):
+        reps = next(iter(groups[g].values()))["reps"]
+        lines.append(f"{g} ({reps} periods)  alpha: " + " ".join(f"{a:7g}" for a in ALPHAS))
+        for truth in POOLED_TRUTHS:
+            if truth in groups[g]:
+                rates = " ".join(f"{accept_rate(groups[g][truth], a):7.3f}" for a in ALPHAS)
+                lines.append(f"  {truth:24}{rates}")
+        a = calibrated_alpha(groups[g])
+        if not any(groups[g][t]["p_values"] for t in NULL_TRUTHS if t in groups[g]):
+            lines.append("  calibrated alpha: no period under a null truth had enough pairs to decide")
+        elif a is None:
+            lines.append(f"  calibrated alpha: none of the levels keeps the size at {TARGET_SIZE}")
+        else:
+            power = ", ".join(
+                f"{t} {accept_rate(groups[g][t], a):.3f}"
+                for t in POOLED_TRUTHS
+                if t not in NULL_TRUTHS and t in groups[g]
+            )
+            lines.append(
+                f"  calibrated alpha: {a:g} (size <= {TARGET_SIZE} under every null truth); power: {power}"
+            )
+    return "\n".join(lines)
 
 
 def _run(task: tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]) -> tuple[str, dict[str, Any]]:
@@ -1188,6 +1270,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(doc, indent=2) + "\n")
     print(summarize(results))
+    if a.cmd == "pooled":
+        print(summarize_pooled(results))
     return 0
 
 

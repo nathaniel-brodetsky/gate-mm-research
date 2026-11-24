@@ -56,7 +56,7 @@ result. No orders, no keys: research on public data only.
    - The calibration behind these numbers: trade-level noise has very heavy tails (fitted Student df
      4.0–4.7 on all trades, up to 9.4 on wide-spread trades); daily trade counts are strongly over-dispersed (gamma shape 0.03–3.4, except XT_USDT and
      SAITO_USDT); SUKU_USDT and DEEP_USDT hit the AR limit of 0.9, which produces the worst cases.
-   - Proposed standard, to be fixed in decision D-002 after steps 2b–2f check the generator: per-pair
+   - Proposed standard, to be fixed in decision D-002 after steps 2b–2g check the generator: per-pair
      tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
      test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
      over pairs, which holds its size.
@@ -160,15 +160,40 @@ result. No orders, no keys: research on public data only.
     cannot measure its theta; a per-pair test in such a window mostly checks whether an event fell
     into it. The economically relevant question becomes whether such days can be recognised from
     as-of data early enough to stop quoting, and what is lost before that (step 3).
-2f. Pooled median rule on realistic days *(this step)*: `python -m mmlab.evaluation.lab pooled` runs
-    the rule of H-003 (median over pairs of each pair's volume-weighted theta, percentile bootstrap over
-    pairs, lower end above 0, at least 8 pairs) for all trades and wide-spread trades, over 30 and 61
-    days, under four truths: every pair at 0; the exploration thetas minus their median (true median 0
-    with the real spread across pairs); the same plus 10 bp; the exploration thetas as they are. It
-    reports the true median of the pairs counted in each period. Run with all three generators, the
-    calendar-day one deciding. This is what D-002 needs: whether the pooled rule keeps its size on all
-    trades, where days are skewed to the loss side and the median of window estimates may sit above
-    the true median, and with pairs that differ.
+2f. Pooled median rule on realistic days *(done 2026-11-24, `results/lab/pooled*.json`)*: `python -m
+    mmlab.evaluation.lab pooled` runs the rule of H-003 (median over pairs of each pair's
+    volume-weighted theta, percentile bootstrap over pairs, lower end above 0, at least 8 pairs) for
+    all trades and wide-spread trades, over 30 and 61 days, under four truths: every pair at 0; the
+    exploration thetas minus their median (true median 0 with the real spread across pairs); the same
+    plus 10 bp; the exploration thetas as they are. It reports the true median of the pairs counted.
+    Findings (800 periods per truth; acceptance at the registered level, nominal 2.5%):
+    - Calendar-day generator, all trades: every pair at 0 is accepted in 7.1% of 30-day periods and
+      5.0% of 61-day ones; the centred thetas in 0.0%; +10 bp in 99.5%. Wide-spread trades: 2.5% and
+      4.0% with every pair at 0, 0.3% and 0.0% centred, 4.1% and 2.0% at +10 bp, 48.4% and 59.1% at the
+      exploration thetas (H-003's own subset and window: 2.5%, at nominal).
+    - Every pair at 0, all trades, other generators: 2.9% and 3.3% (parametric), 4.1% and 3.3%
+      (trade resampling).
+    - Why: with every pair exactly at 0 and days skewed to the loss side, a pair's 30-day estimate is
+      usually above its mean (the event day is missing), so the median over pairs drifts up. With the
+      real, fixed spread across pairs, the signs of the estimates follow the true thetas and the rule
+      almost never errs, which answers a question about these particular pairs, not the size.
+    - The criterion written before this run (centred truth, at most 5%) is met, but it checked an easy
+      case. D-002 will use a stricter one, a change made after seeing these results and in the
+      conservative direction: acceptance at most 2.5% under every null truth.
+    - What the rule tests: the median of the pairs' window estimates, with pairs as a random sample
+      from the population of illiquid pairs (D-001 draws them at random within strata). The true
+      median of the pairs' theta is reached only if the estimates are not skewed; the lab measures the
+      gap. Fixed configurations with many pairs exactly at 0 next to pairs far above 0 defeat any
+      median rule and are outside this model.
+2g. Level of the pooled rule *(this step)*: `lab pooled` keeps the bootstrap p-value of the median of
+    every period and adds the random-pairs null (`centred_random`: in every period the pairs draw their
+    thetas with replacement from the centred values). The summary gives the acceptance at levels from
+    0.1% to 5% and the calibrated level: the largest one at which every null truth (`zero`, `centred`,
+    `centred_random`) is accepted in at most 2.5% of periods, with the power at it. 4,000 periods per
+    truth (Monte Carlo standard error about 0.25 points at 2.5%), with the calendar-day generator
+    (deciding) and the parametric one; the trade-resampling generator is not rerun (cost), its 800-period
+    results above stand. D-002 then fixes the model, the level per subset and window, and that per-pair
+    tests are descriptive.
 3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.

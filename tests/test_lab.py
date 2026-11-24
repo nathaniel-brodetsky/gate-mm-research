@@ -138,12 +138,73 @@ def test_h003_rule_on_synthetic_months() -> None:
     assert lab.h003_check(thin, 1.0, 30, 0.0, 0.0, reps=3, resamples=100, seed=13)[
         "mean_true_median"
     ] == pytest.approx(0.0016)  # a pair that is not counted does not enter the true median
+    assert len(persist["p_values"]) == 40
+    assert max(persist["p_values"]) <= 0.025
+    assert few["p_values"] == []
+    for res in (persist, none, eight):  # the registered decision and p <= 2.5% agree
+        assert lab.accept_rate(res, 0.025) == pytest.approx(res["accept"]["rate"])
+    assert all(1 / 1001 <= p <= 1 for p in none["p_values"])
+    split = {f"S{i}": (IID, -0.01 if i < 4 else 0.01) for i in range(9)}  # fixed: median +0.01
+    fixed = lab.h003_check(split, 1.0, 30, 0.0, 0.0, reps=60, resamples=200, seed=14)
+    assert fixed["mean_true_median"] == pytest.approx(0.01)
+    drawn = lab.h003_check(split, 1.0, 30, 0.0, 0.0, reps=60, resamples=200, seed=14, resample_thetas=True)
+    assert -0.006 < drawn["mean_true_median"] < 0.008  # each period draws 9 of {-1%, +1%} with p = 5/9
+    assert fixed["accept"]["rate"] == 0.0  # 4 of 9 pairs far below 0: the bootstrap often puts 5 below
+
+
+def test_median_p_value() -> None:
+    assert lab.median_p_value(np.array([0.0, 0.0, 1.0, 2.0])) == pytest.approx(3 / 5)  # ties at 0 count
+    assert lab.median_p_value(np.array([1.0, 2.0, 3.0])) == pytest.approx(1 / 4)
+    assert lab.median_p_value(np.array([-1.0, -2.0])) == 1.0
+
+
+def test_levels_and_calibration() -> None:
+    res = {"reps": 4, "p_values": [0.001, 0.02, 0.3]}
+    assert lab.accept_rate(res, 0.02) == 0.5
+    assert lab.accept_rate(res, 0.0005) == 0.0
+    ps = [0.0008] * 1 + [0.004] * 2 + [0.012] * 2 + [0.5] * 95  # 100 periods
+    group = {"zero": {"reps": 100, "p_values": ps}, "centred": {"reps": 100, "p_values": [0.5] * 100}}
+    assert lab.accept_rate(group["zero"], 0.005) == 0.03
+    assert lab.calibrated_alpha(group) == 0.0025  # 0.005 accepts 3% under "zero"
+    assert lab.calibrated_alpha(group, target=0.04) == 0.01  # 0.015 accepts 5%
+    assert lab.calibrated_alpha(group, target=0.03) == 0.01  # a rate equal to the target is allowed
+    group["explored"] = {"reps": 100, "p_values": [0.0001] * 100}  # power, not size
+    assert lab.calibrated_alpha(group) == 0.0025
+    group["centred"] = {"reps": 100, "p_values": [0.0001] * 100}
+    assert lab.calibrated_alpha(group) is None
+    assert lab.calibrated_alpha({"zero": {"reps": 100, "p_values": []}}) == 0.05
+    assert lab.calibrated_alpha({"centred_random": {"reps": 100, "p_values": [0.0001] * 100}}) is None
+
+
+def test_summarize_pooled() -> None:
+    def res(ps: list[float]) -> dict[str, Any]:
+        return {"reps": 10, "p_values": ps}
+
+    results = {
+        "pooled/all/30d/zero": res([0.5] * 10),
+        "pooled/all/30d/centred": res([0.5] * 10),
+        "pooled/all/30d/centred_plus10bp": res([0.001] * 7),
+        "pooled/all/30d/explored": res([0.5] * 10),
+        "pooled/q80/30d/zero": res([0.001] * 10),
+        "h003/november/scale_1": res([0.001] * 10),
+    }
+    text = lab.summarize_pooled(results)
+    assert "all/30d (10 periods)" in text
+    assert "calibrated alpha: 0.05" in text
+    assert "centred_plus10bp 0.700" in text
+    assert "q80/30d" in text
+    assert "none of the levels" in text
+    assert "november" not in text
+    assert lab.summarize_pooled({"pooled/all/30d/zero": {"reps": 3}}) == ""  # results without p-values
+    extended = lab.summarize_pooled({"pooled/all/30d/zero": res([]), "pooled/all/30d/explored": res([0.001])})
+    assert "no period under a null truth had enough pairs" in extended
 
 
 def test_pooled_truths() -> None:
     profs: dict[str, tuple[lab.Gen, float]] = {"A": ("a", 0.001), "B": ("b", 0.003), "C": ("c", -0.002)}
     assert lab.pooled_profiles(profs, "zero") == {"A": ("a", 0.0), "B": ("b", 0.0), "C": ("c", 0.0)}
     assert lab.pooled_profiles(profs, "explored") == profs
+    assert lab.pooled_profiles(profs, "centred_random") == lab.pooled_profiles(profs, "centred")
     cen = lab.pooled_profiles(profs, "centred")
     assert [cen[k][1] for k in "ABC"] == pytest.approx([0.0, 0.002, -0.003])
     assert [g for g, _ in cen.values()] == ["a", "b", "c"]
@@ -184,6 +245,12 @@ def test_pooled_plan(tmp_path: Path) -> None:
         lab.POOLED_TRUTHS
     )
     assert all(fn is lab.h003_check for _, fn, _ in tasks)
+    flags = {n: k["resample_thetas"] for n, _, k in tasks}
+    assert {n for n, f in flags.items() if f} == {
+        f"pooled/{s}/{d}d/centred_random" for s in ("all", "q80") for d in (30, 61)
+    }
+    rnd = dict(zip(names, (k for _, _, k in tasks), strict=True))["pooled/all/30d/centred_random"]
+    assert rnd["profiles"] == kw["profiles"]  # the centred values, redrawn in every period
 
 
 def _cal(pairs: dict[str, dict[str, object]]) -> dict[str, object]:
@@ -588,7 +655,9 @@ def test_daypools_cli_and_runs(tmp_path: Path, capsys: pytest.CaptureFixture[str
         f"pooled/{s}/{n}d/{t}" for s in ("all", "q80") for n in (30, 61) for t in lab.POOLED_TRUTHS
     }
     assert res["pooled/all/30d/zero"]["extend"]["rate"] == 1.0  # two pairs are fewer than the minimum of 8
-    assert "pooled/q80/61d/explored" in capsys.readouterr().out
+    text = capsys.readouterr().out
+    assert "pooled/q80/61d/explored" in text
+    assert "calibrated alpha" in text
 
 
 def test_multi_pair_checks_share_calendar_days(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
