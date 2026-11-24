@@ -128,6 +128,62 @@ def test_h003_rule_on_synthetic_months() -> None:
         dict(list(profiles.items())[:8]), 1.0, 30, 0.2, 0.2, reps=10, resamples=500, seed=11
     )
     assert eight["accept"]["rate"] == 1.0  # exactly the registered minimum of 8 pairs
+    assert persist["mean_true_median"] == pytest.approx(0.004)
+    assert few["mean_true_median"] is None  # no period with enough pairs
+    mixed = {f"M{i}": (IID, 0.0001 * i * i) for i in range(9)}  # median 0.0016, mean 0.00227
+    assert lab.h003_check(mixed, 0.5, 30, 0.0, 0.0, reps=3, resamples=100, seed=12)[
+        "mean_true_median"
+    ] == pytest.approx(0.0008)  # the median times the scale
+    thin = {**mixed, "T": (mp.PairProfile(0.1, None, 3.0, 1.0, 0.01, 1000.0, 0.0, 0.0), 1.0)}
+    assert lab.h003_check(thin, 1.0, 30, 0.0, 0.0, reps=3, resamples=100, seed=13)[
+        "mean_true_median"
+    ] == pytest.approx(0.0016)  # a pair that is not counted does not enter the true median
+
+
+def test_pooled_truths() -> None:
+    profs: dict[str, tuple[lab.Gen, float]] = {"A": ("a", 0.001), "B": ("b", 0.003), "C": ("c", -0.002)}
+    assert lab.pooled_profiles(profs, "zero") == {"A": ("a", 0.0), "B": ("b", 0.0), "C": ("c", 0.0)}
+    assert lab.pooled_profiles(profs, "explored") == profs
+    cen = lab.pooled_profiles(profs, "centred")
+    assert [cen[k][1] for k in "ABC"] == pytest.approx([0.0, 0.002, -0.003])
+    assert [g for g, _ in cen.values()] == ["a", "b", "c"]
+    plus = lab.pooled_profiles(profs, "centred_plus10bp")
+    assert [plus[k][1] for k in "ABC"] == pytest.approx([0.001, 0.003, -0.002])
+    even = lab.pooled_profiles({**profs, "D": ("d", 0.010)}, "centred")
+    assert float(np.median([t for _, t in even.values()])) == pytest.approx(0.0)
+    with pytest.raises(ValueError, match="unknown truth"):
+        lab.pooled_profiles(profs, "half")
+
+
+def test_pooled_plan(tmp_path: Path) -> None:
+    pairs = {}
+    for i, theta in enumerate((0.001, 0.003, -0.002)):
+        path = tmp_path / f"Q{i}.npz"
+        lab.save_pool(path, mp.DayPool(np.zeros(92), np.ones(92), np.ones(92, dtype=np.int64), 1.0))
+        pairs[f"Q{i}_USDT"] = {
+            "trades": 92,
+            "active_days": 92,
+            "pool": str(path),
+            "theta": theta,
+            "block": 1.0,
+        }
+    pairs["THIN_USDT"] = {"trades": 3, "active_days": 1, "pool": "x.npz", "theta": 0.05, "block": 1.0}
+    cal = _cal(pairs)
+    tasks = lab.pooled_plan(cal, reps=5, resamples=50, seed=3)
+    names = [n for n, _, _ in tasks]
+    assert len(names) == 2 * 2 * len(lab.POOLED_TRUTHS)
+    assert "pooled/all/61d/centred" in names
+    assert "pooled/q80/30d/zero" in names
+    assert len({kw["seed"] for _, _, kw in tasks}) == len(tasks)
+    assert min(kw["seed"] for _, _, kw in tasks) == 3 * 10_000 + 7_000
+    kw = dict(zip(names, (k for _, _, k in tasks), strict=True))["pooled/all/30d/centred"]
+    assert set(kw["profiles"]) == {"Q0_USDT", "Q1_USDT", "Q2_USDT"}  # thin pairs left out
+    assert [kw["profiles"][f"Q{i}_USDT"][1] for i in range(3)] == pytest.approx([0.0, 0.002, -0.003])
+    assert (kw["n_days"], kw["scale"], kw["reps"], kw["resamples"]) == (30, 1.0, 5, 50)
+    assert [k["n_days"] for n, _, k in tasks if n.startswith("pooled/q80/61d/")] == [61] * len(
+        lab.POOLED_TRUTHS
+    )
+    assert all(fn is lab.h003_check for _, fn, _ in tasks)
 
 
 def _cal(pairs: dict[str, dict[str, object]]) -> dict[str, object]:
@@ -263,6 +319,10 @@ def test_compare_plan() -> None:
     seeds = [kw["seed"] for _, _, kw in tasks]
     assert len(seeds) == len(set(seeds))
     assert not set(seeds) & {kw["seed"] for _, _, kw in lab.plan(cal, 16, 100, 1)}
+    for n, _, kw in tasks:  # every task runs on the window its name says
+        assert kw["n_days"] == int(n.split("/")[2].removesuffix("d"))
+    pooled = {kw["seed"] for _, _, kw in lab.pooled_plan(cal, 16, 100, 1)}
+    assert not pooled & (set(seeds) | {kw["seed"] for _, _, kw in lab.plan(cal, 16, 100, 1)})
 
 
 def test_show_and_compare_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -520,6 +580,15 @@ def test_daypools_cli_and_runs(tmp_path: Path, capsys: pytest.CaptureFixture[str
         )
         == 0
     )
+    capsys.readouterr()
+    pooled = ["pooled", str(pools), "--reps", "3", "--resamples", "100", "--workers", "1", "--out", str(out)]
+    assert lab.main(pooled) == 0
+    res = json.loads(out.read_text())["results"]
+    assert set(res) == {
+        f"pooled/{s}/{n}d/{t}" for s in ("all", "q80") for n in (30, 61) for t in lab.POOLED_TRUTHS
+    }
+    assert res["pooled/all/30d/zero"]["extend"]["rate"] == 1.0  # two pairs are fewer than the minimum of 8
+    assert "pooled/q80/61d/explored" in capsys.readouterr().out
 
 
 def test_multi_pair_checks_share_calendar_days(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

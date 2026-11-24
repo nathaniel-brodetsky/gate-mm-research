@@ -479,19 +479,22 @@ def h003_check(
     """The registered H-003 rule on synthetic months where every pair's theta is `scale` times its own."""
     outcomes = {"accept": 0, "reject": 0, "extend": 0}
     counted = []
+    truth = []  # true cross-pair median of the pairs counted in a period
     for r in range(reps):
         rng = np.random.default_rng([seed, r])
         common = ar1(n_days, common_ar, rng)
         days = shared_days([g for g, _ in profiles.values()], n_days, rng)
-        est = []
+        est, true = [], []
         for p, theta in profiles.values():
             num, den, cnt = simulate(p, theta * scale, n_days, rng, common, rho, days)
             if cnt.sum() >= MIN_TRADES and (cnt > 0).sum() >= MIN_DAYS:
                 est.append(num.sum() / den.sum())
+                true.append(theta * scale)
         counted.append(len(est))
         if len(est) < min_pairs:
             outcomes["extend"] += 1
             continue
+        truth.append(float(np.median(true)))
         lo, _ = _median_ci(np.asarray(est), resamples, rng)
         outcomes["accept" if lo > 0 else "reject"] += 1
     return {
@@ -499,6 +502,7 @@ def h003_check(
         "scale": scale,
         **{k: _rate(v, reps) for k, v in outcomes.items()},
         "mean_counted_pairs": float(np.mean(counted)),
+        "mean_true_median": float(np.mean(truth)) if truth else None,
     }
 
 
@@ -960,6 +964,58 @@ def plan(
     return [(name, fn, {**kw, "seed": seed * 10_000 + i}) for i, (name, fn, kw) in enumerate(tasks)]
 
 
+POOLED_TRUTHS = ("zero", "centred", "centred_plus10bp", "explored")
+
+
+def pooled_profiles(profiles: Mapping[str, tuple[Gen, float]], truth: str) -> dict[str, tuple[Gen, float]]:
+    """Pair thetas for a check of the pooled median rule.
+
+    zero: every pair 0. centred: the exploration thetas minus their median, so the true cross-pair median
+    is 0 and the pairs differ as they really do. centred_plus10bp: the same plus 10 bp. explored: the
+    exploration thetas as they are.
+    """
+    if truth == "zero":
+        return {p: (g, 0.0) for p, (g, _) in profiles.items()}
+    if truth == "explored":
+        return dict(profiles)
+    if truth not in ("centred", "centred_plus10bp"):
+        raise ValueError(f"unknown truth {truth!r}")
+    med = float(np.median([t for _, t in profiles.values()]))
+    add = BH_ALTERNATIVE if truth == "centred_plus10bp" else 0.0
+    return {p: (g, t - med + add) for p, (g, t) in profiles.items()}
+
+
+def pooled_plan(
+    cal: dict[str, Any], reps: int, resamples: int, seed: int
+) -> list[tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]]:
+    """The pooled median rule (bootstrap over pairs of the median, as H-003) on both subsets, 30 and 61
+    days, under each truth of POOLED_TRUTHS. Only pairs the lab tests on their own take part."""
+    n_cal = int(cal["n_days"])
+    tasks: list[tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]] = []
+    for subset in ("all", "q80"):
+        sub = cal["subsets"][subset]
+        usable = {k for k, e in sub["pairs"].items() if _usable(e)}
+        profs = {k: v for k, v in profiles_for(sub, n_cal).items() if k in usable}
+        for n_days in (30, 61):
+            for truth in POOLED_TRUTHS:
+                tasks.append(
+                    (
+                        f"pooled/{subset}/{n_days}d/{truth}",
+                        h003_check,
+                        {
+                            "profiles": pooled_profiles(profs, truth),
+                            "scale": 1.0,
+                            "n_days": n_days,
+                            "rho": sub["rho"],
+                            "common_ar": sub["common_ar"],
+                            "reps": reps,
+                            "resamples": resamples,
+                        },
+                    )
+                )
+    return [(name, fn, {**kw, "seed": seed * 10_000 + 7_000 + i}) for i, (name, fn, kw) in enumerate(tasks)]
+
+
 def _run(task: tuple[str, Callable[..., dict[str, Any]], dict[str, Any]]) -> tuple[str, dict[str, Any]]:
     name, fn, kw = task
     return name, fn(**kw)
@@ -994,10 +1050,12 @@ def summarize(results: dict[str, dict[str, Any]]) -> str:
                 f"{name:40} coverage {r['coverage']['rate']:.3f} ± {r['coverage']['mc_se']:.3f}"
                 f"  lower>0 at mu=0 {r['lower_above_0']['rate']:.3f}"
             )
-        elif name.startswith("h003/"):
+        elif name.startswith(("h003/", "pooled/")):
+            tm = r.get("mean_true_median")
             lines.append(
                 f"{name:40} accept {r['accept']['rate']:.3f}  reject {r['reject']['rate']:.3f}"
                 f"  extend {r['extend']['rate']:.3f}  counted pairs {r['mean_counted_pairs']:.1f}"
+                + ("" if tm is None else f"  true median {tm * 1e4:+.1f} bp")
             )
     return "\n".join(lines)
 
@@ -1042,6 +1100,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     cm.add_argument("--seed", type=int, default=20261124)
     cm.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
     cm.add_argument("--out", required=True)
+    pd = sub.add_parser("pooled", help="check the pooled median rule under several truths")
+    pd.add_argument("calibration")
+    pd.add_argument("--reps", type=int, default=800)
+    pd.add_argument("--resamples", type=int, default=10_000)
+    pd.add_argument("--seed", type=int, default=20261124)
+    pd.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 1))
+    pd.add_argument("--out", required=True)
     a = p.parse_args(argv)
     if a.cmd == "pools":
         if a.end > EXPLORATION_END:
@@ -1109,7 +1174,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         return 0
     cal = json.loads(Path(a.calibration).read_text())
-    tasks = plan(cal, a.reps, a.resamples, a.seed)
+    tasks = (pooled_plan if a.cmd == "pooled" else plan)(cal, a.reps, a.resamples, a.seed)
     ctx = multiprocessing.get_context("spawn")
     with ProcessPoolExecutor(max_workers=max(1, a.workers), mp_context=ctx) as ex:
         results = dict(ex.map(_run, tasks))

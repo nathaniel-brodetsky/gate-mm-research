@@ -56,7 +56,7 @@ result. No orders, no keys: research on public data only.
    - The calibration behind these numbers: trade-level noise has very heavy tails (fitted Student df
      4.0–4.7 on all trades, up to 9.4 on wide-spread trades); daily trade counts are strongly over-dispersed (gamma shape 0.03–3.4, except XT_USDT and
      SAITO_USDT); SUKU_USDT and DEEP_USDT hit the AR limit of 0.9, which produces the worst cases.
-   - Proposed standard, to be fixed in decision D-002 after steps 2b–2e check the generator: per-pair
+   - Proposed standard, to be fixed in decision D-002 after steps 2b–2f check the generator: per-pair
      tests use the bootstrap-t with the Politis–White block and Benjamini–Yekutieli across pairs, over
      test windows of at least 61 days; claims about all pairs together use the median with a bootstrap
      over pairs, which holds its size.
@@ -116,23 +116,59 @@ result. No orders, no keys: research on public data only.
     - Across 24 pairs with no effect anywhere, Benjamini–Hochberg on the registered p-values finds
       something in 93.5% of 30-day months and 88.2% of 61-day periods; Benjamini–Yekutieli on
       bootstrap-t p-values in 53.5% and 53.2%.
-    - What holds under all three generators: the bootstrap over pairs of the median (coverage
-      93.0–94.8%, lower end above 0 under a true median of 0 in 2.4–3.9% of cases, nominal 2.5%) and
-      the registered H-003 rule built on it (accepts in 45.3% / 23.6% / 1.9% of Novembers if the
-      effect persists / halves / is absent).
+    - The registered H-003 rule (median over pairs, bootstrap over pairs) accepts in 45.3% / 23.6% /
+      1.9% of synthetic Novembers if the effect persists / halves / is absent (with the other
+      generators 50.7% / 44.9% / 4.0% and 46.6% / 21.1% / 2.4%). This is the only check of a pooled
+      rule on generated days, and only for wide-spread trades with every pair at 0. *Corrected after
+      this record was first committed:* it said the bootstrap over pairs "holds under all three
+      generators" with coverage 93.0–94.8%; that check (`median_ci`) draws pair estimates from a
+      normal model and does not use the generator, so it says nothing about real days. Step 2f
+      measures the pooled rule properly.
     - The expectation recorded with the generator before the run ("Add a calendar-day generator to the
       synthetic lab"), that it would be the optimistic bound, was wrong: it is the most realistic one
       and the hardest on per-pair tests. Its numbers take precedence, unless step 2e finds that the days
       driving them are data errors.
-2e. Heaviest days *(this step)*: `python -m mmlab.evaluation.tails` reads the day pools and the
-    comparison and reports, per pair, how lopsided the days are (skewness, excess kurtosis, share of
-    the three heaviest days against normal days), the worst days with their dates, how much theta moves
-    without each, their share of volume, the day's price range and its hours with data problems, and
-    across pairs whether the size of the bootstrap-t follows lopsidedness or block length (Spearman,
-    descriptive) and which dates are among the worst of several pairs. This decides whether the per-pair
-    failures come from rare heavy days (then a window of 30–61 days cannot measure a pair's theta, and
-    D-002 restricts claims to pooled statistics or adds a tail charge from longer history), from slow
-    regimes (long blocks), or from errors in the data.
+2e. Heaviest days *(done 2026-11-24, `results/lab/tails_days.json`)*: `python -m
+    mmlab.evaluation.tails` reads the day pools and the comparison and reports, per pair, how lopsided
+    the days are (skewness, excess kurtosis, share of the three heaviest days against normal days),
+    the worst days with their dates, how much theta moves without each, their share of volume, the
+    day's price range and its hours with data problems, and across pairs whether the size of the
+    bootstrap-t follows lopsidedness or block length (Spearman, descriptive) and which dates are among
+    the worst of several pairs.
+    Findings (exploration period; sizes from the calendar-day generator):
+    - The size of the bootstrap-t over 30 days follows the skewness of the pair's days (Spearman
+      −0.82, p < 0.001, 24 pairs; excess kurtosis +0.47, p = 0.021), not the block length (−0.06,
+      p = 0.78). On wide-spread trades: skewness −0.72 (p = 0.001, 17 pairs).
+    - On all trades the days are skewed to the loss side in 18 of 24 pairs (below −1 in 14). The five
+      pairs with the largest sizes (29–38%: XT, PINGO, ANON, IMU, SAITO) have skewness −5.1 to −8.4;
+      the six with positive skewness have sizes of 3.3–9.0%. The three heaviest days carry 21–52% of
+      the absolute daily deviations, against about 10% for normal days.
+    - The worst day is a day of extreme prices: in 18 of 24 pairs its price range is at least three
+      times the pair's median day (ANON_USDT 478% against 11%, IMU_USDT 313% against 7%, CREO_USDT 175%
+      against 10%, PINGO_USDT 164% against 5%). It carries up to 38.5% of a pair's three-month volume
+      (MLN_USDT), and dropping it alone raises theta by up to 10.9 bp (ZIX_USDT; SAITO_USDT 10.8,
+      ANON_USDT 9.8).
+    - Not data errors: 23 of 24 worst days have no hour with data problems. AIDOGE_USDT on 2026-09-23
+      has 7 and is to be checked against the raw archive before a test relies on it.
+    - Not one market-wide shock: 5 dates are among the three worst days of 3 or more pairs (one of 4);
+      with worst days independent across pairs, 3.9 such dates are expected and 5 or more happen in
+      33% of cases (simulation). Heavy days are events of single tokens.
+    - On wide-spread trades the skewness is positive in 12 of 17 pairs: gains come in a few days (the
+      three heaviest days carry 0.54–0.63 of the deviations for PEOPLEFB_USDT, NAVX_USDT and
+      PINGO_USDT, among the pairs with the largest theta). There a one-sided test errs on the safe side.
+    Consequences: when a pair's losses come from rare events of its token, a window of 30–61 days
+    cannot measure its theta; a per-pair test in such a window mostly checks whether an event fell
+    into it. The economically relevant question becomes whether such days can be recognised from
+    as-of data early enough to stop quoting, and what is lost before that (step 3).
+2f. Pooled median rule on realistic days *(this step)*: `python -m mmlab.evaluation.lab pooled` runs
+    the rule of H-003 (median over pairs of each pair's volume-weighted theta, percentile bootstrap over
+    pairs, lower end above 0, at least 8 pairs) for all trades and wide-spread trades, over 30 and 61
+    days, under four truths: every pair at 0; the exploration thetas minus their median (true median 0
+    with the real spread across pairs); the same plus 10 bp; the exploration thetas as they are. It
+    reports the true median of the pairs counted in each period. Run with all three generators, the
+    calendar-day one deciding. This is what D-002 needs: whether the pooled rule keeps its size on all
+    trades, where days are skewed to the loss side and the median of window estimates may sit above
+    the true median, and with pairs that differ.
 3. Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.

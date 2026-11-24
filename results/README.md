@@ -31,7 +31,9 @@ mmlab.evaluation.lab pools`; the pools themselves stay in `data/interim/lab_pool
 repeat it with the calendar-day generator (`python -m mmlab.evaluation.lab pools --kind days`; the
 pools stay in `data/interim/lab_daypools/`). `lab/tails_days.json` is `python -m mmlab.evaluation.tails
 results/lab/daypools.json --compare results/lab/compare_days.json --dataset data/processed/U001`: the
-heaviest days of every pair.
+heaviest days of every pair. `lab/pooled.json`, `lab/pooled_empirical.json` and `lab/pooled_days.json`
+are `python -m mmlab.evaluation.lab pooled` on `lab/calibration.json`, `lab/pools.json` and
+`lab/daypools.json`: the pooled median rule of H-003 under several truths.
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.
