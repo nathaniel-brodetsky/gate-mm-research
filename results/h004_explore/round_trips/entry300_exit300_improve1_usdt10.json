@@ -1,0 +1,616 @@
+{
+ "period": [
+  "2026-08-01",
+  "2026-11-01"
+ ],
+ "every_s": 60,
+ "horizon_s": 300,
+ "exit_life_s": 300,
+ "latency_ms": 300,
+ "size_usdt": 10.0,
+ "improve_ticks": 1,
+ "queue": "pessimistic",
+ "pairs": {
+  "SUKU_USDT": {
+   "all": {
+    "round_trips": 11119,
+    "unpriced": 0,
+    "days": 92,
+    "entry_value": 88332.17097499999,
+    "passive_share": 0.10267405931375617,
+    "median_hold_s": 300.342781,
+    "net_bp": -60.16735751673395,
+    "gross_bp": -40.166496049352794,
+    "net_usdt_per_day": -5.776862294871841
+   },
+   "q80": {
+    "round_trips": 145,
+    "unpriced": 0,
+    "days": 18,
+    "entry_value": 928.4542389999999,
+    "passive_share": 0.267368625800415,
+    "median_hold_s": 300.339077,
+    "net_bp": -144.7241950449048,
+    "gross_bp": -124.7128424157979,
+    "net_usdt_per_day": -0.14605412214707028
+   },
+   "tick": 9.999999999992654e-07
+  },
+  "BAND_USDT": {
+   "all": {
+    "round_trips": 61178,
+    "unpriced": 10,
+    "days": 92,
+    "entry_value": 355783.489187,
+    "passive_share": 0.2088817202473921,
+    "median_hold_s": 300.31462,
+    "net_bp": -41.95234375374828,
+    "gross_bp": -21.952071891277736,
+    "net_usdt_per_day": -16.223860043783706
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 9.999999999998899e-05
+  },
+  "NAVX_USDT": {
+   "all": {
+    "round_trips": 41068,
+    "unpriced": 12,
+    "days": 92,
+    "entry_value": 234169.414296,
+    "passive_share": 0.1959678087506062,
+    "median_hold_s": 300.3398155,
+    "net_bp": -63.824916425619605,
+    "gross_bp": -43.823927703086795,
+    "net_usdt_per_day": -16.245481844433144
+   },
+   "q80": {
+    "round_trips": 2191,
+    "unpriced": 0,
+    "days": 60,
+    "entry_value": 10934.924935000001,
+    "passive_share": 0.3400506150799653,
+    "median_hold_s": 300.330068,
+    "net_bp": -46.70500996017339,
+    "gross_bp": -26.704739243931474,
+    "net_usdt_per_day": -0.5551258456553515
+   },
+   "tick": 9.999999999975306e-07
+  },
+  "TEVA_USDT": {
+   "all": {
+    "round_trips": 53520,
+    "unpriced": 16,
+    "days": 92,
+    "entry_value": 302601.82482519996,
+    "passive_share": 0.22567274061895562,
+    "median_hold_s": 300.33398450000004,
+    "net_bp": -113.21990156787237,
+    "gross_bp": -93.20405710864686,
+    "net_usdt_per_day": -37.239726979312714
+   },
+   "q80": {
+    "round_trips": 17041,
+    "unpriced": 0,
+    "days": 91,
+    "entry_value": 97771.9508554,
+    "passive_share": 0.2977352063318498,
+    "median_hold_s": 300.327004,
+    "net_bp": -81.27681731435942,
+    "gross_bp": -61.28099691885687,
+    "net_usdt_per_day": -8.63760107406834
+   },
+   "tick": 9.99999999998398e-08
+  },
+  "PEOPLEFB_USDT": {
+   "all": {
+    "round_trips": 62116,
+    "unpriced": 21,
+    "days": 91,
+    "entry_value": 160454.899056225,
+    "passive_share": 0.15146813940275955,
+    "median_hold_s": 300.34272,
+    "net_bp": -206.88802799767797,
+    "gross_bp": -186.8463462684338,
+    "net_usdt_per_day": -36.082823530770504
+   },
+   "q80": {
+    "round_trips": 6861,
+    "unpriced": 0,
+    "days": 77,
+    "entry_value": 20183.723241187,
+    "passive_share": 0.14774782893944513,
+    "median_hold_s": 300.344485,
+    "net_bp": -285.54911676209105,
+    "gross_bp": -265.49162186377436,
+    "net_usdt_per_day": -6.264613417925475
+   },
+   "tick": 9.99999999998398e-08
+  },
+  "ZIX_USDT": {
+   "all": {
+    "round_trips": 19695,
+    "unpriced": 0,
+    "days": 77,
+    "entry_value": 67728.738358854,
+    "passive_share": 0.0839316565942184,
+    "median_hold_s": 300.346526,
+    "net_bp": -141.41565823875774,
+    "gross_bp": -121.36085540006916,
+    "net_usdt_per_day": -10.410765344236891
+   },
+   "q80": {
+    "round_trips": 2053,
+    "unpriced": 0,
+    "days": 44,
+    "entry_value": 5790.570290127001,
+    "passive_share": 0.1225083934647206,
+    "median_hold_s": 300.34138,
+    "net_bp": -135.27691237898276,
+    "gross_bp": -115.30454097215636,
+    "net_usdt_per_day": -0.8514461627846207
+   },
+   "tick": 9.999999999988046e-10
+  },
+  "GMX_USDT": {
+   "all": {
+    "round_trips": 29858,
+    "unpriced": 10,
+    "days": 92,
+    "entry_value": 200550.92134800003,
+    "passive_share": 0.10262338827298158,
+    "median_hold_s": 300.34331,
+    "net_bp": -46.69119314855649,
+    "gross_bp": -26.6931664797629,
+    "net_usdt_per_day": -10.17821935302221
+   },
+   "q80": {
+    "round_trips": 3,
+    "unpriced": 0,
+    "days": 1,
+    "entry_value": 10.0,
+    "passive_share": 0.0,
+    "median_hold_s": 300.394544,
+    "net_bp": -411.3180649469965,
+    "gross_bp": -390.9271378091873,
+    "net_usdt_per_day": -0.00447084853203257
+   },
+   "tick": 0.0009999999999994458
+  },
+  "AIDOGE_USDT": {
+   "all": {
+    "round_trips": 71979,
+    "unpriced": 10,
+    "days": 92,
+    "entry_value": 384497.2117022133,
+    "passive_share": 0.14558907665305332,
+    "median_hold_s": 300.340839,
+    "net_bp": -61.35264653102395,
+    "gross_bp": -41.35251432031782,
+    "net_usdt_per_day": -25.641219045358888
+   },
+   "q80": {
+    "round_trips": 104,
+    "unpriced": 0,
+    "days": 5,
+    "entry_value": 691.8614104849951,
+    "passive_share": 0.20517820614601898,
+    "median_hold_s": 300.33837900000003,
+    "net_bp": -16.14400657745021,
+    "gross_bp": 3.8515840217451625,
+    "net_usdt_per_day": -0.012140668653862761
+   },
+   "tick": 9.999999999998544e-15
+  },
+  "SUPER_USDT": {
+   "all": {
+    "round_trips": 53103,
+    "unpriced": 7,
+    "days": 92,
+    "entry_value": 410232.16985,
+    "passive_share": 0.26970360459652776,
+    "median_hold_s": 300.330787,
+    "net_bp": -45.94187939854102,
+    "gross_bp": -25.940616261961477,
+    "net_usdt_per_day": -20.485692252880973
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 9.99999999995449e-06
+  },
+  "BOS_USDT": {
+   "all": {
+    "round_trips": 52107,
+    "unpriced": 7,
+    "days": 92,
+    "entry_value": 266524.22338935,
+    "passive_share": 0.1754918728554449,
+    "median_hold_s": 300.338575,
+    "net_bp": -99.88555004963385,
+    "gross_bp": -79.87884553045824,
+    "net_usdt_per_day": -28.936868103039906
+   },
+   "q80": {
+    "round_trips": 15891,
+    "unpriced": 7,
+    "days": 91,
+    "entry_value": 77547.83793417,
+    "passive_share": 0.2072068344417342,
+    "median_hold_s": 300.334625,
+    "net_bp": -82.355396695792,
+    "gross_bp": -62.34591958489189,
+    "net_usdt_per_day": -6.941829299966911
+   },
+   "tick": 9.999999999994822e-09
+  },
+  "IMU_USDT": {
+   "all": {
+    "round_trips": 53967,
+    "unpriced": 4,
+    "days": 92,
+    "entry_value": 398236.824567,
+    "passive_share": 0.30166252624583345,
+    "median_hold_s": 300.325138,
+    "net_bp": -65.78140527049466,
+    "gross_bp": -45.780579373741844,
+    "net_usdt_per_day": -28.47454125051816
+   },
+   "q80": {
+    "round_trips": 147,
+    "unpriced": 0,
+    "days": 26,
+    "entry_value": 1084.4337110000001,
+    "passive_share": 0.5760565552909116,
+    "median_hold_s": 90.514049,
+    "net_bp": -62.8621929159566,
+    "gross_bp": -42.83280888385893,
+    "net_usdt_per_day": -0.07409769689722688
+   },
+   "tick": 9.999999999992654e-07
+  },
+  "MLN_USDT": {
+   "all": {
+    "round_trips": 54621,
+    "unpriced": 10,
+    "days": 92,
+    "entry_value": 271818.804068,
+    "passive_share": 0.2470920736859608,
+    "median_hold_s": 300.332085,
+    "net_bp": -49.69429710142582,
+    "gross_bp": -29.693821264110035,
+    "net_usdt_per_day": -14.682439572945048
+   },
+   "q80": {
+    "round_trips": 239,
+    "unpriced": 0,
+    "days": 33,
+    "entry_value": 1311.8764099999999,
+    "passive_share": 0.5141145117473377,
+    "median_hold_s": 161.085835,
+    "net_bp": 23.489619552616077,
+    "gross_bp": 43.47300016116645,
+    "net_usdt_per_day": 0.03349508453364324
+   },
+   "tick": 9.999999999998899e-05
+  },
+  "ORCA_USDT": {
+   "all": {
+    "round_trips": 98089,
+    "unpriced": 26,
+    "days": 92,
+    "entry_value": 833737.745505,
+    "passive_share": 0.3819453928850463,
+    "median_hold_s": 300.318771,
+    "net_bp": -36.60667662227436,
+    "gross_bp": -16.60668869138705,
+    "net_usdt_per_day": -33.17431308422349
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 9.999999999976694e-05
+  },
+  "PINGO_USDT": {
+   "all": {
+    "round_trips": 83695,
+    "unpriced": 27,
+    "days": 92,
+    "entry_value": 450345.20738581,
+    "passive_share": 0.2303791609846475,
+    "median_hold_s": 300.340942,
+    "net_bp": -40.45759563958729,
+    "gross_bp": -20.455768713435468,
+    "net_usdt_per_day": -19.80422206374041
+   },
+   "q80": {
+    "round_trips": 1006,
+    "unpriced": 0,
+    "days": 26,
+    "entry_value": 4463.48086381,
+    "passive_share": 0.22806251736253258,
+    "median_hold_s": 300.3280105,
+    "net_bp": -120.05469778417124,
+    "gross_bp": -100.04623143432927,
+    "net_usdt_per_day": -0.5824585284458056
+   },
+   "tick": 9.999999999940612e-07
+  },
+  "CREO_USDT": {
+   "all": {
+    "round_trips": 124265,
+    "unpriced": 39,
+    "days": 92,
+    "entry_value": 746038.8119136,
+    "passive_share": 0.3491123763083298,
+    "median_hold_s": 300.32671,
+    "net_bp": -36.30521873938119,
+    "gross_bp": -16.30366640557083,
+    "net_usdt_per_day": -29.440328537599246
+   },
+   "q80": {
+    "round_trips": 167,
+    "unpriced": 0,
+    "days": 9,
+    "entry_value": 1142.6738396,
+    "passive_share": 0.49832831834089353,
+    "median_hold_s": 279.484703,
+    "net_bp": -170.32052815595577,
+    "gross_bp": -150.45483320711742,
+    "net_usdt_per_day": -0.21154436072898464
+   },
+   "tick": 9.999999999940612e-08
+  },
+  "FIS_USDT": {
+   "all": {
+    "round_trips": 63377,
+    "unpriced": 18,
+    "days": 92,
+    "entry_value": 387696.9405466381,
+    "passive_share": 0.252030047121937,
+    "median_hold_s": 300.332096,
+    "net_bp": -92.8244937038023,
+    "gross_bp": -72.81911683935971,
+    "net_usdt_per_day": -39.11714371386393
+   },
+   "q80": {
+    "round_trips": 19529,
+    "unpriced": 9,
+    "days": 91,
+    "entry_value": 122141.498554,
+    "passive_share": 0.3341210510525828,
+    "median_hold_s": 300.322205,
+    "net_bp": -55.521237692020804,
+    "gross_bp": -35.51478134754974,
+    "net_usdt_per_day": -7.371138231822011
+   },
+   "tick": 9.999999999992654e-07
+  },
+  "ANON_USDT": {
+   "all": {
+    "round_trips": 50015,
+    "unpriced": 27,
+    "days": 92,
+    "entry_value": 299429.34377,
+    "passive_share": 0.2787940279297497,
+    "median_hold_s": 300.324343,
+    "net_bp": -57.24902897844365,
+    "gross_bp": -37.24344646782482,
+    "net_usdt_per_day": -18.632651280962058
+   },
+   "q80": {
+    "round_trips": 2122,
+    "unpriced": 1,
+    "days": 70,
+    "entry_value": 10637.68544,
+    "passive_share": 0.32265920715173924,
+    "median_hold_s": 300.319314,
+    "net_bp": -92.9888934491282,
+    "gross_bp": -72.9553402898142,
+    "net_usdt_per_day": -1.0752028238320679
+   },
+   "tick": 9.999999999998899e-05
+  },
+  "CKB_USDT": {
+   "all": {
+    "round_trips": 139785,
+    "unpriced": 33,
+    "days": 92,
+    "entry_value": 644407.3674923801,
+    "passive_share": 0.2454280833254597,
+    "median_hold_s": 300.320753,
+    "net_bp": -40.88421969430748,
+    "gross_bp": -20.882788054109103,
+    "net_usdt_per_day": -28.637056940422614
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 9.99999999998398e-08
+  },
+  "DEEP_USDT": {
+   "all": {
+    "round_trips": 231865,
+    "unpriced": 53,
+    "days": 92,
+    "entry_value": 1506709.7666409998,
+    "passive_share": 0.4817274278735994,
+    "median_hold_s": 292.169066,
+    "net_bp": -33.09004010551093,
+    "gross_bp": -13.089886374481608,
+    "net_usdt_per_day": -54.19248544077793
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 9.999999999975306e-07
+  },
+  "XT_USDT": {
+   "all": {
+    "round_trips": 113013,
+    "unpriced": 34,
+    "days": 92,
+    "entry_value": 532562.67323,
+    "passive_share": 0.10270318289163738,
+    "median_hold_s": 300.340529,
+    "net_bp": -31.30684837336946,
+    "gross_bp": -11.306760328605653,
+    "net_usdt_per_day": -18.12267267405208
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 0.0009999999999994458
+  },
+  "FLOCK_USDT": {
+   "all": {
+    "round_trips": 177601,
+    "unpriced": 25,
+    "days": 92,
+    "entry_value": 1353637.5024785,
+    "passive_share": 0.6001192885212655,
+    "median_hold_s": 97.143556,
+    "net_bp": -29.768753958935132,
+    "gross_bp": -9.768466918428032,
+    "net_usdt_per_day": -43.8001106096412
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 9.999999999996123e-06
+  },
+  "TITN_USDT": {
+   "all": {
+    "round_trips": 43282,
+    "unpriced": 10,
+    "days": 92,
+    "entry_value": 296719.735447,
+    "passive_share": 0.2339284545412323,
+    "median_hold_s": 300.3328845,
+    "net_bp": -34.18910281912782,
+    "gross_bp": -14.188585229509657,
+    "net_usdt_per_day": -11.026719069197707
+   },
+   "q80": {
+    "round_trips": 185,
+    "unpriced": 0,
+    "days": 28,
+    "entry_value": 1027.747875,
+    "passive_share": 0.30303478370120684,
+    "median_hold_s": 300.307952,
+    "net_bp": -2.0918668791242805,
+    "gross_bp": 17.878765920730096,
+    "net_usdt_per_day": -0.0023368605867422404
+   },
+   "tick": 9.999999999992654e-07
+  },
+  "SAITO_USDT": {
+   "all": {
+    "round_trips": 38743,
+    "unpriced": 11,
+    "days": 92,
+    "entry_value": 292656.9104711,
+    "passive_share": 0.05440303220713542,
+    "median_hold_s": 300.346479,
+    "net_bp": -44.90212300591571,
+    "gross_bp": -24.900178186756513,
+    "net_usdt_per_day": -14.283604991852819
+   },
+   "q80": {
+    "round_trips": 974,
+    "unpriced": 0,
+    "days": 52,
+    "entry_value": 4394.2441743,
+    "passive_share": 0.07624179784077868,
+    "median_hold_s": 300.344742,
+    "net_bp": -138.678741888153,
+    "gross_bp": -118.68912026801901,
+    "net_usdt_per_day": -0.6623785365665976
+   },
+   "tick": 9.999999999994822e-08
+  },
+  "SPYX_USDT": {
+   "all": {
+    "round_trips": 89345,
+    "unpriced": 15,
+    "days": 92,
+    "entry_value": 714431.07841,
+    "passive_share": 0.3128757223404564,
+    "median_hold_s": 300.322335,
+    "net_bp": -20.7590110601042,
+    "gross_bp": -0.7589812038680426,
+    "net_usdt_per_day": -16.120524628690607
+   },
+   "q80": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "entry_value": 0.0,
+    "passive_share": null,
+    "median_hold_s": null,
+    "net_bp": null,
+    "gross_bp": null,
+    "net_usdt_per_day": 0.0
+   },
+   "tick": 0.009999999999990905
+  }
+ },
+ "too_thin": []
+}
