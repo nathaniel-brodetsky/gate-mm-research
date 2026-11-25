@@ -64,6 +64,9 @@ AUC by time since the switch, single-feature AUCs, and the decision by the rule 
 `perp_archive/` holds `python -m mmlab.data_ingestion.gate_archive_map summary` on the scans of the
 order book archive (stage 4, step 1): `futures_orderbooks.csv` for futures BTC_USDT and GPS_USDT,
 `spot_control.csv` for spot BTC_USDT; the raw scans stay in `data/interim/archive_map/`.
+`perp_archive/coverage/GPS_USDT-YYYY-MM.csv` is `python -m mmlab.orderbook.gate_coverage --biz
+futures_usdt --market GPS_USDT --quiet` for one month (stage 4, step 2a): one row per hour with its
+status, last row, chain to the previous hour and the ids lost at a break.
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.

@@ -115,6 +115,32 @@ def test_scan_finds_truncated_hour_missing_hour_and_resync(
     assert rows[3].level_mismatches > 0
     assert rows[1].id_gap == 0
     assert rows[2].last_row_s < 3600 < rows[1].last_row_s
+    s = gc.summarize(rows, truncated_s=rows[2].last_row_s + 1)
+    assert s == {
+        "hours": 6,
+        "missing": 1,
+        "issues": 0,
+        "chain_breaks": 1,
+        "lost_ids": rows[3].id_gap,
+        "truncated": 1,
+        "usable": 4,  # 0, 1, 3 and 5; 2 is truncated, and hour 3 does not chain to it
+    }
+    assert gc.summarize(rows, truncated_s=0)["usable"] == 4  # hour 2 is still broken from hour 3
+
+
+def test_summarize_by_hand() -> None:
+    def h(status: str, last: float, chain: str, gap: int = 0) -> gc.HourCoverage:
+        return gc.HourCoverage("x", status, 1, 1, last, 0, 0, 0, 0, 0, chain, gap, 0)
+
+    rows = [h("clean", 3599, "n/a"), h("clean", 3599, "ok"), h("issues", 3599, "ok"), h("clean", 2999, "ok")]
+    rows += [h("clean", 3599, "broken", 7), h("missing", -1, "n/a"), h("clean", 3000, "n/a")]
+    s = gc.summarize(rows)
+    assert s["usable"] == 4  # rows 0, 1, 4 and 6: 2 has issues, 3 is truncated (and broken), 5 missing
+    assert s["truncated"] == 1
+    assert s["lost_ids"] == 7
+    assert gc.summarize([]) == dict.fromkeys(
+        ("hours", "missing", "issues", "chain_breaks", "lost_ids", "truncated", "usable"), 0
+    )
 
 
 def test_cli_summary(
@@ -145,7 +171,14 @@ def test_cli_summary(
     assert gc.main(argv, opener) == 0
     text = capsys.readouterr().out
     assert "hours 2, missing 1, with issues 0, chain breaks 0" in text
+    assert "2026-11-15T12 .. 2026-11-15T14" in text
+    assert "usable 1 (50.0%)" in text
+    assert "2026-11-15T12  clean" in text
+    assert gc.main([*argv, "--quiet"], opener) == 0
+    quiet = capsys.readouterr().out
+    assert quiet.startswith("SUMMARY")
     assert out.read_text().splitlines()[0].startswith("hour,status,")
+    assert b"\r" not in out.read_bytes()
 
 
 def test_parse_hour() -> None:

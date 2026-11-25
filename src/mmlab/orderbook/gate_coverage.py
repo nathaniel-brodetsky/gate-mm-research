@@ -3,6 +3,9 @@
 A chain break (next snapshot id != last covered id, or replayed book != next snapshot) means updates
 are missing from the archive; the next hourly snapshot resynchronises the book.
 
+An hour is usable when its file is clean, its last row comes at least 50 minutes after its snapshot
+(earlier means the tail was lost) and the next hour chains to it (otherwise updates are missing).
+
 Usage:
   python -m mmlab.orderbook.gate_coverage --biz futures_usdt --market GPS_USDT \\
       --start 2026-10-15T00 --end 2026-10-16T00 --out coverage.csv
@@ -42,6 +45,28 @@ class HourCoverage:
     chain: str  # n/a | ok | broken  (relative to the previous hour)
     id_gap: int  # this snapshot id - previous last covered id; 0 when chained
     level_mismatches: int
+
+
+TRUNCATED_S = 3000.0
+
+
+def summarize(rows: Sequence[HourCoverage], truncated_s: float = TRUNCATED_S) -> dict[str, int]:
+    """Counts over consecutive hours; see the module docstring for a usable hour."""
+    usable = sum(
+        r.status == "clean"
+        and r.last_row_s >= truncated_s
+        and (k + 1 == len(rows) or rows[k + 1].chain != "broken")
+        for k, r in enumerate(rows)
+    )
+    return {
+        "hours": len(rows),
+        "missing": sum(r.status == "missing" for r in rows),
+        "issues": sum(r.status == "issues" for r in rows),
+        "chain_breaks": sum(r.chain == "broken" for r in rows),
+        "lost_ids": sum(max(r.id_gap, 0) for r in rows if r.chain == "broken"),
+        "truncated": sum(r.status != "missing" and r.last_row_s < truncated_s for r in rows),
+        "usable": usable,
+    }
 
 
 def parse_hour(s: str) -> datetime:
@@ -127,12 +152,13 @@ def main(argv: Sequence[str] | None = None, opener: urllib.request.OpenerDirecto
     p.add_argument("--base", default=None, help="archive base URL (default: official)")
     p.add_argument("--sleep", type=float, default=0.2)
     p.add_argument("--out", default=None, help="CSV path")
+    p.add_argument("--quiet", action="store_true", help="print the summary only")
     a = p.parse_args(argv)
 
     rows = scan(
         a.biz, a.market, parse_hour(a.start), parse_hour(a.end), Path(a.data_dir), a.base, opener, a.sleep
     )
-    for r in rows:
+    for r in [] if a.quiet else rows:
         print(
             f"{r.hour}  {r.status:7} levels {r.snapshot_levels:6} updates {r.updates:7} "
             f"last {r.last_row_s:7.1f}s  chain {r.chain:6} id_gap {r.id_gap:7} mism {r.level_mismatches}"
@@ -145,17 +171,15 @@ def main(argv: Sequence[str] | None = None, opener: urllib.request.OpenerDirecto
         )
     if a.out:
         with open(a.out, "w", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=[f.name for f in fields(HourCoverage)])
+            w = csv.DictWriter(fh, fieldnames=[f.name for f in fields(HourCoverage)], lineterminator="\n")
             w.writeheader()
             w.writerows(asdict(r) for r in rows)
-    n = len(rows)
-    missing = sum(r.status == "missing" for r in rows)
-    issues = sum(r.status == "issues" for r in rows)
-    broken = sum(r.chain == "broken" for r in rows)
-    lost = sum(max(r.id_gap, 0) for r in rows if r.chain == "broken")
+    s = summarize(rows)
+    share = s["usable"] / s["hours"] if s["hours"] else 0.0
     print(
-        f"SUMMARY {a.biz} {a.market}: hours {n}, missing {missing}, with issues {issues}, "
-        f"chain breaks {broken}, missing update ids {lost}"
+        f"SUMMARY {a.biz} {a.market} {a.start} .. {a.end}: hours {s['hours']}, missing {s['missing']}, "
+        f"with issues {s['issues']}, chain breaks {s['chain_breaks']}, missing update ids {s['lost_ids']}, "
+        f"truncated {s['truncated']}, usable {s['usable']} ({share:.1%})"
     )
     return 0
 
