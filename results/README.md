@@ -48,6 +48,8 @@ fills of virtual orders at the back of the queue (stage 3, step 6a).
 varied (step 6b); file names give the settings.
 `h004_explore/fills_improve/` holds the same with `--improve-ticks 1`: orders one tick inside the spread
 (step 6c).
+`h004_explore/round_trips/` holds `python -m mmlab.execution_simulator.round_trip data/processed/U001`
+with entry and exit lifetimes varied: round trips of orders one tick inside the spread (step 6d).
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.

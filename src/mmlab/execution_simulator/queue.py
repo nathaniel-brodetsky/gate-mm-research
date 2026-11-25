@@ -89,6 +89,7 @@ class Order:
     act_us: int  # joins the queue: end of the batch it arrives in
     expire_us: int
     ahead: float  # queue ahead at activation, base units
+    tag: int = -1  # caller's reference (e.g. the entry fill an exit order closes)
 
 
 @dataclass(frozen=True)
@@ -120,8 +121,13 @@ def place(
     horizon_us: int,
     improve_ticks: int = 0,
     tick: float = 0.0,
+    sizes_base: NDArray[np.float64] | None = None,
+    tags: NDArray[np.int64] | None = None,
 ) -> list[Order]:
-    """Orders on one side at the given decision times (sorted); skipped where they cannot be placed."""
+    """Orders on one side at the given decision times; skipped where they cannot be placed.
+
+    The size is size_quote / price unless `sizes_base` gives one per decision; `tags` are carried along.
+    """
     if improve_ticks and tick <= 0:
         raise ValueError("improving needs a positive tick size")
     known = np.searchsorted(book.avail, decide_us, side="right") - 1
@@ -131,7 +137,9 @@ def place(
     qty = book.ask_qty if side == 1 else book.bid_qty
     opp = book.bid if side == 1 else book.ask
     out = []
-    for t, ta, i, j in zip(decide_us.tolist(), act_us.tolist(), known.tolist(), act.tolist(), strict=True):
+    for n, (t, ta, i, j) in enumerate(
+        zip(decide_us.tolist(), act_us.tolist(), known.tolist(), act.tolist(), strict=True)
+    ):
         if i < 0 or not book.ok[i] or not book.ok[j]:
             continue
         p = float(px[i]) - side * improve_ticks * tick
@@ -152,7 +160,8 @@ def place(
             ahead = 0.0 if improve_ticks else float(qty[i])
         else:
             ahead = 0.0  # the level is gone: the order is alone at its price
-        out.append(Order(side, p, size_quote / p, t, ta, ta + horizon_us, ahead))
+        size = size_quote / p if sizes_base is None else float(sizes_base[n])
+        out.append(Order(side, p, size, t, ta, ta + horizon_us, ahead, -1 if tags is None else int(tags[n])))
     return out
 
 

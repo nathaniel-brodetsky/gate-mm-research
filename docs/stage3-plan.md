@@ -300,20 +300,46 @@ result. No orders, no keys: research on public data only.
          queue: it goes to orders that were there before. The queue model is pessimistic, so this is
          one bound. Computed with the first version of the engine, in which a trade through the
          price filled the whole order; at 10 USDT this changes little.
-   6b. Bounds and sensitivity *(run 2026-11-25, `results/h004_explore/fills_grid/`; findings with 6c)*: a
-       trade through the order's price now fills it only up to that trade's size, and `--queue optimistic`
-       credits every fall of the displayed size not explained by trades to the queue ahead (the
-       pessimistic model credits it only as far as the display forces). The grid runs both models at
-       latencies of 100, 300 and 1,000 ms, lifetimes of 60, 300 and 1,800 s and sizes of 10 and 100 USDT
-       (24 runs, `results/h004_explore/fills_grid/`). If even the optimistic bound leaves wide-spread
-       fills negative, H-003's positive theta is not available to a new maker on these pairs, whatever the
-       November test says.
-   6c. Stepping inside the spread *(this step)*: `--improve-ticks 1` prices each order one tick better
-       than the best price at the decision, where the spread leaves room, so that it stands alone in
-       front instead of at the back (the tick of each pair is the smallest gap between its displayed
-       prices). At activation it joins behind whatever is displayed at its price by then, stands
-       behind a better price that appeared meanwhile with nothing ahead at its own, or is rejected
-       if the opposite side has reached it. A taker trading at the old best price fills it first, up
-       to the trade's size, at its own price. Run with both queue models at 300 ms, lifetimes of 300
-       and 60 s, 10 USDT (`results/h004_explore/fills_improve/`). This is how a maker following H-003
-       would actually quote: whether being first in a wide spread is paid or adversely selected.
+   6b. Bounds and sensitivity *(done 2026-11-25, `results/h004_explore/fills_grid/`)*: a trade through the
+       order's price now fills it only up to that trade's size, and `--queue optimistic` credits every
+       fall of the displayed size not explained by trades to the queue ahead (the pessimistic model
+       credits it only as far as the display forces). Both models at latencies of 100, 300 and 1,000 ms,
+       lifetimes of 60, 300 and 1,800 s and sizes of 10 and 100 USDT (24 runs).
+       Findings (medians over pairs with 30 fills on 5 days; all orders / orders decided at half-spreads
+       of at least 80 bp):
+       - The queue model hardly matters: the two bounds differ by at most 0.6 bp. What happens to the
+         queue in front of the order through cancellations does not decide its fills.
+       - Latency between 100 and 1,000 ms hardly matters either (within 0.3 bp on all orders; on wide-
+         spread orders within 2.1 bp, except a 60 s lifetime, where 1 s costs 6.6 bp against 100–300 ms).
+         Being faster would not change the result at these horizons.
+       - Lifetimes of 60 / 300 / 1,800 s fill 3.1% / 11.4% / 37.3% of orders (wide: 7.1% / 16.0% / 41.4%).
+         Fills earn −28.5 / −27.4 / −31.0 bp (wide: −8.0 / −24.1 / −20.5 bp), always 12–17 bp below the
+         average trade (wide: 40–49 bp below).
+       - Orders of 100 USDT are filled only by larger takers and do far worse: −47 to −49 bp (wide: −56 to
+         −86 bp), 31–37 bp below the average trade (wide: 97–114 bp below).
+       - Closing across the spread 60 s later: −58 to −64 bp (wide: −131 to −139 bp).
+   6c. Stepping inside the spread *(done 2026-11-25, `results/h004_explore/fills_improve/`)*: `--improve-
+       ticks 1` prices each order one tick better than the best price at the decision, where the spread
+       leaves room, so that it stands alone in front instead of at the back (the tick of each pair is the
+       smallest gap between its displayed prices). At activation it joins behind whatever is displayed at
+       its price by then, stands behind a better price that appeared meanwhile with nothing ahead at its
+       own, or is rejected if the opposite side has reached it. A taker trading at the old best price
+       fills it first, up to the trade's size, at its own price. Both queue models at 300 ms, lifetimes of
+       300 and 60 s, 10 USDT.
+       Findings (both queue models alike):
+       - All orders: 16.9% filled within 300 s (5.0% within 60 s); fills −23.2 bp (−19.8 bp), 4–9 bp
+         better than at the back of the queue; closed across the spread −46.6 bp (−45.5 bp).
+       - Wide spreads: 18.5% filled within 300 s (9.2% within 60 s); fills +4.1 bp (+10.8 bp) against the
+         mid 60 s later, the only positive cells so far, yet 27 bp (11 bp) below the average wide-spread
+         trade; closed across the spread −125 bp (−124 bp).
+       - A maker that steps in front of a wide spread earns a few bp against the mid. Whether that is
+         money depends entirely on getting out without crossing the spread.
+   6d. Round trips *(this step)*: `python -m mmlab.execution_simulator.round_trip` takes the entries of 6c
+       and closes every piece of every entry fill on its own: first passively, with an exit order on the
+       other side one tick inside the spread, decided at the fill and kept for a while; whatever is still
+       open then, or a piece whose exit order cannot be placed, across the spread at the best opposite
+       price (taker fee). No netting between pieces. Per pair: the share closed passively, the holding
+       time, the net and gross P&L per unit of entry value after the maker fee on both passive legs and
+       the taker fee on crossed parts, and the net P&L per day in USDT. Entries kept 60 or 300 s, exits
+       300 or 1,800 s (`results/h004_explore/round_trips/`). This is the first estimate of what quoting
+       wide spreads would earn, not a test.
