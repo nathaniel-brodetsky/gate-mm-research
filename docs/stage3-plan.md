@@ -1,7 +1,8 @@
 # Stage 3 — Research program
 
 Status: started 2026-11-24. Owner's brief: run every hypothesis and every method we have, record every
-result. No orders, no keys: research on public data only.
+result. No orders, no keys: research on public data only. Spot market making concluded 2026-11-25
+([report](stage3-report.md)); the next direction is the owner's choice.
 
 ## Rules that keep many tests honest
 
