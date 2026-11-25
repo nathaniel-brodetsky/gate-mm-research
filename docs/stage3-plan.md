@@ -300,10 +300,20 @@ result. No orders, no keys: research on public data only.
          queue: it goes to orders that were there before. The queue model is pessimistic, so this is
          one bound. Computed with the first version of the engine, in which a trade through the
          price filled the whole order; at 10 USDT this changes little.
-   6b. Bounds and sensitivity *(this step)*: a trade through the order's price now fills it only up to
-       that trade's size, and `--queue optimistic` credits every fall of the displayed size not
-       explained by trades to the queue ahead (the pessimistic model credits it only as far as the
-       display forces). The grid runs both models at latencies of 100, 300 and 1,000 ms, lifetimes of
-       60, 300 and 1,800 s and sizes of 10 and 100 USDT (24 runs, `results/h004_explore/fills_grid/`).
-       If even the optimistic bound leaves wide-spread fills negative, H-003's positive theta is not
-       available to a new maker on these pairs, whatever the November test says.
+   6b. Bounds and sensitivity *(run 2026-11-25, `results/h004_explore/fills_grid/`; findings with 6c)*: a
+       trade through the order's price now fills it only up to that trade's size, and `--queue optimistic`
+       credits every fall of the displayed size not explained by trades to the queue ahead (the
+       pessimistic model credits it only as far as the display forces). The grid runs both models at
+       latencies of 100, 300 and 1,000 ms, lifetimes of 60, 300 and 1,800 s and sizes of 10 and 100 USDT
+       (24 runs, `results/h004_explore/fills_grid/`). If even the optimistic bound leaves wide-spread
+       fills negative, H-003's positive theta is not available to a new maker on these pairs, whatever the
+       November test says.
+   6c. Stepping inside the spread *(this step)*: `--improve-ticks 1` prices each order one tick better
+       than the best price at the decision, where the spread leaves room, so that it stands alone in
+       front instead of at the back (the tick of each pair is the smallest gap between its displayed
+       prices). At activation it joins behind whatever is displayed at its price by then, stands
+       behind a better price that appeared meanwhile with nothing ahead at its own, or is rejected
+       if the opposite side has reached it. A taker trading at the old best price fills it first, up
+       to the trade's size, at its own price. Run with both queue models at 300 ms, lifetimes of 300
+       and 60 s, 10 USDT (`results/h004_explore/fills_improve/`). This is how a maker following H-003
+       would actually quote: whether being first in a wide spread is paid or adversely selected.

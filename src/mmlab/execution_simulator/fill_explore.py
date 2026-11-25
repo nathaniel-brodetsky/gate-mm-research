@@ -36,7 +36,7 @@ import polars as pl
 from numpy.typing import NDArray
 
 from mmlab.evaluation.h003 import MAKER_FEE, MIN_DAYS, MIN_TRADES, THRESHOLD_BP, eligible, states
-from mmlab.execution_simulator.queue import Book, Fill, Order, Trades, place, simulate
+from mmlab.execution_simulator.queue import Book, Fill, Order, Trades, place, simulate, tick_size
 from mmlab.feature_engineering.asof_activity import epoch_s
 from mmlab.microstructure.markouts import in_period
 from mmlab.microstructure.quote_pause import EXPLORATION_END
@@ -150,6 +150,7 @@ def explore_pair(
     latency_ms: int,
     size: float,
     queue: str = "pessimistic",
+    improve_ticks: int = 0,
 ) -> tuple[str, dict[str, Any] | None]:
     trades = pl.read_parquet(ds / "trades" / f"{pair}.parquet")
     tob = pl.read_parquet(ds / "tob" / f"{pair}.parquet")
@@ -164,9 +165,11 @@ def explore_pair(
     book = Book.from_tob(tob)
     tr = Trades.from_frame(trades)
     t = decision_times(start, end, every_s, horizon_s)
+    tick = tick_size(book) if improve_ticks else 0.0
+    lat, hor = latency_ms * 1000, horizon_s * 1_000_000
     orders = sorted(
-        place(book, t, 1, size, latency_ms * 1000, horizon_s * 1_000_000)
-        + place(book, t, -1, size, latency_ms * 1000, horizon_s * 1_000_000),
+        place(book, t, 1, size, lat, hor, improve_ticks, tick)
+        + place(book, t, -1, size, lat, hor, improve_ticks, tick),
         key=lambda o: (o.act_us, o.decided_us, o.side),
     )
     fills = simulate(book, tr, orders, optimistic=queue == "optimistic")
@@ -175,6 +178,7 @@ def explore_pair(
     q = (book.ask[k] - book.bid[k]) / (book.ask[k] + book.bid[k])
     wide = np.round(q * 1e4, 6) >= THRESHOLD_BP
     res = summarize_orders(orders, wide, fill_markouts(book, orders, fills), theta_trades)
+    res["tick"] = tick
     return pair, res
 
 
@@ -189,8 +193,9 @@ def explore(
     size: float = SIZE_USDT,
     workers: int = 1,
     queue: str = "pessimistic",
+    improve_ticks: int = 0,
 ) -> dict[str, Any]:
-    args = [(ds, p, start, end, every_s, horizon_s, latency_ms, size, queue) for p in pairs]
+    args = [(ds, p, start, end, every_s, horizon_s, latency_ms, size, queue, improve_ticks) for p in pairs]
     if workers > 1:
         with ProcessPoolExecutor(max_workers=workers) as ex:
             done = list(ex.map(explore_pair, *zip(*args, strict=True)))
@@ -203,6 +208,7 @@ def explore(
         "latency_ms": latency_ms,
         "size_usdt": size,
         "queue": queue,
+        "improve_ticks": improve_ticks,
         "pairs": {p: r for p, r in done if r is not None},
         "too_thin": [p for p, r in done if r is None],
     }
@@ -240,10 +246,15 @@ def _m(xs: Sequence[float], fmt: str) -> str:
     return format(statistics.median(xs), fmt) if xs else "n/a"
 
 
+def _placement(res: Mapping[str, Any]) -> str:
+    k = int(res.get("improve_ticks", 0))
+    return f"{k} tick(s) inside the spread" if k else "at the back of the queue"
+
+
 def summarize(res: Mapping[str, Any]) -> str:
     pairs = res["pairs"]
     lines = [
-        f"virtual orders at the back of the queue, {res['period'][0]} .. {res['period'][1]}: every "
+        f"virtual orders {_placement(res)}, {res['period'][0]} .. {res['period'][1]}: every "
         f"{res['every_s']} s on both sides, {res['size_usdt']:g} USDT, latency {res['latency_ms']} ms, "
         f"cancelled after {res['horizon_s']} s, {res.get('queue', 'pessimistic')} queue; {len(pairs)} pairs; "
         "exploration, no inference",
@@ -267,9 +278,10 @@ def summarize(res: Mapping[str, Any]) -> str:
 
 def compact(res: Mapping[str, Any]) -> str:
     """One line per run: settings, then per subset the fill rate and the median thetas in bp."""
+    k = int(res.get("improve_ticks", 0))
     head = (
         f"{res.get('queue', 'pessimistic'):11} {res['latency_ms']:5d} ms {res['horizon_s']:5d} s "
-        f"{res['size_usdt']:5g} USDT"
+        f"{res['size_usdt']:5g} USDT" + (f" +{k} tick" if k else "")
     )
     parts = []
     for subset in ("all", "q80"):
@@ -292,6 +304,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     p.add_argument("--latency-ms", type=int, default=LATENCY_MS)
     p.add_argument("--size-usdt", type=float, default=SIZE_USDT)
     p.add_argument("--queue", choices=["pessimistic", "optimistic"], default="pessimistic")
+    p.add_argument(
+        "--improve-ticks", type=int, default=0, help="price orders this many ticks inside the spread"
+    )
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--out", required=True)
     a = p.parse_args(argv)
@@ -311,6 +326,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         a.size_usdt,
         a.workers,
         a.queue,
+        a.improve_ticks,
     )
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)

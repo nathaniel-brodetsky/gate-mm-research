@@ -115,3 +115,9 @@ def test_explore_pair_and_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]
     assert line.startswith("optimistic    300 ms   300 s    10 USDT | all: filled ")
     assert "| q80: filled" in line
     assert "fills      n/a" in line  # one fill in the small dataset: below 30 fills on 5 days
+    assert fe.main([*argv, "--improve-ticks", "1", "--out", str(out)]) == 0
+    doc = json.loads(out.read_text())
+    assert doc["improve_ticks"] == 1
+    assert doc["pairs"]["A_USDT"]["tick"] == pytest.approx(2.0)  # 99 / 101 / 149 / 151: gaps of 2
+    assert "1 tick(s) inside the spread" in capsys.readouterr().out
+    assert fe.compact(doc).split("|")[0].rstrip().endswith("10 USDT +1 tick")

@@ -46,6 +46,8 @@ realized spread by the as-of state before the trade (stage 3, step 4a).
 fills of virtual orders at the back of the queue (stage 3, step 6a).
 `h004_explore/fills_grid/` holds the same with `--queue`, `--latency-ms`, `--horizon-s` and `--size-usdt`
 varied (step 6b); file names give the settings.
+`h004_explore/fills_improve/` holds the same with `--improve-ticks 1`: orders one tick inside the spread
+(step 6c).
 
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.

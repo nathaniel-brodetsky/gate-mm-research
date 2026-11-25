@@ -21,6 +21,9 @@ on a price touch; it is filled only by archived trades, after the displayed queu
   trades at the price since the last look came from ahead). The order's own presence changes nothing
   in the archive.
 - The order lives `horizon` after activation; whatever is unfilled then is cancelled.
+- Improving: with `improve_ticks` = k the order is priced k ticks better than the best price at the
+  decision (inside the spread), where the spread leaves room. Nobody was displayed there at the
+  decision; at activation it joins behind whatever is displayed at its price by then, or stands alone.
 """
 
 from __future__ import annotations
@@ -33,7 +36,7 @@ from numpy.typing import NDArray
 
 from mmlab.microstructure.conditional import book_table
 
-REL_EPS = 1e-12  # prices are equal if they differ by less than this, relative
+REL_EPS = 1e-9  # prices are equal if they differ by less than this, relative (ticks are >= 1e-6 of price)
 BATCH_US = 100_000
 
 
@@ -99,10 +102,28 @@ def _same(a: float, b: float) -> bool:
     return abs(a - b) <= REL_EPS * abs(b)
 
 
+def tick_size(book: Book) -> float:
+    """Price increment of a pair: the smallest gap between distinct displayed prices."""
+    prices = np.unique(np.concatenate([book.bid[np.isfinite(book.bid)], book.ask[np.isfinite(book.ask)]]))
+    if prices.size < 2:
+        raise ValueError("fewer than two distinct prices: no tick size")
+    gaps = np.diff(prices)
+    return float(gaps[gaps > REL_EPS * prices[1:]].min())
+
+
 def place(
-    book: Book, decide_us: NDArray[np.int64], side: int, size_quote: float, latency_us: int, horizon_us: int
+    book: Book,
+    decide_us: NDArray[np.int64],
+    side: int,
+    size_quote: float,
+    latency_us: int,
+    horizon_us: int,
+    improve_ticks: int = 0,
+    tick: float = 0.0,
 ) -> list[Order]:
     """Orders on one side at the given decision times (sorted); skipped where they cannot be placed."""
+    if improve_ticks and tick <= 0:
+        raise ValueError("improving needs a positive tick size")
     known = np.searchsorted(book.avail, decide_us, side="right") - 1
     act_us = ((decide_us + latency_us) // BATCH_US + 1) * BATCH_US
     act = np.searchsorted(book.avail, act_us, side="right") - 1
@@ -113,19 +134,22 @@ def place(
     for t, ta, i, j in zip(decide_us.tolist(), act_us.tolist(), known.tolist(), act.tolist(), strict=True):
         if i < 0 or not book.ok[i] or not book.ok[j]:
             continue
-        p = float(px[i])
+        p = float(px[i]) - side * improve_ticks * tick
+        if improve_ticks and (side * (p - float(opp[i])) <= 0 or _same(p, float(opp[i]))):
+            continue  # the spread at the decision leaves no room inside it
         if (
             not np.isfinite(p)
             or not np.isfinite(opp[j])
-            or (side == 1 and opp[j] >= p)
-            or (side == -1 and opp[j] <= p)
+            or side * (p - float(opp[j])) <= 0
+            or _same(p, float(opp[j]))
         ):
             continue  # no price, or post-only would reject it
         best = float(px[j])
         if np.isfinite(best) and _same(best, p):
             ahead = float(qty[j])
         elif np.isfinite(best) and (best - p) * side < 0:
-            ahead = float(qty[i])  # a better price stands in front; our level was last seen at the decision
+            # a better price stands in front; our level was last seen at the decision (empty if improving)
+            ahead = 0.0 if improve_ticks else float(qty[i])
         else:
             ahead = 0.0  # the level is gone: the order is alone at its price
         out.append(Order(side, p, size_quote / p, t, ta, ta + horizon_us, ahead))

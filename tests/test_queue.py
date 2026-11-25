@@ -184,9 +184,10 @@ def _reference(
     return sorted(out, key=lambda r: (r[1], r[0]))
 
 
+@pytest.mark.parametrize("improve", [0, 1])
 @pytest.mark.parametrize("optimistic", [False, True])
 @pytest.mark.parametrize("seed", range(12))
-def test_engine_matches_the_per_order_reference(seed: int, optimistic: bool) -> None:
+def test_engine_matches_the_per_order_reference(seed: int, optimistic: bool, improve: int) -> None:
     rng = np.random.default_rng(seed)
     n = 400
     times = np.round(np.cumsum(rng.uniform(0.05, 2.0, n)), 1)  # states on 100 ms batch ends
@@ -216,7 +217,8 @@ def test_engine_matches_the_per_order_reference(seed: int, optimistic: bool) -> 
     decide[::7] = decide[::7] // 100_000 * 100_000 - 300_000  # some orders join exactly at a batch edge
     decide = np.sort(decide)
     orders = sorted(
-        qu.place(b, decide, 1, 50.0, 300_000, 20 * S) + qu.place(b, decide, -1, 50.0, 300_000, 20 * S),
+        qu.place(b, decide, 1, 50.0, 300_000, 20 * S, improve, 0.5)
+        + qu.place(b, decide, -1, 50.0, 300_000, 20 * S, improve, 0.5),
         key=lambda o: (o.act_us, o.decided_us, o.side),
     )
     got = sorted(run(b, t, orders, optimistic), key=lambda r: (r[1], r[0]))
@@ -240,3 +242,58 @@ def test_optimistic_queue_does_not_count_trades_as_cancels() -> None:
     hidden = book([*BASE, (2.0, 99.0, 100.5, 5.0, 1.0, True), (3.0, 99.0, 101.0, 5.0, 1.0, True)])
     # 101 was shown with 4, hidden behind 100.5, then shown with 1: 3 cancelled, all from ahead
     assert run(hidden, trades([(3.5, 101.0, 1.5, 1)]), sell_at(hidden), optimistic=True) == [(0, 3.5, 0.5)]
+
+
+def test_tick_size() -> None:
+    b = book(
+        [
+            (0.0, 0.1234, 0.1237, 1, 1, True),
+            (1.0, 0.1233, 0.1236, 1, 1, True),
+            (2.0, 0.1233, 0.1240, 1, 1, True),
+        ]
+    )
+    assert qu.tick_size(b) == pytest.approx(0.0001)
+    with pytest.raises(ValueError, match="no tick size"):
+        qu.tick_size(book([(0.0, np.nan, 1.0, 1, 1, False)]))
+
+
+def test_improving_orders_stand_inside_the_spread() -> None:
+    b = book(BASE)  # 99 / 101, tick 0.5
+    sell = qu.place(b, np.array([S]), 1, 100.5, 300_000, 100 * S, improve_ticks=1, tick=0.5)
+    buy = qu.place(b, np.array([S]), -1, 99.5, 300_000, 100 * S, improve_ticks=1, tick=0.5)
+    assert (sell[0].price, sell[0].ahead, buy[0].price, buy[0].ahead) == (100.5, 0.0, 99.5, 0.0)
+    # alone in front: a buy at the old ask fills it up to the trade's size, at its own price
+    t = trades([(2.0, 101.0, 0.4, 1), (3.0, 101.0, 2.0, 1)])
+    assert run(b, t, sell) == [(0, 2.0, 0.4), (0, 3.0, 0.6)]
+    narrow = book([(0.0, 100.0, 100.5, 1, 1, True)])
+    assert qu.place(narrow, np.array([S]), 1, 100.0, 300_000, S, improve_ticks=1, tick=0.5) == []  # no room
+    two = qu.place(narrow, np.array([S]), 1, 100.0, 300_000, S, improve_ticks=2, tick=0.25)
+    assert two == []  # 100.5 - 2 x 0.25 = 100.0 is the bid itself
+    joined = book([(0.0, 99.0, 101.0, 5, 3, True), (1.4, 99.0, 100.5, 5, 2, True)])
+    assert qu.place(joined, np.array([S]), 1, 100.5, 300_000, S, improve_ticks=1, tick=0.5)[0].ahead == 2.0
+    beaten = book([(0.0, 99.0, 101.0, 5, 3, True), (1.4, 99.0, 100.0, 5, 2, True)])
+    assert qu.place(beaten, np.array([S]), 1, 100.5, 300_000, S, improve_ticks=1, tick=0.5)[0].ahead == 0.0
+    crossed = book([(0.0, 99.0, 101.0, 5, 3, True), (1.4, 100.5, 102.0, 5, 2, True)])
+    assert qu.place(crossed, np.array([S]), 1, 100.5, 300_000, S, improve_ticks=1, tick=0.5) == []
+    with pytest.raises(ValueError, match="positive tick"):
+        qu.place(b, np.array([S]), 1, 100.5, 300_000, S, improve_ticks=1)
+
+
+def test_float_noise_in_an_improved_price_still_matches_the_archive() -> None:
+    tick = 0.1235 - 0.1234  # 9.999999999998899e-05
+    b = book([(0.0, 0.1230, 0.1235, 5, 3, True), (1.4, 0.1230, 0.1234, 5, 2, True)])
+    o = qu.place(b, np.array([S]), 1, 0.1234, 300_000, 100 * S, improve_ticks=1, tick=tick)
+    assert o[0].ahead == 2.0  # 0.1235 - tick is the archive's 0.1234: joined behind the 2 shown
+
+
+def test_float_noise_guards() -> None:
+    t = 0.6 - 0.5  # a tick measured on another gap: 0.2 - t lands 3e-17 above 0.1
+    assert 0.2 - t > 0.1
+    # no room at the decision (the improved price is the bid), even if the bid moves away later
+    away = book([(0.0, 0.1, 0.2, 1, 1, True), (1.4, 0.05, 0.2, 1, 1, True)])
+    assert qu.place(away, np.array([S]), 1, 0.1, 300_000, S, improve_ticks=1, tick=t) == []
+    # room at the decision, but at activation the bid has come up to the improved price: post-only
+    up = book([(0.0, 0.05, 0.2, 1, 1, True), (1.4, 0.1, 0.2, 1, 1, True)])
+    assert qu.place(up, np.array([S]), 1, 0.1, 300_000, S, improve_ticks=1, tick=t) == []
+    noisy = book([(0.0, 0.1, 0.2, 1, 1, True), (1.0, 0.2 - t, 0.3, 1, 1, True)])
+    assert qu.tick_size(noisy) == pytest.approx(0.1)  # 0.1 and 0.1 + 3e-17 are one price
