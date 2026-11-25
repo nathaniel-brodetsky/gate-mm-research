@@ -242,6 +242,10 @@ result. No orders, no keys: research on public data only. Spot market making con
    Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.
+   3b. Topological features in the lab *(written 2026-11-25, [topology-plan.md](topology-plan.md))*:
+       `python -m mmlab.topology.regime_lab` on synthetic mids with known regimes (volatility,
+       reversion against momentum, jumps, cycles), the swing and Rips diagrams of trailing windows
+       against seven simple statistics, with a rule written before the run.
 4. Feature library on the archive: quoted spread, imbalance, depth (if built), volatility, trade flow
    and its sign autocorrelation, time since the last trade, price impact per unit volume (Kyle's
    lambda), and topological features if step 3 passes.

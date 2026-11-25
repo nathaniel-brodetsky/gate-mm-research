@@ -51,6 +51,10 @@ varied (step 6b); file names give the settings.
 `h004_explore/round_trips/` holds `python -m mmlab.execution_simulator.round_trip data/processed/U001`
 with entry and exit lifetimes varied: round trips of orders one tick inside the spread (step 6d).
 
+`topology/regime_lab.json` is `python -m mmlab.topology.regime_lab` (stage 3, step 3b): per scenario
+and window, the test AUC of the baselines, of topology and of both, the gain with its 99% interval,
+AUC by time since the switch, single-feature AUCs, and the decision by the rule written before the run.
+
 `perp_archive/` holds `python -m mmlab.data_ingestion.gate_archive_map summary` on the scans of the
 order book archive (stage 4, step 1): `futures_orderbooks.csv` for futures BTC_USDT and GPS_USDT,
 `spot_control.csv` for spot BTC_USDT; the raw scans stay in `data/interim/archive_map/`.
