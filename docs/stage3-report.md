@@ -145,9 +145,9 @@ added in this stage:
 | `mmlab.microstructure.quote_pause`, `state_explore` | explorations of pauses and of the state before a trade |
 | `mmlab.execution_simulator.queue`, `fill_explore`, `round_trip` | queue-aware fills, fill markouts, round trips |
 
-## 8. Addendum 2026-11-25: topological features
+## 8. Addenda 2026-11-25
 
-Step 3b of the plan, skipped before this report, was run in the synthetic lab
+**Topological features.** Step 3b of the plan, skipped before this report, was run in the synthetic lab
 ([topology-plan.md](topology-plan.md), `results/topology/regime_lab.json`): persistence diagrams of
 trailing price windows (swings and Rips loops of the delay embedding) against seven simple statistics,
 on regimes with known switches. By the rule written before the run they fail: for reverting against
@@ -155,3 +155,9 @@ continuing moves they add nothing (AUC gain −0.001 and +0.002 at 60 and 300 s)
 +0.012, below the 0.02 required, and they see no switch sooner; in the cycle control they add +0.014
 and +0.040, so they work where there is a loop to see. None of the conclusions above changes.
 Modules: `mmlab.feature_engineering.window_stats`, `mmlab.topology.persistence`, `regime_lab`.
+
+**Lead-lag from BTC** (step 3c, [leadlag-plan.md](leadlag-plan.md),
+`results/h004_explore/leadlag_btc.json`): not quoting while spot BTC_USDT has moved more than 3 bp the
+taker's way gains at most +0.24 bp for the median pair; even knowing BTC's next minute gains +2.02 bp,
+below the 3 bp the rule required. The adverse selection on these pairs does not come from BTC's moves.
+Modules: `mmlab.market_data.reference_grid`, `mmlab.microstructure.leadlag_explore`.

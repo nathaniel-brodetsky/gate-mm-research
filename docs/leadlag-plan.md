@@ -1,6 +1,6 @@
 # Lead-lag from the wider market (stage 3, step 3c)
 
-Status: written 2026-11-25; not yet run.
+Status: closed 2026-11-25 by its rule (findings at the end).
 
 ## Why
 
@@ -41,3 +41,27 @@ on Gate, whose trades archive is complete. No other venue's data is used.
 
 If the ceiling is open but no as-of lag qualifies, BTC moves too fast for a maker 1 s behind; other
 references (ETH_USDT, the same token on a liquid venue) would be the owner's decision.
+
+## Findings (2026-11-25, `results/h004_explore/leadlag_btc.json`)
+
+Exploration period, research pairs; effect of not quoting while BTC's signed move exceeds 3 bp,
+medians over pairs [archive].
+
+| feature | all trades (24 pairs, theta −10.45 bp): kept, gain | H-003 subset (20 pairs, theta +26.55 bp): kept, gain |
+|---|---|---|
+| ref_1s | 0.996, +0.03 bp (16/24 improved) | 0.997, +0.05 bp (12/20) |
+| ref_5s | 0.977, +0.04 bp (13/24) | 0.981, +0.58 bp (13/20) |
+| ref_10s | 0.952, +0.04 bp (14/24) | 0.964, +0.36 bp (11/20) |
+| ref_30s | 0.873, +0.24 bp (14/24) | 0.894, −0.32 bp (8/20) |
+| ref_60s | 0.807, +0.17 bp (14/24) | 0.834, −1.29 bp (7/20) |
+| ex post, next 60 s | 0.813, +2.02 bp (20/24) | 0.830, +5.71 bp (16/20) |
+
+- **The rule closes lead-lag from BTC.** Even knowing BTC's next minute, not quoting the 19% of the
+  volume when BTC then moved the taker's way gains 2.02 bp for the median pair on all trades, below
+  the 3 bp ceiling. What BTC did before the trade is worth at most 0.24 bp; no as-of lag qualifies on
+  either subset.
+- The adverse selection on these pairs does not come from BTC's moves; more likely from each token's
+  own flow, news or its price on other venues. Testing the last needs other venues' data: the owner's
+  decision.
+- On wide spreads the ex-post ceiling is larger (+5.71 bp), but signals known before the trade give
+  at most +0.58 bp there, and the longer lags lower theta.
