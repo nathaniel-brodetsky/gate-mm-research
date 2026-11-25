@@ -1,0 +1,590 @@
+{
+ "config": {
+  "paths_per_scenario": 80,
+  "seed": 20261125,
+  "length_s": 14400,
+  "every_s": 20,
+  "warmup_s": 300,
+  "windows_s": [
+   60,
+   300
+  ],
+  "embed_step_s": {
+   "60": 1,
+   "300": 5
+  },
+  "sigma_ticks": 0.35,
+  "mean_duration_s": 900.0,
+  "vol_factor": 1.5,
+  "phi": 0.3,
+  "ema_half_life_s": 30.0,
+  "jump_prob": 0.005,
+  "jump_share": 0.3,
+  "cycle_s": 40.0,
+  "cycle_share": 0.1,
+  "swing_ticks": 2.0,
+  "l2": 1.0,
+  "boots": 1000,
+  "baselines_only": false,
+  "gudhi": "3.13.0"
+ },
+ "results": {
+  "volatility": {
+   "60": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.4875,
+    "auc": {
+     "baselines": 0.9463,
+     "topology": 0.8935,
+     "both": 0.9483
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.9206,
+     "range": 0.7813,
+     "variance_ratio": 0.6849,
+     "block_autocorr": 0.5466,
+     "efficiency": 0.5043,
+     "max_share": 0.5147,
+     "change_share": 0.9006,
+     "swings_2_ticks": 0.7882,
+     "swing_entropy": 0.6894,
+     "swing_landscape_l1": 0.8821,
+     "rips_h0_total": 0.5911,
+     "rips_h1_total": 0.6199,
+     "rips_h1_longest": 0.5701,
+     "rips_h1_landscape_l1": 0.586
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 971,
+      "baselines": 0.1985,
+      "topology": 0.2547,
+      "both": 0.1954
+     },
+     {
+      "from_s": 30,
+      "points": 912,
+      "baselines": 0.7949,
+      "topology": 0.7466,
+      "both": 0.798
+     },
+     {
+      "from_s": 60,
+      "points": 1750,
+      "baselines": 0.9713,
+      "topology": 0.9217,
+      "both": 0.973
+     },
+     {
+      "from_s": 120,
+      "points": 4581,
+      "baselines": 0.9708,
+      "topology": 0.9183,
+      "both": 0.9725
+     },
+     {
+      "from_s": 300,
+      "points": 19986,
+      "baselines": 0.9723,
+      "topology": 0.918,
+      "both": 0.9742
+     }
+    ],
+    "gain": 0.002,
+    "gain_interval": [
+     0.0013,
+     0.0028
+    ]
+   },
+   "300": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.4875,
+    "auc": {
+     "baselines": 0.9202,
+     "topology": 0.9132,
+     "both": 0.9231
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.9172,
+     "range": 0.7393,
+     "variance_ratio": 0.6861,
+     "block_autocorr": 0.5129,
+     "efficiency": 0.5056,
+     "max_share": 0.6902,
+     "change_share": 0.9133,
+     "swings_2_ticks": 0.8645,
+     "swing_entropy": 0.7415,
+     "swing_landscape_l1": 0.8975,
+     "rips_h0_total": 0.5338,
+     "rips_h1_total": 0.5433,
+     "rips_h1_longest": 0.5101,
+     "rips_h1_landscape_l1": 0.5255
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 971,
+      "baselines": 0.0781,
+      "topology": 0.0874,
+      "both": 0.0759
+     },
+     {
+      "from_s": 30,
+      "points": 912,
+      "baselines": 0.1176,
+      "topology": 0.1252,
+      "both": 0.1154
+     },
+     {
+      "from_s": 60,
+      "points": 1750,
+      "baselines": 0.2134,
+      "topology": 0.2379,
+      "both": 0.2054
+     },
+     {
+      "from_s": 120,
+      "points": 4581,
+      "baselines": 0.8559,
+      "topology": 0.8426,
+      "both": 0.8658
+     },
+     {
+      "from_s": 300,
+      "points": 19986,
+      "baselines": 0.9999,
+      "topology": 0.9987,
+      "both": 1.0
+     }
+    ],
+    "gain": 0.0029,
+    "gain_interval": [
+     0.0005,
+     0.005
+    ]
+   }
+  },
+  "reversion": {
+   "60": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.4778,
+    "auc": {
+     "baselines": 0.5815,
+     "topology": 0.5412,
+     "both": 0.5807
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.5134,
+     "range": 0.5752,
+     "variance_ratio": 0.5317,
+     "block_autocorr": 0.5405,
+     "efficiency": 0.5744,
+     "max_share": 0.512,
+     "change_share": 0.5133,
+     "swings_2_ticks": 0.5275,
+     "swing_entropy": 0.5082,
+     "swing_landscape_l1": 0.528,
+     "rips_h0_total": 0.5049,
+     "rips_h1_total": 0.532,
+     "rips_h1_longest": 0.5364,
+     "rips_h1_landscape_l1": 0.5404
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 912,
+      "baselines": 0.4602,
+      "topology": 0.4718,
+      "both": 0.4595
+     },
+     {
+      "from_s": 30,
+      "points": 885,
+      "baselines": 0.5524,
+      "topology": 0.5423,
+      "both": 0.5449
+     },
+     {
+      "from_s": 60,
+      "points": 1672,
+      "baselines": 0.588,
+      "topology": 0.5438,
+      "both": 0.5819
+     },
+     {
+      "from_s": 120,
+      "points": 4393,
+      "baselines": 0.5536,
+      "topology": 0.508,
+      "both": 0.5502
+     },
+     {
+      "from_s": 300,
+      "points": 20338,
+      "baselines": 0.5936,
+      "topology": 0.5513,
+      "both": 0.5941
+     }
+    ],
+    "gain": -0.0008,
+    "gain_interval": [
+     -0.0029,
+     0.0015
+    ]
+   },
+   "300": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.4778,
+    "auc": {
+     "baselines": 0.6704,
+     "topology": 0.6089,
+     "both": 0.6723
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.5152,
+     "range": 0.666,
+     "variance_ratio": 0.6367,
+     "block_autocorr": 0.6118,
+     "efficiency": 0.6126,
+     "max_share": 0.5199,
+     "change_share": 0.5171,
+     "swings_2_ticks": 0.5634,
+     "swing_entropy": 0.5289,
+     "swing_landscape_l1": 0.5231,
+     "rips_h0_total": 0.5944,
+     "rips_h1_total": 0.5762,
+     "rips_h1_longest": 0.5324,
+     "rips_h1_landscape_l1": 0.5624
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 912,
+      "baselines": 0.3289,
+      "topology": 0.359,
+      "both": 0.3279
+     },
+     {
+      "from_s": 30,
+      "points": 885,
+      "baselines": 0.3527,
+      "topology": 0.3894,
+      "both": 0.3544
+     },
+     {
+      "from_s": 60,
+      "points": 1672,
+      "baselines": 0.4181,
+      "topology": 0.4476,
+      "both": 0.4185
+     },
+     {
+      "from_s": 120,
+      "points": 4393,
+      "baselines": 0.5922,
+      "topology": 0.5412,
+      "both": 0.5905
+     },
+     {
+      "from_s": 300,
+      "points": 20338,
+      "baselines": 0.7347,
+      "topology": 0.6568,
+      "both": 0.7374
+     }
+    ],
+    "gain": 0.0019,
+    "gain_interval": [
+     -0.0015,
+     0.0049
+    ]
+   }
+  },
+  "jumps": {
+   "60": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.5158,
+    "auc": {
+     "baselines": 0.7578,
+     "topology": 0.664,
+     "both": 0.7627
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.6055,
+     "range": 0.5607,
+     "variance_ratio": 0.5129,
+     "block_autocorr": 0.5043,
+     "efficiency": 0.5314,
+     "max_share": 0.7225,
+     "change_share": 0.6768,
+     "swings_2_ticks": 0.6031,
+     "swing_entropy": 0.5907,
+     "swing_landscape_l1": 0.6509,
+     "rips_h0_total": 0.5771,
+     "rips_h1_total": 0.5973,
+     "rips_h1_longest": 0.5394,
+     "rips_h1_landscape_l1": 0.5632
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 860,
+      "baselines": 0.3484,
+      "topology": 0.4229,
+      "both": 0.3544
+     },
+     {
+      "from_s": 30,
+      "points": 824,
+      "baselines": 0.6357,
+      "topology": 0.6022,
+      "both": 0.6459
+     },
+     {
+      "from_s": 60,
+      "points": 1578,
+      "baselines": 0.7575,
+      "topology": 0.6499,
+      "both": 0.757
+     },
+     {
+      "from_s": 120,
+      "points": 4218,
+      "baselines": 0.7756,
+      "topology": 0.6617,
+      "both": 0.78
+     },
+     {
+      "from_s": 300,
+      "points": 20720,
+      "baselines": 0.7762,
+      "topology": 0.6777,
+      "both": 0.7812
+     }
+    ],
+    "gain": 0.0049,
+    "gain_interval": [
+     0.0026,
+     0.0074
+    ]
+   },
+   "300": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.5158,
+    "auc": {
+     "baselines": 0.8322,
+     "topology": 0.7419,
+     "both": 0.8442
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.5789,
+     "range": 0.5255,
+     "variance_ratio": 0.5078,
+     "block_autocorr": 0.5011,
+     "efficiency": 0.5315,
+     "max_share": 0.8097,
+     "change_share": 0.771,
+     "swings_2_ticks": 0.6531,
+     "swing_entropy": 0.6339,
+     "swing_landscape_l1": 0.677,
+     "rips_h0_total": 0.5368,
+     "rips_h1_total": 0.5839,
+     "rips_h1_longest": 0.5696,
+     "rips_h1_landscape_l1": 0.5829
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 860,
+      "baselines": 0.1895,
+      "topology": 0.2509,
+      "both": 0.1703
+     },
+     {
+      "from_s": 30,
+      "points": 824,
+      "baselines": 0.2429,
+      "topology": 0.287,
+      "both": 0.2335
+     },
+     {
+      "from_s": 60,
+      "points": 1578,
+      "baselines": 0.3312,
+      "topology": 0.3793,
+      "both": 0.3273
+     },
+     {
+      "from_s": 120,
+      "points": 4218,
+      "baselines": 0.6981,
+      "topology": 0.6424,
+      "both": 0.7157
+     },
+     {
+      "from_s": 300,
+      "points": 20720,
+      "baselines": 0.9332,
+      "topology": 0.8223,
+      "both": 0.9441
+     }
+    ],
+    "gain": 0.012,
+    "gain_interval": [
+     0.0035,
+     0.0215
+    ]
+   }
+  },
+  "cycles": {
+   "60": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.5427,
+    "auc": {
+     "baselines": 0.765,
+     "topology": 0.7517,
+     "both": 0.7793
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.5026,
+     "range": 0.6182,
+     "variance_ratio": 0.7171,
+     "block_autocorr": 0.6951,
+     "efficiency": 0.5288,
+     "max_share": 0.5026,
+     "change_share": 0.5029,
+     "swings_2_ticks": 0.6072,
+     "swing_entropy": 0.646,
+     "swing_landscape_l1": 0.6198,
+     "rips_h0_total": 0.684,
+     "rips_h1_total": 0.5344,
+     "rips_h1_longest": 0.5187,
+     "rips_h1_landscape_l1": 0.5019
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 954,
+      "baselines": 0.3459,
+      "topology": 0.3443,
+      "both": 0.3337
+     },
+     {
+      "from_s": 30,
+      "points": 892,
+      "baselines": 0.6656,
+      "topology": 0.6611,
+      "both": 0.6749
+     },
+     {
+      "from_s": 60,
+      "points": 1709,
+      "baselines": 0.7825,
+      "topology": 0.7649,
+      "both": 0.7964
+     },
+     {
+      "from_s": 120,
+      "points": 4467,
+      "baselines": 0.7768,
+      "topology": 0.7587,
+      "both": 0.7892
+     },
+     {
+      "from_s": 300,
+      "points": 20178,
+      "baselines": 0.7846,
+      "topology": 0.7714,
+      "both": 0.8005
+     }
+    ],
+    "gain": 0.0143,
+    "gain_interval": [
+     0.0107,
+     0.0179
+    ]
+   },
+   "300": {
+    "train_points": 28200,
+    "test_points": 28200,
+    "test_share_regime_1": 0.5427,
+    "auc": {
+     "baselines": 0.8005,
+     "topology": 0.8085,
+     "both": 0.8408
+    },
+    "single_feature_auc": {
+     "realized_vol": 0.5118,
+     "range": 0.5368,
+     "variance_ratio": 0.7442,
+     "block_autocorr": 0.6756,
+     "efficiency": 0.5113,
+     "max_share": 0.5044,
+     "change_share": 0.5122,
+     "swings_2_ticks": 0.6814,
+     "swing_entropy": 0.7294,
+     "swing_landscape_l1": 0.7327,
+     "rips_h0_total": 0.5713,
+     "rips_h1_total": 0.5545,
+     "rips_h1_longest": 0.5755,
+     "rips_h1_landscape_l1": 0.5792
+    },
+    "auc_by_seconds_since_switch": [
+     {
+      "from_s": 0,
+      "points": 954,
+      "baselines": 0.1986,
+      "topology": 0.2095,
+      "both": 0.1687
+     },
+     {
+      "from_s": 30,
+      "points": 892,
+      "baselines": 0.2544,
+      "topology": 0.2481,
+      "both": 0.2193
+     },
+     {
+      "from_s": 60,
+      "points": 1709,
+      "baselines": 0.3532,
+      "topology": 0.3586,
+      "both": 0.3295
+     },
+     {
+      "from_s": 120,
+      "points": 4467,
+      "baselines": 0.696,
+      "topology": 0.709,
+      "both": 0.7295
+     },
+     {
+      "from_s": 300,
+      "points": 20178,
+      "baselines": 0.9072,
+      "topology": 0.9111,
+      "both": 0.9509
+     }
+    ],
+    "gain": 0.0403,
+    "gain_interval": [
+     0.0302,
+     0.0507
+    ]
+   }
+  }
+ },
+ "decision": {
+  "rule": "gain >= 0.02, 99% interval above 0, in reversion/jumps, any window",
+  "passes": false,
+  "cells": []
+ }
+}
