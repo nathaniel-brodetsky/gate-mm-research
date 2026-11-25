@@ -251,6 +251,11 @@ result. No orders, no keys: research on public data only. Spot market making con
        and +0.005/+0.012 for jumps (60/300 s) and sees no switch sooner; in the cycle control it adds
        +0.014/+0.040, so the features do see loops when there are any. Topological features are not
        built on the archive, and neither are depth snapshots for them.
+   3c. Lead-lag from the wider market *(written 2026-11-25, [leadlag-plan.md](leadlag-plan.md))*:
+       `python -m mmlab.market_data.reference_grid` builds a one-second as-of price grid of spot
+       BTC_USDT from Gate's deals; `python -m mmlab.microstructure.leadlag_explore` buckets theta by
+       BTC's move 1–60 s before the trade (as of 1 s before) and, as a ceiling, in the minute after
+       it, with a rule written before the run.
 4. Feature library on the archive: quoted spread, imbalance, depth (if built), volatility, trade flow
    and its sign autocorrelation, time since the last trade, price impact per unit volume (Kyle's
    lambda); topological features did not pass step 3b.

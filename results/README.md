@@ -51,6 +51,12 @@ varied (step 6b); file names give the settings.
 `h004_explore/round_trips/` holds `python -m mmlab.execution_simulator.round_trip data/processed/U001`
 with entry and exit lifetimes varied: round trips of orders one tick inside the spread (step 6d).
 
+`h004_explore/leadlag_btc.json` is `python -m mmlab.microstructure.leadlag_explore` (stage 3, step 3c)
+on `data/processed/U001` with the reference grid of spot BTC_USDT (`python -m
+mmlab.market_data.reference_grid`, August–October 2026): per pair, buckets of BTC's signed move before
+and (ex post) after each trade with theta, the effect of not quoting above 3 bp, and the screen with
+the decision of the rule written before the run.
+
 `topology/regime_lab.json` is `python -m mmlab.topology.regime_lab` (stage 3, step 3b): per scenario
 and window, the test AUC of the baselines, of topology and of both, the gain with its 99% interval,
 AUC by time since the switch, single-feature AUCs, and the decision by the rule written before the run.

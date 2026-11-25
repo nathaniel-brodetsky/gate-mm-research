@@ -119,13 +119,14 @@ def bucket_table(
     x: NDArray[np.float64],
     day: NDArray[np.int64],
     feats: Mapping[str, NDArray[np.float64]],
+    edges: Mapping[str, Sequence[float]] = EDGES,
 ) -> dict[str, dict[str, dict[str, float | int | None]]]:
     """Per feature and bucket: trades, active days, volume and theta (None without volume)."""
     out: dict[str, dict[str, dict[str, float | int | None]]] = {}
     for name, values in feats.items():
-        idx = bucket_index(values, EDGES[name])
+        idx = bucket_index(values, edges[name])
         out[name] = {}
-        for k, lab in enumerate(labels(EDGES[name])):
+        for k, lab in enumerate(labels(edges[name])):
             m = idx == k
             vol = float(v[m].sum())
             out[name][lab] = {
