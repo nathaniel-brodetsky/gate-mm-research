@@ -51,6 +51,10 @@ varied (step 6b); file names give the settings.
 `h004_explore/round_trips/` holds `python -m mmlab.execution_simulator.round_trip data/processed/U001`
 with entry and exit lifetimes varied: round trips of orders one tick inside the spread (step 6d).
 
+`perp_archive/` holds `python -m mmlab.data_ingestion.gate_archive_map summary` on the scans of the
+order book archive (stage 4, step 1): `futures_orderbooks.csv` for futures BTC_USDT and GPS_USDT,
+`spot_control.csv` for spot BTC_USDT; the raw scans stay in `data/interim/archive_map/`.
+
 `lab/realism.json` is `python -m mmlab.evaluation.lab realism data/processed/U001` on that calibration:
 real daily statistics ranked among synthetic periods.
 
