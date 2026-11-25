@@ -1,6 +1,6 @@
 # Topological features: the lab first (stage 3, step 3b)
 
-Status: lab written 2026-11-25; not yet run. This is the step of the stage 3 plan that was skipped
+Status: closed 2026-11-25 by its rule (findings at the end). This is the step of the stage 3 plan that was skipped
 after the quote pauses: "do topological features detect regime changes better and earlier than
 rolling volatility?" It is a question about a method, so it is answered on synthetic data with known
 regimes before any feature is computed on the archive (rule 1 of the stage 3 plan).
@@ -61,3 +61,33 @@ nothing; if topology fails even in cycles, the features are not doing what they 
 - Fails: topological features of single price windows are closed for regime detection at these
   scales. Other topology (Mapper, correlation networks across pairs) only with a concrete hypothesis,
   e.g. together with lead-lag from liquid markets.
+
+## Findings (2026-11-25, `results/topology/regime_lab.json`)
+
+80 paths per scenario, seed 20261125; test AUC on 40 paths per scenario [synthetic].
+
+| scenario | window | baselines | topology | both | gain [99% interval] |
+|---|---|---|---|---|---|
+| volatility | 60 s | 0.946 | 0.893 | 0.948 | +0.002 [+0.001, +0.003] |
+| volatility | 300 s | 0.920 | 0.913 | 0.923 | +0.003 [+0.001, +0.005] |
+| reversion | 60 s | 0.582 | 0.541 | 0.581 | −0.001 [−0.003, +0.002] |
+| reversion | 300 s | 0.670 | 0.609 | 0.672 | +0.002 [−0.002, +0.005] |
+| jumps | 60 s | 0.758 | 0.664 | 0.763 | +0.005 [+0.003, +0.007] |
+| jumps | 300 s | 0.832 | 0.742 | 0.844 | +0.012 [+0.004, +0.021] |
+| cycles | 60 s | 0.765 | 0.752 | 0.779 | +0.014 [+0.011, +0.018] |
+| cycles | 300 s | 0.800 | 0.808 | 0.841 | +0.040 [+0.030, +0.051] |
+
+- **The rule fails.** Where it matters to a maker, reverting against continuing moves, topology adds
+  nothing (−0.001 and +0.002). For jumps it adds a detectable +0.005 and +0.012, below 0.02.
+- **The features work.** In the control they are built for, a cycle, they add +0.014 and +0.040, and
+  at 300 s topology alone beats the baselines (0.808 against 0.800). Everywhere else topology alone is
+  weaker than the baselines. So the result is not a broken implementation: for these regimes the
+  variance ratio, autocorrelation and the largest change already carry what the diagrams see.
+- **Not earlier.** In the first 60 s after a switch, adding topology changes the AUC by −0.035 to
+  +0.010; no scenario is seen sooner.
+- The lab does not show that real markets have no structure that topology would see; it shows that
+  the regimes a maker cares about are visible to simple statistics at least as well.
+
+Closed: topological features of single price windows for regime detection at these scales; the order
+book depth snapshots planned for them are not built. Other topology (Mapper, networks across pairs)
+only with a concrete hypothesis.

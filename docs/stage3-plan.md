@@ -242,13 +242,18 @@ result. No orders, no keys: research on public data only. Spot market making con
    Synthetic market with known regime changes: do topological features (persistence of sliding-window
    embeddings of mid, spread and flow) detect them better and earlier than rolling volatility? Depth
    snapshots of the order book are built only if they do.
-   3b. Topological features in the lab *(written 2026-11-25, [topology-plan.md](topology-plan.md))*:
-       `python -m mmlab.topology.regime_lab` on synthetic mids with known regimes (volatility,
-       reversion against momentum, jumps, cycles), the swing and Rips diagrams of trailing windows
-       against seven simple statistics, with a rule written before the run.
+   3b. Topological features in the lab *(done 2026-11-25, `results/topology/regime_lab.json`,
+       [topology-plan.md](topology-plan.md))*: `python -m mmlab.topology.regime_lab` on synthetic mids
+       with known regimes (volatility, reversion against momentum, jumps, cycles), the swing and Rips
+       diagrams of trailing windows against seven simple statistics, with a rule written before the
+       run (a gain of at least 0.02 AUC with its 99% interval above 0, in reversion or jumps).
+       Findings: the rule fails. Adding topology changes the test AUC by −0.001/+0.002 for reversion
+       and +0.005/+0.012 for jumps (60/300 s) and sees no switch sooner; in the cycle control it adds
+       +0.014/+0.040, so the features do see loops when there are any. Topological features are not
+       built on the archive, and neither are depth snapshots for them.
 4. Feature library on the archive: quoted spread, imbalance, depth (if built), volatility, trade flow
    and its sign autocorrelation, time since the last trade, price impact per unit volume (Kyle's
-   lambda), and topological features if step 3 passes.
+   lambda); topological features did not pass step 3b.
    4a. Realized spread by as-of state *(done 2026-11-24, `results/h004_explore/state.json`)*: `python -m
        mmlab.microstructure.state_explore` cuts the trades of the exploration period into fixed buckets
        of five features known 1 s before the trade (`mmlab.feature_engineering.trade_state`):

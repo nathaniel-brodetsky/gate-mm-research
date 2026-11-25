@@ -144,3 +144,14 @@ added in this stage:
 | `mmlab.feature_engineering.asof_activity`, `trade_state` | as-of signals on a one-second grid and per trade |
 | `mmlab.microstructure.quote_pause`, `state_explore` | explorations of pauses and of the state before a trade |
 | `mmlab.execution_simulator.queue`, `fill_explore`, `round_trip` | queue-aware fills, fill markouts, round trips |
+
+## 8. Addendum 2026-11-25: topological features
+
+Step 3b of the plan, skipped before this report, was run in the synthetic lab
+([topology-plan.md](topology-plan.md), `results/topology/regime_lab.json`): persistence diagrams of
+trailing price windows (swings and Rips loops of the delay embedding) against seven simple statistics,
+on regimes with known switches. By the rule written before the run they fail: for reverting against
+continuing moves they add nothing (AUC gain −0.001 and +0.002 at 60 and 300 s), for jumps +0.005 and
++0.012, below the 0.02 required, and they see no switch sooner; in the cycle control they add +0.014
+and +0.040, so they work where there is a loop to see. None of the conclusions above changes.
+Modules: `mmlab.feature_engineering.window_stats`, `mmlab.topology.persistence`, `regime_lab`.
