@@ -1,0 +1,590 @@
+{
+ "period": [
+  "2026-08-01",
+  "2026-11-01"
+ ],
+ "every_s": 60,
+ "horizon_s": 1800,
+ "latency_ms": 300,
+ "size_usdt": 100.0,
+ "queue": "pessimistic",
+ "pairs": {
+  "SUKU_USDT": {
+   "all": {
+    "orders": 262292,
+    "orders_filled": 37671,
+    "filled_share_of_size": 0.07391686375280222,
+    "median_wait_s": 767.457865,
+    "fills": 116297,
+    "fill_days": 92,
+    "theta_fill": -0.006410742130113999,
+    "theta_exit": -0.009101734153873605,
+    "theta_trades": -0.002624662054746787
+   },
+   "q80": {
+    "orders": 534,
+    "orders_filled": 167,
+    "filled_share_of_size": 0.2160842643632959,
+    "median_wait_s": 224.884406,
+    "fills": 945,
+    "fill_days": 18,
+    "theta_fill": -0.010750691837080894,
+    "theta_exit": -0.021173788607459148,
+    "theta_trades": 0.0009274122886968423
+   }
+  },
+  "BAND_USDT": {
+   "all": {
+    "orders": 261617,
+    "orders_filled": 106867,
+    "filled_share_of_size": 0.21373818855544555,
+    "median_wait_s": 526.256082,
+    "fills": 533470,
+    "fill_days": 92,
+    "theta_fill": -0.004035745373210966,
+    "theta_exit": -0.005769574724887248,
+    "theta_trades": -0.0010425624361448638
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.011257558108492487
+   }
+  },
+  "NAVX_USDT": {
+   "all": {
+    "orders": 261858,
+    "orders_filled": 84764,
+    "filled_share_of_size": 0.1794417686254764,
+    "median_wait_s": 625.127171,
+    "fills": 398194,
+    "fill_days": 92,
+    "theta_fill": -0.006083236025040054,
+    "theta_exit": -0.011228548669227966,
+    "theta_trades": 0.0011026671877086634
+   },
+   "q80": {
+    "orders": 4455,
+    "orders_filled": 2134,
+    "filled_share_of_size": 0.34070120579573515,
+    "median_wait_s": 276.935875,
+    "fills": 13768,
+    "fill_days": 63,
+    "theta_fill": -0.00621578680740206,
+    "theta_exit": -0.014892087597327346,
+    "theta_trades": 0.0055372853883174636
+   }
+  },
+  "TEVA_USDT": {
+   "all": {
+    "orders": 262243,
+    "orders_filled": 97878,
+    "filled_share_of_size": 0.1753916807668689,
+    "median_wait_s": 567.6493755,
+    "fills": 404425,
+    "fill_days": 92,
+    "theta_fill": -0.014286380787482164,
+    "theta_exit": -0.026472099943493147,
+    "theta_trades": -0.0038219232854103252
+   },
+   "q80": {
+    "orders": 43937,
+    "orders_filled": 21273,
+    "filled_share_of_size": 0.3018256468204247,
+    "median_wait_s": 376.16161,
+    "fills": 108659,
+    "fill_days": 92,
+    "theta_fill": -0.013471312873158729,
+    "theta_exit": -0.027647449654226584,
+    "theta_trades": -0.003618323220472031
+   }
+  },
+  "PEOPLEFB_USDT": {
+   "all": {
+    "orders": 262300,
+    "orders_filled": 63496,
+    "filled_share_of_size": 0.044538148655867096,
+    "median_wait_s": 564.1503829999999,
+    "fills": 293922,
+    "fill_days": 89,
+    "theta_fill": -0.029983891444258986,
+    "theta_exit": -0.04424579498838629,
+    "theta_trades": 0.003332782751448165
+   },
+   "q80": {
+    "orders": 26633,
+    "orders_filled": 7092,
+    "filled_share_of_size": 0.06763438323622235,
+    "median_wait_s": 610.5928805,
+    "fills": 35133,
+    "fill_days": 75,
+    "theta_fill": -0.03608626293934733,
+    "theta_exit": -0.05835547119123017,
+    "theta_trades": 0.013759458679883556
+   }
+  },
+  "ZIX_USDT": {
+   "all": {
+    "orders": 262314,
+    "orders_filled": 22679,
+    "filled_share_of_size": 0.013357811572227827,
+    "median_wait_s": 480.817617,
+    "fills": 92249,
+    "fill_days": 71,
+    "theta_fill": -0.014660957765932372,
+    "theta_exit": -0.0295285625549566,
+    "theta_trades": 0.0004546327618761595
+   },
+   "q80": {
+    "orders": 17870,
+    "orders_filled": 2303,
+    "filled_share_of_size": 0.015317870682044207,
+    "median_wait_s": 814.99218,
+    "fills": 7065,
+    "fill_days": 38,
+    "theta_fill": -0.0227221291309546,
+    "theta_exit": -0.06078603417792615,
+    "theta_trades": 0.006550468687684633
+   }
+  },
+  "GMX_USDT": {
+   "all": {
+    "orders": 262252,
+    "orders_filled": 75280,
+    "filled_share_of_size": 0.1577214738122874,
+    "median_wait_s": 673.556697,
+    "fills": 251223,
+    "fill_days": 92,
+    "theta_fill": -0.004224345407102046,
+    "theta_exit": -0.00693717790206779,
+    "theta_trades": -0.0010477151336096445
+   },
+   "q80": {
+    "orders": 4,
+    "orders_filled": 2,
+    "filled_share_of_size": 0.5,
+    "median_wait_s": 162.5866245,
+    "fills": 17,
+    "fill_days": 2,
+    "theta_fill": -0.011168805154146366,
+    "theta_exit": -0.016880637125244756,
+    "theta_trades": 0.026331069536660527
+   }
+  },
+  "AIDOGE_USDT": {
+   "all": {
+    "orders": 262296,
+    "orders_filled": 105224,
+    "filled_share_of_size": 0.16711575873303938,
+    "median_wait_s": 695.538586,
+    "fills": 480356,
+    "fill_days": 92,
+    "theta_fill": -0.005846085053987869,
+    "theta_exit": -0.010644810883538938,
+    "theta_trades": 0.00027314209592953475
+   },
+   "q80": {
+    "orders": 476,
+    "orders_filled": 281,
+    "filled_share_of_size": 0.24743012051269794,
+    "median_wait_s": 606.064617,
+    "fills": 906,
+    "fill_days": 7,
+    "theta_fill": -0.0005473923464017118,
+    "theta_exit": -0.008624249426071161,
+    "theta_trades": 0.001866617848251435
+   }
+  },
+  "SUPER_USDT": {
+   "all": {
+    "orders": 262016,
+    "orders_filled": 106478,
+    "filled_share_of_size": 0.298761094399197,
+    "median_wait_s": 444.9926905,
+    "fills": 392118,
+    "fill_days": 92,
+    "theta_fill": -0.003927695244668208,
+    "theta_exit": -0.005783501827571172,
+    "theta_trades": -0.0014214917422166664
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.00012971983293767937
+   }
+  },
+  "BOS_USDT": {
+   "all": {
+    "orders": 262273,
+    "orders_filled": 82582,
+    "filled_share_of_size": 0.15421682269208267,
+    "median_wait_s": 612.3328280000001,
+    "fills": 382293,
+    "fill_days": 92,
+    "theta_fill": -0.009851965406288184,
+    "theta_exit": -0.019618316579977608,
+    "theta_trades": 0.0010512952829460401
+   },
+   "q80": {
+    "orders": 82788,
+    "orders_filled": 21574,
+    "filled_share_of_size": 0.13579971265484975,
+    "median_wait_s": 559.024486,
+    "fills": 105652,
+    "fill_days": 92,
+    "theta_fill": -0.006134506646669617,
+    "theta_exit": -0.018259238353198665,
+    "theta_trades": 0.004740997829084512
+   }
+  },
+  "IMU_USDT": {
+   "all": {
+    "orders": 262253,
+    "orders_filled": 97824,
+    "filled_share_of_size": 0.2648548683612771,
+    "median_wait_s": 518.225465,
+    "fills": 406915,
+    "fill_days": 92,
+    "theta_fill": -0.005663237508162818,
+    "theta_exit": -0.008493028368445406,
+    "theta_trades": -0.0021651776931029803
+   },
+   "q80": {
+    "orders": 256,
+    "orders_filled": 155,
+    "filled_share_of_size": 0.5230818316406249,
+    "median_wait_s": 106.609981,
+    "fills": 854,
+    "fill_days": 28,
+    "theta_fill": -0.006475649605532039,
+    "theta_exit": -0.011240743422192934,
+    "theta_trades": 0.004893481285168269
+   }
+  },
+  "MLN_USDT": {
+   "all": {
+    "orders": 262256,
+    "orders_filled": 91050,
+    "filled_share_of_size": 0.18625793989647518,
+    "median_wait_s": 599.837681,
+    "fills": 569635,
+    "fill_days": 92,
+    "theta_fill": -0.004667557518868576,
+    "theta_exit": -0.00754304283844719,
+    "theta_trades": -0.0008169557040164421
+   },
+   "q80": {
+    "orders": 469,
+    "orders_filled": 224,
+    "filled_share_of_size": 0.35332133688699363,
+    "median_wait_s": 156.46495,
+    "fills": 1572,
+    "fill_days": 43,
+    "theta_fill": 0.0005152671520910052,
+    "theta_exit": -0.005724256651167479,
+    "theta_trades": 0.003480252010102092
+   }
+  },
+  "ORCA_USDT": {
+   "all": {
+    "orders": 261604,
+    "orders_filled": 163959,
+    "filled_share_of_size": 0.5076423805972768,
+    "median_wait_s": 301.396183,
+    "fills": 601003,
+    "fill_days": 92,
+    "theta_fill": -0.0029373126102302475,
+    "theta_exit": -0.004456497290509865,
+    "theta_trades": -0.0010304693207370307
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.002761534217620585
+   }
+  },
+  "PINGO_USDT": {
+   "all": {
+    "orders": 262267,
+    "orders_filled": 87231,
+    "filled_share_of_size": 0.16495568431504612,
+    "median_wait_s": 602.679837,
+    "fills": 583768,
+    "fill_days": 91,
+    "theta_fill": -0.004823304712391785,
+    "theta_exit": -0.008052397611171862,
+    "theta_trades": -0.0022991100981970694
+   },
+   "q80": {
+    "orders": 8172,
+    "orders_filled": 1107,
+    "filled_share_of_size": 0.06680152937276065,
+    "median_wait_s": 538.198486,
+    "fills": 7052,
+    "fill_days": 25,
+    "theta_fill": -0.013218272723392072,
+    "theta_exit": -0.03131246467668262,
+    "theta_trades": 0.01346288037039713
+   }
+  },
+  "CREO_USDT": {
+   "all": {
+    "orders": 262205,
+    "orders_filled": 139345,
+    "filled_share_of_size": 0.3388699654814058,
+    "median_wait_s": 419.704909,
+    "fills": 1100736,
+    "fill_days": 92,
+    "theta_fill": -0.0036395560380640835,
+    "theta_exit": -0.005793573224485033,
+    "theta_trades": -0.0011648117150437046
+   },
+   "q80": {
+    "orders": 226,
+    "orders_filled": 165,
+    "filled_share_of_size": 0.6089479814336284,
+    "median_wait_s": 131.461351,
+    "fills": 1097,
+    "fill_days": 11,
+    "theta_fill": -0.013536355649138396,
+    "theta_exit": -0.02873279710436999,
+    "theta_trades": 0.005542128238538972
+   }
+  },
+  "FIS_USDT": {
+   "all": {
+    "orders": 262260,
+    "orders_filled": 116575,
+    "filled_share_of_size": 0.2620547815036894,
+    "median_wait_s": 541.178343,
+    "fills": 498675,
+    "fill_days": 92,
+    "theta_fill": -0.009308570164617475,
+    "theta_exit": -0.019160150979240478,
+    "theta_trades": 0.0008761891958764321
+   },
+   "q80": {
+    "orders": 51502,
+    "orders_filled": 26146,
+    "filled_share_of_size": 0.35595173900171717,
+    "median_wait_s": 359.6101675,
+    "fills": 129109,
+    "fill_days": 91,
+    "theta_fill": -0.006061160044150089,
+    "theta_exit": -0.018079183189297614,
+    "theta_trades": 0.0034436720966027692
+   }
+  },
+  "ANON_USDT": {
+   "all": {
+    "orders": 262277,
+    "orders_filled": 87561,
+    "filled_share_of_size": 0.20528146094853916,
+    "median_wait_s": 624.594751,
+    "fills": 453349,
+    "fill_days": 92,
+    "theta_fill": -0.005490264902990109,
+    "theta_exit": -0.010598783566892117,
+    "theta_trades": -0.002695180317162315
+   },
+   "q80": {
+    "orders": 6586,
+    "orders_filled": 2312,
+    "filled_share_of_size": 0.23366553773155177,
+    "median_wait_s": 394.656652,
+    "fills": 14134,
+    "fill_days": 72,
+    "theta_fill": -0.008621692109428775,
+    "theta_exit": -0.020592461223090712,
+    "theta_trades": 0.00012421562994006352
+   }
+  },
+  "CKB_USDT": {
+   "all": {
+    "orders": 259396,
+    "orders_filled": 158315,
+    "filled_share_of_size": 0.39981133901514637,
+    "median_wait_s": 350.027581,
+    "fills": 1399270,
+    "fill_days": 92,
+    "theta_fill": -0.0038186816406183626,
+    "theta_exit": -0.005286428902816631,
+    "theta_trades": -0.0015030118990305788
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.0013604766057451426
+   }
+  },
+  "DEEP_USDT": {
+   "all": {
+    "orders": 260956,
+    "orders_filled": 219145,
+    "filled_share_of_size": 0.7304499386187709,
+    "median_wait_s": 131.640289,
+    "fills": 1294265,
+    "fill_days": 92,
+    "theta_fill": -0.002482777239662587,
+    "theta_exit": -0.0038391128217560694,
+    "theta_trades": -0.0013028054358763305
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.0074872433240954096
+   }
+  },
+  "XT_USDT": {
+   "all": {
+    "orders": 262204,
+    "orders_filled": 141362,
+    "filled_share_of_size": 0.3900919038897195,
+    "median_wait_s": 534.4717029999999,
+    "fills": 497050,
+    "fill_days": 92,
+    "theta_fill": -0.0021638406434418465,
+    "theta_exit": -0.003837102064502585,
+    "theta_trades": -0.0012024982581848838
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": 0.0006006170739606638
+   }
+  },
+  "FLOCK_USDT": {
+   "all": {
+    "orders": 260065,
+    "orders_filled": 204483,
+    "filled_share_of_size": 0.6622602866969374,
+    "median_wait_s": 128.002747,
+    "fills": 1074144,
+    "fill_days": 92,
+    "theta_fill": -0.0022952416762307424,
+    "theta_exit": -0.0037607559885520494,
+    "theta_trades": -0.0009111186577262886
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.003209577442938189
+   }
+  },
+  "TITN_USDT": {
+   "all": {
+    "orders": 262294,
+    "orders_filled": 76861,
+    "filled_share_of_size": 0.16823654922190365,
+    "median_wait_s": 688.741047,
+    "fills": 345334,
+    "fill_days": 92,
+    "theta_fill": -0.0023670007403422317,
+    "theta_exit": -0.005001953016161177,
+    "theta_trades": -0.000991267566432492
+   },
+   "q80": {
+    "orders": 1599,
+    "orders_filled": 282,
+    "filled_share_of_size": 0.07180919786741713,
+    "median_wait_s": 595.145538,
+    "fills": 1094,
+    "fill_days": 33,
+    "theta_fill": 0.0016237423413250863,
+    "theta_exit": -0.005392376982552401,
+    "theta_trades": -0.0005811219359552982
+   }
+  },
+  "SAITO_USDT": {
+   "all": {
+    "orders": 262287,
+    "orders_filled": 57505,
+    "filled_share_of_size": 0.06419021608497943,
+    "median_wait_s": 910.716617,
+    "fills": 157080,
+    "fill_days": 92,
+    "theta_fill": -0.007692452107797673,
+    "theta_exit": -0.012372966460914674,
+    "theta_trades": -0.0036602919161153446
+   },
+   "q80": {
+    "orders": 9107,
+    "orders_filled": 1622,
+    "filled_share_of_size": 0.056359990495772484,
+    "median_wait_s": 820.3555650000001,
+    "fills": 5596,
+    "fill_days": 51,
+    "theta_fill": -0.01518099090466073,
+    "theta_exit": -0.03235617363605038,
+    "theta_trades": 0.0003166854686749099
+   }
+  },
+  "SPYX_USDT": {
+   "all": {
+    "orders": 261987,
+    "orders_filled": 177397,
+    "filled_share_of_size": 0.5501595781088374,
+    "median_wait_s": 412.748754,
+    "fills": 448168,
+    "fill_days": 92,
+    "theta_fill": -0.0011059368576509855,
+    "theta_exit": -0.002276130599368308,
+    "theta_trades": -0.0009557231430214183
+   },
+   "q80": {
+    "orders": 0,
+    "orders_filled": 0,
+    "filled_share_of_size": null,
+    "median_wait_s": null,
+    "fills": 0,
+    "fill_days": 0,
+    "theta_fill": null,
+    "theta_exit": null,
+    "theta_trades": -0.012440563673085315
+   }
+  }
+ },
+ "too_thin": []
+}
