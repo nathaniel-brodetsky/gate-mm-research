@@ -334,12 +334,34 @@ result. No orders, no keys: research on public data only.
          trade; closed across the spread −125 bp (−124 bp).
        - A maker that steps in front of a wide spread earns a few bp against the mid. Whether that is
          money depends entirely on getting out without crossing the spread.
-   6d. Round trips *(this step)*: `python -m mmlab.execution_simulator.round_trip` takes the entries of 6c
-       and closes every piece of every entry fill on its own: first passively, with an exit order on the
-       other side one tick inside the spread, decided at the fill and kept for a while; whatever is still
-       open then, or a piece whose exit order cannot be placed, across the spread at the best opposite
-       price (taker fee). No netting between pieces. Per pair: the share closed passively, the holding
-       time, the net and gross P&L per unit of entry value after the maker fee on both passive legs and
-       the taker fee on crossed parts, and the net P&L per day in USDT. Entries kept 60 or 300 s, exits
-       300 or 1,800 s (`results/h004_explore/round_trips/`). This is the first estimate of what quoting
-       wide spreads would earn, not a test.
+   6d. Round trips *(done 2026-11-25, `results/h004_explore/round_trips/`)*: `python -m
+       mmlab.execution_simulator.round_trip` takes the entries of 6c and closes every piece of every entry
+       fill on its own: first passively, with an exit order on the other side one tick inside the spread,
+       decided at the fill and kept for a while; whatever is still open then, or a piece whose exit order
+       cannot be placed, across the spread at the best opposite price (taker fee). No netting between
+       pieces. Per pair: the share closed passively, the holding time, the net and gross P&L per unit of
+       entry value after the maker fee on both passive legs and the taker fee on crossed parts, and the
+       net P&L per day in USDT. Entries kept 60 or 300 s, exits 300 or 1,800 s
+       (`results/h004_explore/round_trips/`). This is the first estimate of what quoting wide spreads
+       would earn, not a test.
+       Findings (medians over pairs with 30 round trips on 5 days; 10 USDT entries one tick inside,
+       every 60 s on both sides, pessimistic queue; entries kept 60 or 300 s, exits 300 or 1,800 s):
+       - All orders: net −46.3 to −48.7 bp per round trip, gross −26.3 to −28.7 bp before fees; no pair
+         has a positive net in any of the four settings (0 of 24). Summed over the 24 pairs: −192 to −580
+         USDT a day.
+       - Wide spreads: net −47.8 to −82.4 bp, gross −27.8 to −62.3 bp; 1 to 3 of 14–15 pairs positive.
+         Summed: −4.9 to −33.4 USDT a day.
+       - Exits kept 1,800 s close about half of the size passively (0.48–0.53) after a median of 19–30
+         minutes; exits kept 300 s close 23–32%. The +4 to +11 bp an entry earns against the mid 60 s
+         later is lost while the position is held: the price keeps moving against fresh inventory, and
+         what is not closed passively pays the spread.
+   Conclusion for spot at VIP 0. On these 24 illiquid spot pairs, quoting at or one tick inside the best
+   price loses in every setting tested (both queue models, latencies of 100–1,000 ms, lifetimes of
+   60–1,800 s, sizes of 10 and 100 USDT, exits of 300 and 1,800 s), before fees as well as after. The
+   positive average realized spread of wide-spread trades (H-003) belongs to liquidity that was already in
+   place; a new maker does not get it. Routes left: another market with lower maker fees (Gate's USDT-M
+   perpetuals charge 0.02% maker and 0.05% taker at VIP 0,
+   https://www.gate.com/announcements/article/43029, read 2026-11-25), though the spot round trips lose
+   even before fees; inventory-aware quoting with signals, which would have to close a gap of 26–62 bp
+   before fees while the as-of states of step 4a move theta by about 3 bp; or research on the taker side.
+   The choice is the owner's.

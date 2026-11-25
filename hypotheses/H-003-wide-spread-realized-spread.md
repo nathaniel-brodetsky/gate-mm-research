@@ -127,3 +127,17 @@ reproduces the real daily statistics; `docs/stage3-plan.md`, steps 2d–2g):
   carry 54–63% of the absolute daily deviations for PEOPLEFB_USDT, NAVX_USDT and PINGO_USDT
   (`results/lab/tails_days.json`). An effect, if accepted, would come in a few days per pair; that
   matters for capacity and risk, not for the decision.
+
+### How a result will be read: the execution simulator, 2026-11-25 (before November was opened)
+
+H-003 is about the average trade's realized spread against the mid 60 s later. The queue-aware simulator
+(`docs/stage3-plan.md`, step 6) shows what a new maker would get on the same trades in August–October:
+
+- Joining the back of the queue at half-spreads of at least 80 bp: fills earn −8 to −24 bp, 40–49 bp below
+  the average trade, under both queue models and at latencies of 100–1,000 ms.
+- Stepping one tick inside: fills earn +4 to +11 bp, still 11–27 bp below the average trade.
+- Full round trips, closing passively where possible and across the spread otherwise: −48 to −82 bp net,
+  −28 to −62 bp before fees; 1–3 of 14–15 pairs positive.
+
+So an acceptance of H-003 will mean that the liquidity in place at wide spreads earned its fee on average,
+not that a new maker can earn it. The decision rule is unchanged.
