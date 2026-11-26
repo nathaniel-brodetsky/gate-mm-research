@@ -63,6 +63,10 @@ def test_candidates() -> None:
     assert pc.gate_only(TARDIS, GATE, date(2025, 6, 1)) == ["HIDDEN_USDT"]
 
 
+def test_page_size_is_one_gate_accepts() -> None:
+    assert pc.PAGE == 100  # Gate answered HTTP 400 to limit=1000 and accepted limit=100 (2026-11-26)
+
+
 def test_gate_contracts_pages(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(pc, "PAGE", 2)
     names = [f"C{i}_USDT" for i in range(5)]
@@ -73,7 +77,7 @@ def test_gate_contracts_pages(monkeypatch: pytest.MonkeyPatch) -> None:
         off = int(url.rsplit("offset=", 1)[1])
         return [{"name": n} for n in names[off : off + 2]]
 
-    assert [c["name"] for c in pc.gate_contracts(paged)] == names
+    assert [c["name"] for c in pc.gate_contracts(paged, sleep_s=0)] == names
     assert len(calls) == 3  # 2 + 2 + 1
     calls.clear()
 
@@ -81,7 +85,7 @@ def test_gate_contracts_pages(monkeypatch: pytest.MonkeyPatch) -> None:
         calls.append(url)
         return [{"name": n} for n in names]
 
-    assert len(pc.gate_contracts(ignores_paging)) == 5
+    assert len(pc.gate_contracts(ignores_paging, sleep_s=0)) == 5
     assert len(calls) == 2  # the second page adds nothing new
 
 

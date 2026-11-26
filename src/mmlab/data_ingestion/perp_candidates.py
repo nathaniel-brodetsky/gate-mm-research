@@ -32,7 +32,7 @@ from mmlab.data_ingestion.gate_archive import BASE_URL, ArchiveRef, ProbeResult,
 TARDIS_URL: Final = "https://api.tardis.dev/v1/exchanges/gate-io-futures"
 GATE_URL: Final = "https://api.gateio.ws/api/v4/futures/usdt/contracts"
 USER_AGENT: Final = "mmlab-perp-candidates/0.1"
-PAGE: Final = 1000
+PAGE: Final = 100  # a page of 1,000 is refused with HTTP 400 (2026-11-26); 100 is accepted
 FIELDS: Final = (
     "name",
     "available_since",
@@ -54,11 +54,13 @@ def fetch_json(url: str, timeout: float = 30.0) -> Any:
         return json.loads(r.read())
 
 
-def gate_contracts(fetch: Fetch) -> list[dict[str, Any]]:
+def gate_contracts(fetch: Fetch, sleep_s: float = 0.2) -> list[dict[str, Any]]:
     """All USDT perpetual contracts Gate lists now, page by page (stops when a page adds nothing new)."""
     out: dict[str, dict[str, Any]] = {}
     offset = 0
     while True:
+        if offset and sleep_s:
+            time.sleep(sleep_s)
         page = fetch(f"{GATE_URL}?limit={PAGE}&offset={offset}")
         new = [c for c in page if c["name"] not in out]
         for c in new:
