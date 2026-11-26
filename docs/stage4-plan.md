@@ -100,7 +100,8 @@ microstructure (spreads, adverse selection, inventory risk).
        futures order books and the monthly futures `trades` files: top of book and trades per contract,
        sizes in contracts, the same validity rules as for spot. Periods reaching 2025-11-01 are
        refused without --open-time-holdout (D-003), and the holdout contracts stay locked. Built for
-       the 24 research contracts over the exploration period, July–October 2025. Measures in bp
+       the 24 research contracts over the exploration period, July–October 2025 (seven of them are
+       delisted inside it: D-003, Amendment 1). Measures in bp
        (markouts, realized spread) need no contract multiplier; order sizes in USDT do, and Gate gives
        it only for contracts still listed.
    3b. The stage 3 tools on that data: H-001-style markouts before and after fees, the lab and its

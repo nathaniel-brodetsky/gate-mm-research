@@ -58,3 +58,19 @@ still trading on 2026-01-01.
   name; they are flagged when found, not removed, as in D-001.
 - **Fees.** Which maker and taker fees an account pays on these contracts is not established from public
   data (stage 4 plan); results are stated before fees and under named fee scenarios.
+
+## Amendment 1 — 2026-11-26, after the selection, while the exploration data was being built and before any of it was read
+
+Tardis.dev's availability dates (`results/perp_universe/candidates.csv`) show that seven research
+contracts were delisted inside the exploration period: RDAC_USDT on 2025-07-08, PEIPEI_USDT on
+2025-07-31, BTT_USDT on 2025-09-12, AMP_USDT and REQ_USDT on 2025-09-27, PYR_USDT and ALU_USDT on
+2025-10-17. NAVX_USDT was delisted on 2025-11-14, inside the test period; XNO_USDT and PUFFER_USDT only
+after the window. Fixed now:
+
+- No contract is replaced. Decisions use the research set as selected; a contract enters a median over
+  contracts only where it meets the minimums of the measure (trades on enough days), so RDAC_USDT (about
+  a week of data) will mostly drop out by itself.
+- The run-up to a delisting is a regime of its own (Gate announces delistings days ahead). Every result
+  is also reported without each delisted contract's last 14 days before its delisting date.
+- Contracts delisted before 2025-11-01 have no data in the test period: the test will rest on at most
+  17 research contracts, NAVX_USDT until 2025-11-14.
