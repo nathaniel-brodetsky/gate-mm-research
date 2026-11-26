@@ -64,15 +64,24 @@ microstructure (spreads, adverse selection, inventory risk).
    2b. A universe U-002 of illiquid perpetuals for the window, registered before its order book data
        is examined (D-003). Gate's API lists only the contracts trading today; a universe chosen from
        it would leave out contracts delisted since (survivorship bias).
-       2b-1. *(this step)* `python -m mmlab.data_ingestion.perp_candidates` reads Tardis.dev's free list
-             of the symbols it recorded on Gate futures, with the dates they were available (delisted
-             ones included), and Gate's list of today's contracts; both answers are kept as raw JSON.
-             Candidates: USDT perpetuals listed before 2025-06-01 and still available on 2025-07-01.
-             For each, the archive is asked for the size of its June 2025 trades file (headers only).
-             Gate contracts launched before June 2025 that Tardis does not know are reported.
-       2b-2. D-003: strata and sampling from June 2025 activity (trades, before the window), with
-             delisted contracts kept, and the split of the window into exploration and a held-out
-             test period; written before any order book of the universe is read.
+       2b-1. *(done 2026-11-26, `results/perp_universe/candidates.csv`)* `python -m
+             mmlab.data_ingestion.perp_candidates` read Tardis.dev's free list of the symbols it
+             recorded on Gate futures, with the dates they were available (delisted ones included), and
+             Gate's list of today's contracts (pages of 100; a page of 1,000 is refused); both answers
+             are kept as raw JSON. Candidates: USDT perpetuals listed before 2025-06-01 and still
+             available on 2025-07-01, with the size of their June 2025 trades file (headers only).
+             Findings: Tardis lists 1,802 symbols, Gate 1,042 USDT contracts today. 587 candidates, of
+             which 219 (37%) are no longer listed: a universe drawn from today's list would have lost
+             them. Every Gate contract launched before June 2025 is in Tardis's list. 570 candidates
+             have a June 2025 trades file (2.01 GB together: 12 under 0.1 MB, 253 of 0.1–1 MB, 265 of
+             1–10 MB, 38 of 10–100 MB, 2 above), 17 have none.
+       2b-2. *(this step)* `python -m mmlab.data_ingestion.perp_activity` reads the June 2025 trades
+             of the 570: trades per calendar day, active days, median daily trades and, where Gate
+             still gives the multiplier, median daily quote volume. The trade count needs no
+             multiplier, so it is the measure a rule can apply to delisted contracts too.
+       2b-3. D-003: strata and sampling from June 2025 activity, delisted contracts kept, and the
+             split of the window into exploration and a held-out test period; written before any
+             order book of the universe is read.
 3. The dataset builder adapted to the futures formats (signed sizes, contract multipliers, funding),
    then the stage 3 tools: markouts, the lab and D-002 levels, the queue-aware fills and round trips
    with the perpetual fees (maker 0.02%, taker 0.05% at VIP 0) and funding.
