@@ -83,12 +83,29 @@ microstructure (spreads, adverse selection, inventory risk).
              Findings: 569 were active on at least 28 days. Median daily trades: 10–100: 2 contracts
              (2 delisted since), 100–1,000: 87 (46), 1,000–10,000: 392 (151), above: 88 (18). The
              least active contracts are the most often delisted.
-       2b-3. *(this step)* [D-003](decisions/D-003-perp-universe.md): four strata of median daily
-             trades in [100, 10,000), 6 research and 3 holdout contracts each by a salted hash,
-             delisted contracts kept; exploration July–October 2025, held-out test November–December
-             2025. `python -m mmlab.market_data.perp_universe` writes `configs/universe_U002.json`.
-3. The dataset builder adapted to the futures formats (signed sizes, contract multipliers, funding),
-   then the stage 3 tools: markouts, the lab and D-002 levels, the queue-aware fills and round trips
-   with the perpetual fees (maker 0.02%, taker 0.05% at VIP 0) and funding.
+       2b-3. *(done 2026-11-26, `configs/universe_U002.json`)* [D-003](decisions/D-003-perp-universe.md):
+             four strata of median daily trades in [100, 10,000), 6 research and 3 holdout contracts
+             each by a salted hash, delisted contracts kept; exploration July–October 2025, held-out
+             test November–December 2025. `python -m mmlab.market_data.perp_universe` wrote the
+             selection after the rule was pushed.
+             Findings: eligible per stratum 15, 71, 228 and 162 (8, 38, 102 and 49 of them delisted
+             since); excluded: 88 above 10,000 trades a day, 17 without a June file, 4 stable or
+             pegged, 1 active on fewer than 28 days, 1 below 100. 16 of the 36 selected contracts are
+             delisted since: all six research contracts of the least active stratum (PYR, PEIPEI,
+             AMP, BTT, ALU, NAVX), two of the second (XNO, REQ), none of the third, two of the fourth
+             (PUFFER, RDAC); 6 of the 12 holdout contracts. Flag (D-001 policy, not removed): holdout
+             USTC_USDT is TerraClassicUSD, a former algorithmic stablecoin that lost its peg in 2022.
+3. Data and exploration on the research contracts.
+   3a. *(this step)* `python -m mmlab.market_data.build_dataset --biz futures_usdt` reads the hourly
+       futures order books and the monthly futures `trades` files: top of book and trades per contract,
+       sizes in contracts, the same validity rules as for spot. Periods reaching 2025-11-01 are
+       refused without --open-time-holdout (D-003), and the holdout contracts stay locked. Built for
+       the 24 research contracts over the exploration period, July–October 2025. Measures in bp
+       (markouts, realized spread) need no contract multiplier; order sizes in USDT do, and Gate gives
+       it only for contracts still listed.
+   3b. The stage 3 tools on that data: H-001-style markouts before and after fees, the lab and its
+       D-002 levels, the queue-aware fills and round trips, with fee scenarios (maker 0.02%, the
+       contract field's −0.01%) and funding; then a registered batch before November–December 2025 is
+       read.
 4. If the window fails, the options are the owner's: a WebSocket recorder (forward data, months to
    collect) or a paid history (Tardis.dev lists Gate futures since 2020-07-01; prices not checked).

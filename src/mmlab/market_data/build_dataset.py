@@ -10,7 +10,9 @@ the previous one, an invalid sentinel row is added right after the last known up
 hour, so an as-of lookup never carries a stale book across a gap.
 
 Holdout guard: periods reaching 2026-11-01 or later are refused unless --open-time-holdout is given
-(H-001, H-002, D-001).
+(H-001, H-002, D-001). With --biz futures_usdt (USDT perpetuals, U-002) the hourly futures order books
+and the monthly futures `trades` files are read instead, sizes in contracts; the time holdout starts on
+2025-11-01 (D-003) and the holdout contracts stay locked.
 
 Usage:
   python -m mmlab.market_data.build_dataset configs/universe_U001.json data/processed/U001 \\
@@ -42,12 +44,17 @@ from mmlab.data_ingestion.gate_download import fetch
 from mmlab.data_ingestion.gate_orderbook_file import iter_orderbook_file
 from mmlab.data_ingestion.gate_trades_file import Trade, check_sequence, iter_trades_file
 from mmlab.hypothesis_registry.holdout import holdout_unlocked
-from mmlab.orderbook.gate_coverage import hours, parse_hour
+from mmlab.orderbook.gate_coverage import hours, kind_of, parse_hour
 from mmlab.orderbook.gate_replay import ReplayReport, check_chain
 from mmlab.orderbook.l2 import L2Book
 from mmlab.orderbook.top_of_book import BATCH_US, TopOfBook, top_of_book
 
 TIME_HOLDOUT_START = datetime(2026, 11, 1, tzinfo=UTC)
+HOLDOUT_START = {
+    "spot": TIME_HOLDOUT_START,
+    "futures_usdt": datetime(2025, 11, 1, tzinfo=UTC),
+}  # D-001, D-003
+TRADES_TYPE = {"spot": "deals", "futures_usdt": "trades"}
 TOB_SCHEMA = {
     "label_us": pl.Int64,
     "avail_us": pl.Int64,
@@ -120,8 +127,10 @@ def build_pair(
     delete_raw: bool,
     retries: int = 5,
     backoff_s: float = 2.0,
+    biz: str = "spot",
 ) -> PairSummary:
     t0 = time.monotonic()
+    kind = kind_of(biz)
     frames: list[pl.DataFrame] = []  # one small frame per hour keeps memory flat
     hour_rows: list[dict[str, Any]] = []
     prev: tuple[L2Book, ReplayReport] | None = None
@@ -138,7 +147,7 @@ def build_pair(
         sentinels += 1
 
     for t in hours(start, end):
-        ref = archive_ref("spot", "orderbooks", pair, t.strftime("%Y%m"), t.day, t.hour, base)
+        ref = archive_ref(biz, "orderbooks", pair, t.strftime("%Y%m"), t.day, t.hour, base)
         path = fetch(ref, raw_root, retries=retries, backoff_s=backoff_s)
         label = t.strftime("%Y-%m-%dT%H")
         if path is None:
@@ -150,7 +159,7 @@ def build_pair(
         raw += path.stat().st_size
         snaps.clear()
         tob, rep, book = top_of_book(
-            iter_orderbook_file(path, "spot"), on_snapshot=lambda b: snaps.append(b.copy())
+            iter_orderbook_file(path, kind), on_snapshot=lambda b: snaps.append(b.copy())
         )
         chained = prev is not None and check_chain(prev[0], prev[1], snaps[0], rep).ok
         if prev is not None and not chained:
@@ -183,12 +192,15 @@ def build_pair(
     paths = []
     for ym in sorted({t.strftime("%Y%m") for t in hours(start, end)}):
         tpath = fetch(
-            archive_ref("spot", "deals", pair, ym, base=base), raw_root, retries=retries, backoff_s=backoff_s
+            archive_ref(biz, TRADES_TYPE[biz], pair, ym, base=base),
+            raw_root,
+            retries=retries,
+            backoff_s=backoff_s,
         )
         if tpath is not None:
             raw += tpath.stat().st_size
             paths.append(tpath)
-    stream = (x for tp in paths for x in iter_trades_file(tp, "spot", start_us, end_us))
+    stream = (x for tp in paths for x in iter_trades_file(tp, kind, start_us, end_us))
     seq = check_sequence(_collect(stream, cols))
     trades_df = pl.DataFrame(cols, schema=TRADE_SCHEMA)
 
@@ -236,6 +248,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Build top of book and trades Parquet files for research pairs.")
     p.add_argument("universe")
     p.add_argument("out")
+    p.add_argument("--biz", choices=sorted(HOLDOUT_START), default="spot")
     p.add_argument("--start", default="2026-08-01")
     p.add_argument("--end", default="2026-11-01", help="exclusive")
     p.add_argument("--pairs", default="", help="comma-separated subset of the research pairs")
@@ -256,10 +269,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     a = p.parse_args(argv)
 
     start, end = parse_hour(a.start), parse_hour(a.end)
-    if end > TIME_HOLDOUT_START and not a.open_time_holdout:
-        print(f"refused: period ends after {TIME_HOLDOUT_START:%Y-%m-%d}, the untouched time holdout")
+    hold = HOLDOUT_START[a.biz]
+    if end > hold and not a.open_time_holdout:
+        print(f"refused: period ends after {hold:%Y-%m-%d}, the untouched time holdout of {a.biz}")
         return 2
     uni = json.loads(Path(a.universe).read_text())
+    if a.holdout_pairs and a.biz != "spot":
+        print("refused: the holdout contracts of U-002 are locked until a hypothesis is decided (D-003)")
+        return 2
     if a.holdout_pairs:
         err = holdout_unlocked(a.decision)
         if err:
@@ -305,6 +322,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 a.delete_raw,
                 a.retries,
                 a.backoff,
+                a.biz,
             ): x
             for x in todo
         }

@@ -205,3 +205,50 @@ def test_failed_pair_is_reported_and_others_are_kept(
     assert (out / "tob" / "SYN_USDT.parquet").exists()
     assert not (out / "tob" / "BAD_USDT.parquet").exists()
     assert [r["pair"] for r in csv.DictReader((out / "summary.csv").open())] == ["SYN_USDT"]
+
+
+T_OCT25 = 1_760_486_400  # 2025-10-15 00:00 UTC
+
+
+def test_futures_contracts_build_with_their_own_holdout(
+    archive: tuple[str, dict[str, Any]], universe: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    base, _ = archive
+    m = SynthMarket("futures", seed=17)
+    for h in range(3):
+        FILES[f"/futures_usdt/orderbooks/202510/SYN_USDT-20251015{h:02d}.csv.gz"] = _gz(
+            m.hour(T_OCT25 + 3600 * h, steps=300)
+        )
+    FILES["/futures_usdt/trades/202510/SYN_USDT-202510.csv.gz"] = _gz(m.trade_rows())
+    out = tmp_path / "fut"
+    argv = [
+        str(universe),
+        str(out),
+        "--biz",
+        "futures_usdt",
+        "--start",
+        "2025-10-15T00",
+        "--end",
+        "2025-10-15T03",
+    ]
+    argv += ["--workers", "1", "--raw-dir", str(tmp_path / "raw"), "--base", base]
+    assert bd.main(argv) == 0
+    hours = list(csv.DictReader((out / "hours" / "SYN_USDT.csv").open()))
+    assert [h["status"] for h in hours] == ["clean"] * 3
+    assert [h["chained"] for h in hours] == ["", "true", "true"]
+    tob = pl.read_parquet(out / "tob" / "SYN_USDT.parquet")
+    assert tob.filter(pl.col("valid")).height > 100
+    assert (tob.filter(pl.col("valid"))["ask"] > tob.filter(pl.col("valid"))["bid"]).all()
+    trades = pl.read_parquet(out / "trades" / "SYN_USDT.parquet")
+    rows = [r.split(",") for r in m.trade_rows()]
+    end_us = (T_OCT25 + 3 * 3600) * 1_000_000
+    inside = [r for r in rows if round(float(r[0]) * 1e6) < end_us]
+    assert trades.height == len(inside) > 0
+    assert (trades["taker"] == 1).sum() == sum(not r[3].startswith("-") for r in inside)  # + = taker buy
+    assert (trades["qty"] > 0).all()
+    capsys.readouterr()
+    late = [*argv[:7], "2025-11-01T01", *argv[8:]]
+    assert bd.main(late) == 2
+    assert "untouched time holdout of futures_usdt" in capsys.readouterr().out
+    assert bd.main([*argv, "--holdout-pairs", "--decision", "accepted"]) == 2
+    assert "locked" in capsys.readouterr().out
