@@ -104,9 +104,17 @@ microstructure (spreads, adverse selection, inventory risk).
        delisted inside it: D-003, Amendment 1). Measures in bp
        (markouts, realized spread) need no contract multiplier; order sizes in USDT do, and Gate gives
        it only for contracts still listed.
-   3b. The stage 3 tools on that data: H-001-style markouts before and after fees, the lab and its
-       D-002 levels, the queue-aware fills and round trips, with fee scenarios (maker 0.02%, the
-       contract field's −0.01%) and funding; then a registered batch before November–December 2025 is
-       read.
+   3b. *(this step)* `python -m mmlab.microstructure.perp_explore` on the research contracts over the
+       exploration period: per contract, realized spread at 10, 60 and 300 s (mid), at 60 s against the
+       microprice and the far side (exit), the quoted half-spread, and theta under the two fee
+       scenarios (maker 0.02%; the contract field's −0.01%); by bucket of quoted half-spread; all
+       trades and without each delisted contract's last 14 days. Medians over contracts with at least
+       30 trades on 5 days, overall and by stratum. How it will be read, written before the run: a
+       subset (all trades or a bucket of half-spread) is a candidate for a registered batch only if
+       its median theta at maker 0.02% is positive over at least 8 counted contracts; the round trips
+       of a new maker (step 3c) then check it before anything is registered. On spot the same median
+       was −10.45 bp at a 0.1% fee (stage 3).
+   3c. The queue-aware fills and round trips on the perpetuals, with the fee scenarios and funding;
+       then a batch registered under D-002 before November–December 2025 is read.
 4. If the window fails, the options are the owner's: a WebSocket recorder (forward data, months to
    collect) or a paid history (Tardis.dev lists Gate futures since 2020-07-01; prices not checked).

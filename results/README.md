@@ -69,6 +69,11 @@ order book archive (stage 4, step 1): `futures_orderbooks.csv` for futures BTC_U
 Tardis.dev's symbol list, with today's Gate fields where the contract is still listed and the size of
 its June 2025 trades file; the raw answers stay in `data/raw/meta/`.
 
+`perp_explore/markouts.json` is `python -m mmlab.microstructure.perp_explore data/processed/U002`
+(stage 4, step 3b): per research contract of U-002 over July–October 2025, realized spread before and
+after the two fee scenarios, by quoted half-spread, with and without the last 14 days before a
+delisting; and the medians over contracts.
+
 `perp_universe/activity_2025-06.csv` is `python -m mmlab.data_ingestion.perp_activity` (stage 4,
 step 2b-2): per candidate with a June 2025 trades file, active days, trades, median daily trades and
 contract notional, and the median daily quote volume where Gate still gives the multiplier.
