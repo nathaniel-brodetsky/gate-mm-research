@@ -1,0 +1,151 @@
+{
+  "delisted_since": [
+    "ALU_USDT",
+    "AMP_USDT",
+    "BTT_USDT",
+    "GNO_USDT",
+    "KEY_USDT",
+    "MASA_USDT",
+    "NAVX_USDT",
+    "OL_USDT",
+    "PEIPEI_USDT",
+    "PUFFER_USDT",
+    "PYR_USDT",
+    "RDAC_USDT",
+    "REI_USDT",
+    "REQ_USDT",
+    "VOXEL_USDT",
+    "XNO_USDT"
+  ],
+  "eligible_per_stratum": {
+    "0": 15,
+    "1": 71,
+    "2": 228,
+    "3": 162
+  },
+  "excluded": {
+    "above the highest stratum": 88,
+    "active on fewer than 28 days": 1,
+    "below the lowest stratum": 1,
+    "no trades file": 17,
+    "stable or pegged": 4
+  },
+  "holdout": {
+    "0": [
+      "QTUM_USDT",
+      "WEN_USDT",
+      "BEAMX_USDT"
+    ],
+    "1": [
+      "REI_USDT",
+      "GNO_USDT",
+      "KEY_USDT"
+    ],
+    "2": [
+      "MASA_USDT",
+      "BIGTIME_USDT",
+      "WOO_USDT"
+    ],
+    "3": [
+      "USTC_USDT",
+      "VOXEL_USDT",
+      "OL_USDT"
+    ]
+  },
+  "input": {
+    "activity": {
+      "file": "activity_2025-06.csv",
+      "sha256": "6a58b61dbe18354780b68b50b933ba556d45dac1c25198f794b361bab4624df6"
+    },
+    "candidates": {
+      "file": "candidates.csv",
+      "sha256": "8b7068900a55b854128dd985dc3508151db1fca80cf2c2e7f01ff5efecf9b204"
+    }
+  },
+  "june_median_daily_trades": {
+    "AKT_USDT": 2877.0,
+    "ALU_USDT": 282.0,
+    "AMP_USDT": 216.5,
+    "ASR_USDT": 601.5,
+    "ASTR_USDT": 326.5,
+    "BAT_USDT": 2709.0,
+    "BEAMX_USDT": 227.0,
+    "BIGTIME_USDT": 2292.5,
+    "BRETT_USDT": 8097.5,
+    "BTT_USDT": 113.5,
+    "CGPT_USDT": 3881.0,
+    "FLUX_USDT": 1565.0,
+    "GNO_USDT": 374.5,
+    "HNT_USDT": 1950.5,
+    "KAVA_USDT": 442.5,
+    "KEY_USDT": 425.0,
+    "LUNA_USDT": 1457.5,
+    "MASA_USDT": 2438.5,
+    "MAV_USDT": 1320.5,
+    "MELANIA_USDT": 5876.5,
+    "MORPHO_USDT": 4177.0,
+    "NAVX_USDT": 261.5,
+    "OL_USDT": 6285.0,
+    "PEIPEI_USDT": 254.5,
+    "POWR_USDT": 663.5,
+    "PUFFER_USDT": 3175.5,
+    "PYR_USDT": 129.5,
+    "QTUM_USDT": 205.5,
+    "RDAC_USDT": 3713.5,
+    "REI_USDT": 527.5,
+    "REQ_USDT": 517.5,
+    "USTC_USDT": 3957.5,
+    "VOXEL_USDT": 4386.0,
+    "WEN_USDT": 184.0,
+    "WOO_USDT": 3048.0,
+    "XNO_USDT": 619.0
+  },
+  "research": {
+    "0": [
+      "PYR_USDT",
+      "PEIPEI_USDT",
+      "AMP_USDT",
+      "BTT_USDT",
+      "ALU_USDT",
+      "NAVX_USDT"
+    ],
+    "1": [
+      "POWR_USDT",
+      "XNO_USDT",
+      "ASR_USDT",
+      "KAVA_USDT",
+      "REQ_USDT",
+      "ASTR_USDT"
+    ],
+    "2": [
+      "FLUX_USDT",
+      "MAV_USDT",
+      "HNT_USDT",
+      "AKT_USDT",
+      "LUNA_USDT",
+      "BAT_USDT"
+    ],
+    "3": [
+      "PUFFER_USDT",
+      "RDAC_USDT",
+      "MELANIA_USDT",
+      "CGPT_USDT",
+      "MORPHO_USDT",
+      "BRETT_USDT"
+    ]
+  },
+  "rule": {
+    "edges": [
+      100.0,
+      316.22776601683796,
+      1000.0,
+      3162.2776601683795,
+      10000.0
+    ],
+    "holdout_per_stratum": 3,
+    "min_active_days": 28,
+    "research_per_stratum": 6,
+    "salt": "mmlab-U002-2026-11-26",
+    "selection_month": "2025-06"
+  }
+}
