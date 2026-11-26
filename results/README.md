@@ -74,6 +74,11 @@ its June 2025 trades file; the raw answers stay in `data/raw/meta/`.
 after the two fee scenarios, by quoted half-spread, with and without the last 14 days before a
 delisting; and the medians over contracts.
 
+`perp_explore/round_trips_{pessimistic,optimistic}.json` is `python -m
+mmlab.execution_simulator.perp_round_trip data/processed/U002 --queue ...` (stage 4, step 3c): per
+research contract, the round trips of a new maker quoting one contract one tick inside the spread, net
+bp under the two fee scenarios, with and without the last 14 days before a delisting.
+
 `perp_universe/activity_2025-06.csv` is `python -m mmlab.data_ingestion.perp_activity` (stage 4,
 step 2b-2): per candidate with a June 2025 trades file, active days, trades, median daily trades and
 contract notional, and the median daily quote volume where Gate still gives the multiplier.

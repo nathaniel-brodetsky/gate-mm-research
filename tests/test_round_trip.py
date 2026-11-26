@@ -41,6 +41,7 @@ def test_passive_exit() -> None:
     assert r["hold_s"] == pytest.approx(3.0)
     assert r["gross"] == pytest.approx(100.5 - 99.5)
     assert r["net"] == pytest.approx(1.0 - MAKER_FEE * (100.5 + 99.5))
+    assert (r["maker_value"], r["taker_value"]) == (pytest.approx(200.0), 0.0)
 
 
 def test_crossed_at_expiry() -> None:
@@ -49,6 +50,7 @@ def test_crossed_at_expiry() -> None:
     assert r["hold_s"] == pytest.approx(10.4)  # the exit joined at 2.4 s and lived 10 s
     assert r["gross"] == pytest.approx(100.5 - 101.0)
     assert r["net"] == pytest.approx(-0.5 - MAKER_FEE * 100.5 - TAKER_FEE * 101.0)
+    assert (r["maker_value"], r["taker_value"]) == (pytest.approx(100.5), pytest.approx(101.0))
 
 
 def test_partial_passive_then_crossed() -> None:
@@ -57,6 +59,8 @@ def test_partial_passive_then_crossed() -> None:
     assert r["gross"] == pytest.approx(0.4 * 1.0 + 0.6 * -0.5)
     fees = MAKER_FEE * 100.5 + MAKER_FEE * 99.5 * 0.4 + TAKER_FEE * 101.0 * 0.6
     assert r["net"] == pytest.approx(0.1 - fees)
+    assert r["maker_value"] == pytest.approx(100.5 + 99.5 * 0.4)
+    assert r["taker_value"] == pytest.approx(101.0 * 0.6)
 
 
 def test_crossed_at_once_without_an_exit_order_and_unpriced() -> None:

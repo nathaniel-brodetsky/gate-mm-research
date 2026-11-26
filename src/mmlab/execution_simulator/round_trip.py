@@ -70,7 +70,11 @@ def round_trips(
     tick: float,
     optimistic: bool = False,
 ) -> pl.DataFrame:
-    """One row per entry fill piece with how and at what price it was closed, and its P&L in USDT."""
+    """One row per entry fill piece with how and at what price it was closed, and its P&L in USDT.
+
+    `net` uses the spot fees; `maker_value` and `taker_value` (the value traded as maker and as taker)
+    give the net under any other fees: gross - maker fee * maker_value - taker fee * taker_value.
+    """
     n = len(fills)
     ts = np.array([f.ts for f in fills], dtype=np.int64)
     qty = np.array([f.qty for f in fills])
@@ -104,9 +108,8 @@ def round_trips(
     px_pass = np.nan_to_num(px_exit)  # passive size is 0 where there was no exit order
     aggr_part = np.where(done, 0.0, (pe - px_aggr) * aggr)  # NaN if a crossing was needed but unpriced
     gross = side * ((pe - px_pass) * passive + aggr_part)
-    fees = (
-        MAKER_FEE * pe * qty + MAKER_FEE * px_pass * passive + np.where(done, 0.0, TAKER_FEE * px_aggr * aggr)
-    )
+    maker_value = pe * qty + px_pass * passive  # traded as maker: the entry and the passive exit
+    taker_value = np.where(done, 0.0, px_aggr * aggr)  # crossed at the end
     t_close = np.where(done, last, expire)
     return pl.DataFrame(
         {
@@ -118,7 +121,9 @@ def round_trips(
             "had_exit_order": has_exit,
             "hold_s": (t_close - ts) / 1e6,
             "gross": gross,
-            "net": gross - fees,
+            "net": gross - MAKER_FEE * maker_value - TAKER_FEE * taker_value,
+            "maker_value": maker_value,
+            "taker_value": taker_value,
         }
     ).fill_nan(None)
 

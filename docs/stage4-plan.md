@@ -114,7 +114,18 @@ microstructure (spreads, adverse selection, inventory risk).
        its median theta at maker 0.02% is positive over at least 8 counted contracts; the round trips
        of a new maker (step 3c) then check it before anything is registered. On spot the same median
        was −10.45 bp at a 0.1% fee (stage 3).
-   3c. The queue-aware fills and round trips on the perpetuals, with the fee scenarios and funding;
-       then a batch registered under D-002 before November–December 2025 is read.
+   3c. *(this step)* `python -m mmlab.execution_simulator.perp_round_trip`: the stage 3 round trips
+       of a new maker on the research contracts over the exploration period. Every 60 s an order of
+       one contract (the smallest Gate accepts) on each side, one tick inside the spread, kept 60 s;
+       each filled piece closed by a passive order one tick inside the other side, kept 300 s, then
+       across the spread. Net bp of entry value under the two fee scenarios (VIP 0: maker 0.02%, taker
+       0.05%; contract fields: maker −0.01%, taker 0.075%), for the pessimistic and the optimistic
+       queue model, all round trips and without the last 14 days before a delisting. Funding is left
+       out (minutes of holding, charged every 8 hours). How it will be read, written before the run:
+       a new maker's quoting is a candidate for a registered batch only if the median net at VIP 0
+       is positive over at least 8 counted contracts with the pessimistic queue; the optimistic queue
+       is a bound, not a basis.
+   3d. A batch registered under D-002 before November–December 2025 is read, or the perpetuals track
+       is closed like spot.
 4. If the window fails, the options are the owner's: a WebSocket recorder (forward data, months to
    collect) or a paid history (Tardis.dev lists Gate futures since 2020-07-01; prices not checked).
