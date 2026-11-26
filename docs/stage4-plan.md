@@ -21,6 +21,12 @@ microstructure (spreads, adverse selection, inventory risk).
 - Trade archives are complete where checked, also during order book outages.
 - 1,037 USDT perpetuals were listed on 2026-11-23, 289 with 24 h quote volume of 20k–200k USDT.
 - Futures sizes are in contracts; a contract's value needs its quanto multiplier.
+- Fees: Gate's announcement gives 0.02% maker and 0.05% taker at VIP 0, but the public contract
+  objects carry their own `maker_fee_rate` and `taker_fee_rate`, documented as "maker fee rate,
+  negative values indicate rebates" (https://www.gate.com/docs/developers/apiv4/en/futures/); on
+  2026-11-26 0G_USDT showed −0.0001 and 0.00075, and Gate's own 2025 example for BTC_USDT the same.
+  Which rate an account pays is not established from public data; it decides the economics and is
+  the owner's to check (e.g. the account's fee page) before any trading stage.
 
 ## Steps
 
@@ -44,15 +50,29 @@ microstructure (spreads, adverse selection, inventory risk).
    - The candidate window for perpetuals is 2025: February–December. Step 2 checks the six most recent
      months, July–December 2025, before anything is built on them.
 2. Hour-by-hour coverage of the window.
-   2a. *(this step)* `python -m mmlab.orderbook.gate_coverage --quiet` downloads and replays every
-       hourly order book file of futures GPS_USDT from 2025-07-01 to 2026-01-01, month by month. An hour
-       is usable when its file is clean, its last row comes at least 50 minutes after its snapshot and
-       the next hour chains to it. Rule, written before the run: a month is usable when at least 95% of
-       its hours are; the window goes on to step 2b if at least three consecutive months are usable.
-   2b. A universe U-002 of illiquid perpetuals, registered before its order book data is examined
-       (D-003). Gate's API lists only the contracts trading today, so a universe chosen from it in 2025
-       would leave out contracts delisted since: survivorship bias, which D-003 must address (e.g.
-       delisted contracts found in the trades archive or in Gate's delisting announcements).
+   2a. *(done 2026-11-26, `results/perp_archive/coverage/GPS_USDT-2025-*.csv`)* `python -m
+       mmlab.orderbook.gate_coverage --quiet` downloaded and replayed every hourly order book file of
+       futures GPS_USDT from 2025-07-01 to 2026-01-01, month by month. An hour is usable when its file
+       is clean, its last row comes at least 50 minutes after its snapshot and the next hour chains to
+       it. Rule, written before the run: a month is usable when at least 95% of its hours are; the
+       window goes on if at least three consecutive months are usable.
+       Findings [archive]: every month is usable. Usable hours: July 99.1%, August 98.4%, September
+       98.2%, October 96.2%, November 97.5%, December 99.1%; one hour missing (July); 6 to 28 chain
+       breaks and 1 to 21 truncated hours a month, most in October. The window July–December 2025 goes
+       on to step 2b. The update ids lost at the breaks (93,087 to 1,457,842 a month) are not read as
+       GPS_USDT updates: whether the ids count per contract is not established.
+   2b. A universe U-002 of illiquid perpetuals for the window, registered before its order book data
+       is examined (D-003). Gate's API lists only the contracts trading today; a universe chosen from
+       it would leave out contracts delisted since (survivorship bias).
+       2b-1. *(this step)* `python -m mmlab.data_ingestion.perp_candidates` reads Tardis.dev's free list
+             of the symbols it recorded on Gate futures, with the dates they were available (delisted
+             ones included), and Gate's list of today's contracts; both answers are kept as raw JSON.
+             Candidates: USDT perpetuals listed before 2025-06-01 and still available on 2025-07-01.
+             For each, the archive is asked for the size of its June 2025 trades file (headers only).
+             Gate contracts launched before June 2025 that Tardis does not know are reported.
+       2b-2. D-003: strata and sampling from June 2025 activity (trades, before the window), with
+             delisted contracts kept, and the split of the window into exploration and a held-out
+             test period; written before any order book of the universe is read.
 3. The dataset builder adapted to the futures formats (signed sizes, contract multipliers, funding),
    then the stage 3 tools: markouts, the lab and D-002 levels, the queue-aware fills and round trips
    with the perpetual fees (maker 0.02%, taker 0.05% at VIP 0) and funding.
