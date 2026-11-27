@@ -1,6 +1,7 @@
 # Stage 4 — USDT-M perpetuals (separate track)
 
-Status: started 2026-11-25 by the owner's choice after the stage 3 report. Research on public data only;
+Status: concluded 2026-11-27 ([stage4-report.md](stage4-report.md)); started 2026-11-25 by the owner's choice
+after the stage 3 report. Research on public data only;
 spot and perpetuals are never mixed (own data, own universe, own hypotheses). Whether the owner may use
 Gate's perpetuals at all is for the owner to check (stage 3 report, section 6) before any trading
 stage.
@@ -152,14 +153,20 @@ microstructure (spreads, adverse selection, inventory risk).
          sign. On spot the same round trips gave gross −26 to −29 bp and net −46 to −49 bp.
        - Limitation: every filled piece is closed on its own. A maker that nets its buys against its
          sells crosses the spread less; step 3c-2 measures that bound.
-   3c-2. *(this step)* `python -m mmlab.execution_simulator.perp_round_trip --measure fills`: the
+   3c-2. *(done 2026-11-27, `results/perp_explore/own_fills_pessimistic.json`)* `python -m
+       mmlab.execution_simulator.perp_round_trip --measure fills`: the
        markout of the same maker's own entry fills against the mid 60 and 300 s later, before any
        exit: what a maker that nets its inventory would make per unit of fill value, before inventory
        risk; net is the 300-s markout minus one maker fee. How it will be read, written before the run:
        if the median contract's net at VIP 0 is not positive (pessimistic queue, at least 8 counted
        contracts), passive market making on these perpetuals is closed at VIP 0 as it was on spot; the
        contract-field fee is reported beside it.
-   3d. A batch registered under D-002 before November–December 2025 is read, or the perpetuals track
-       is closed like spot.
+       Findings (medians over contracts) [simulator]: own fills −6.76 bp at 60 s and −6.67 bp at 300 s;
+       net −8.67 bp at VIP 0 (6 of 24 positive) and −5.67 bp with the contract fields (7 of 24).
+       Stratum 0 alone is positive (+7.31 bp at 300 s, net +5.31 bp at VIP 0, 5 of 6). By the rule,
+       closed.
+   3d. *(done 2026-11-27)* No batch is registered: passive market making on the illiquid perpetuals is
+       closed, like spot ([stage4-report.md](stage4-report.md)). November–December 2025 and the holdout
+       contracts stay closed.
 4. If the window fails, the options are the owner's: a WebSocket recorder (forward data, months to
    collect) or a paid history (Tardis.dev lists Gate futures since 2020-07-01; prices not checked).
