@@ -1,0 +1,824 @@
+{
+ "period": [
+  "2025-07-01",
+  "2025-11-01"
+ ],
+ "queue": "pessimistic",
+ "improve_ticks": 1,
+ "size_contracts": 1.0,
+ "scenarios": {
+  "vip0": [
+   0.0002,
+   0.0005
+  ],
+  "contract_fields": [
+   -0.0001,
+   0.00075
+  ]
+ },
+ "contracts": {
+  "PYR_USDT": {
+   "available_to": "2025-10-17",
+   "all": {
+    "round_trips": 4077,
+    "unpriced": 8,
+    "days": 108,
+    "counted": true,
+    "passive_share": 0.1837518730375058,
+    "median_hold_s": 300.340463,
+    "gross_bp": -22.56637071718182,
+    "net_bp": {
+     "vip0": -29.017063059470043,
+     "contract_fields": -27.507199626543027
+    }
+   },
+   "without_runup": {
+    "round_trips": 3347,
+    "unpriced": 2,
+    "days": 94,
+    "counted": true,
+    "passive_share": 0.1925890074373373,
+    "median_hold_s": 300.340828,
+    "gross_bp": -21.694301568624006,
+    "net_bp": {
+     "vip0": -28.11804967628868,
+     "contract_fields": -26.559483137064195
+    }
+   }
+  },
+  "PEIPEI_USDT": {
+   "available_to": "2025-07-31",
+   "all": {
+    "round_trips": 2501,
+    "unpriced": 1,
+    "days": 30,
+    "counted": true,
+    "passive_share": 0.17629423593022922,
+    "median_hold_s": 300.338067,
+    "gross_bp": -26.416388042811427,
+    "net_bp": {
+     "vip0": -32.8873316820428,
+     "contract_fields": -31.417739660863987
+    }
+   },
+   "without_runup": {
+    "round_trips": 1138,
+    "unpriced": 0,
+    "days": 16,
+    "counted": true,
+    "passive_share": 0.16230982452136333,
+    "median_hold_s": 300.3389015,
+    "gross_bp": -21.97869617446451,
+    "net_bp": {
+     "vip0": -28.489461097388144,
+     "contract_fields": -27.095540454813133
+    }
+   }
+  },
+  "AMP_USDT": {
+   "available_to": "2025-09-27",
+   "all": {
+    "round_trips": 6819,
+    "unpriced": 6,
+    "days": 88,
+    "counted": true,
+    "passive_share": 0.17310630620540246,
+    "median_hold_s": 300.339696,
+    "gross_bp": -13.799588343727413,
+    "net_bp": {
+     "vip0": -20.280543816832115,
+     "contract_fields": -18.82859018697228
+    }
+   },
+   "without_runup": {
+    "round_trips": 5971,
+    "unpriced": 5,
+    "days": 74,
+    "counted": true,
+    "passive_share": 0.17753421963280788,
+    "median_hold_s": 300.339534,
+    "gross_bp": -14.534980245979275,
+    "net_bp": {
+     "vip0": -21.002971813279988,
+     "contract_fields": -19.526787597881906
+    }
+   }
+  },
+  "BTT_USDT": {
+   "available_to": "2025-09-12",
+   "all": {
+    "round_trips": 6186,
+    "unpriced": 2,
+    "days": 73,
+    "counted": true,
+    "passive_share": 0.162123996672714,
+    "median_hold_s": 300.339945,
+    "gross_bp": -8.032888666329255,
+    "net_bp": {
+     "vip0": -14.546156299713191,
+     "contract_fields": -13.154300351484544
+    }
+   },
+   "without_runup": {
+    "round_trips": 4310,
+    "unpriced": 2,
+    "days": 59,
+    "counted": true,
+    "passive_share": 0.14924401370234816,
+    "median_hold_s": 300.3391395,
+    "gross_bp": -6.792331260603504,
+    "net_bp": {
+     "vip0": -13.344267378839573,
+     "contract_fields": -12.02330236519895
+    }
+   }
+  },
+  "ALU_USDT": {
+   "available_to": "2025-10-17",
+   "all": {
+    "round_trips": 92717,
+    "unpriced": 28,
+    "days": 108,
+    "counted": true,
+    "passive_share": 0.6740116613091064,
+    "median_hold_s": 66.379015,
+    "gross_bp": -17.94948961798069,
+    "net_bp": {
+     "vip0": -22.927338864871462,
+     "contract_fields": -18.72024537387407
+    }
+   },
+   "without_runup": {
+    "round_trips": 85447,
+    "unpriced": 23,
+    "days": 94,
+    "counted": true,
+    "passive_share": 0.6892881465630202,
+    "median_hold_s": 58.046147,
+    "gross_bp": -17.671538729263943,
+    "net_bp": {
+     "vip0": -22.60358456780152,
+     "contract_fields": -18.312495313572494
+    }
+   }
+  },
+  "NAVX_USDT": {
+   "available_to": "2025-11-14",
+   "all": {
+    "round_trips": 22188,
+    "unpriced": 22,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.30920079652839394,
+    "median_hold_s": 300.3265745,
+    "gross_bp": -7.701504656269776,
+    "net_bp": {
+     "vip0": -13.773325756144974,
+     "contract_fields": -11.57239219050657
+    }
+   },
+   "without_runup": {
+    "round_trips": 21835,
+    "unpriced": 22,
+    "days": 122,
+    "counted": true,
+    "passive_share": 0.30824393176395365,
+    "median_hold_s": 300.32677,
+    "gross_bp": -7.570144776393787,
+    "net_bp": {
+     "vip0": -13.644845384567763,
+     "contract_fields": -11.449176580044972
+    }
+   }
+  },
+  "POWR_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 10879,
+    "unpriced": 11,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.1507871213356854,
+    "median_hold_s": 0.3,
+    "gross_bp": -13.94063046267286,
+    "net_bp": {
+     "vip0": -20.488455536627633,
+     "contract_fields": -19.159239213310887
+    }
+   },
+   "without_runup": {
+    "round_trips": 10879,
+    "unpriced": 11,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.1507871213356854,
+    "median_hold_s": 0.3,
+    "gross_bp": -13.94063046267286,
+    "net_bp": {
+     "vip0": -20.488455536627633,
+     "contract_fields": -19.159239213310887
+    }
+   }
+  },
+  "XNO_USDT": {
+   "available_to": "2026-11-18",
+   "all": {
+    "round_trips": 11854,
+    "unpriced": 21,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.15425725597808168,
+    "median_hold_s": 300.3329215,
+    "gross_bp": -12.359629957222138,
+    "net_bp": {
+     "vip0": -18.89679484287545,
+     "contract_fields": -17.548331517159866
+    }
+   },
+   "without_runup": {
+    "round_trips": 11854,
+    "unpriced": 21,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.15425725597808168,
+    "median_hold_s": 300.3329215,
+    "gross_bp": -12.359629957222138,
+    "net_bp": {
+     "vip0": -18.89679484287545,
+     "contract_fields": -17.548331517159866
+    }
+   }
+  },
+  "ASR_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 40669,
+    "unpriced": 14,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.48588964414493524,
+    "median_hold_s": 18.692494,
+    "gross_bp": -13.28160916186681,
+    "net_bp": {
+     "vip0": -18.824118825532466,
+     "contract_fields": -15.651826119995686
+    }
+   },
+   "without_runup": {
+    "round_trips": 40669,
+    "unpriced": 14,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.48588964414493524,
+    "median_hold_s": 18.692494,
+    "gross_bp": -13.28160916186681,
+    "net_bp": {
+     "vip0": -18.824118825532466,
+     "contract_fields": -15.651826119995686
+    }
+   }
+  },
+  "KAVA_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 23296,
+    "unpriced": 11,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.2400479804402814,
+    "median_hold_s": 33.979296000000005,
+    "gross_bp": -8.2656427451481,
+    "net_bp": {
+     "vip0": -14.545460405280433,
+     "contract_fields": -12.725196546720039
+    }
+   },
+   "without_runup": {
+    "round_trips": 23296,
+    "unpriced": 11,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.2400479804402814,
+    "median_hold_s": 33.979296000000005,
+    "gross_bp": -8.2656427451481,
+    "net_bp": {
+     "vip0": -14.545460405280433,
+     "contract_fields": -12.725196546720039
+    }
+   }
+  },
+  "REQ_USDT": {
+   "available_to": "2025-09-27",
+   "all": {
+    "round_trips": 7585,
+    "unpriced": 7,
+    "days": 88,
+    "counted": true,
+    "passive_share": 0.1436703240094408,
+    "median_hold_s": 300.33239,
+    "gross_bp": -10.658774953900924,
+    "net_bp": {
+     "vip0": -17.227895841102704,
+     "contract_fields": -15.937751282805921
+    }
+   },
+   "without_runup": {
+    "round_trips": 6752,
+    "unpriced": 3,
+    "days": 74,
+    "counted": true,
+    "passive_share": 0.14108258655737066,
+    "median_hold_s": 300.3314755,
+    "gross_bp": -11.507520422100454,
+    "net_bp": {
+     "vip0": -18.084383051339767,
+     "contract_fields": -16.80852978949608
+    }
+   }
+  },
+  "ASTR_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 21051,
+    "unpriced": 9,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.2530112152163603,
+    "median_hold_s": 5.983845,
+    "gross_bp": -10.96687610512979,
+    "net_bp": {
+     "vip0": -17.207826337746745,
+     "contract_fields": -15.316278798983449
+    }
+   },
+   "without_runup": {
+    "round_trips": 21051,
+    "unpriced": 9,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.2530112152163603,
+    "median_hold_s": 5.983845,
+    "gross_bp": -10.96687610512979,
+    "net_bp": {
+     "vip0": -17.207826337746745,
+     "contract_fields": -15.316278798983449
+    }
+   }
+  },
+  "FLUX_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 21389,
+    "unpriced": 10,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.20222195689996778,
+    "median_hold_s": 8.188096,
+    "gross_bp": -13.461395873322385,
+    "net_bp": {
+     "vip0": -19.85462812485027,
+     "contract_fields": -18.242362157559125
+    }
+   },
+   "without_runup": {
+    "round_trips": 21389,
+    "unpriced": 10,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.20222195689996778,
+    "median_hold_s": 8.188096,
+    "gross_bp": -13.461395873322385,
+    "net_bp": {
+     "vip0": -19.85462812485027,
+     "contract_fields": -18.242362157559125
+    }
+   }
+  },
+  "MAV_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 75173,
+    "unpriced": 24,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.43601244422155083,
+    "median_hold_s": 59.63576,
+    "gross_bp": -13.67452061229343,
+    "net_bp": {
+     "vip0": -19.366562083062114,
+     "contract_fields": -16.468546345857394
+    }
+   },
+   "without_runup": {
+    "round_trips": 75173,
+    "unpriced": 24,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.43601244422155083,
+    "median_hold_s": 59.63576,
+    "gross_bp": -13.67452061229343,
+    "net_bp": {
+     "vip0": -19.366562083062114,
+     "contract_fields": -16.468546345857394
+    }
+   }
+  },
+  "HNT_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 34493,
+    "unpriced": 20,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.2871737527012849,
+    "median_hold_s": 92.229218,
+    "gross_bp": -14.200506214684403,
+    "net_bp": {
+     "vip0": -20.33895478697484,
+     "contract_fields": -18.25946988030222
+    }
+   },
+   "without_runup": {
+    "round_trips": 34493,
+    "unpriced": 20,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.2871737527012849,
+    "median_hold_s": 92.229218,
+    "gross_bp": -14.200506214684403,
+    "net_bp": {
+     "vip0": -20.33895478697484,
+     "contract_fields": -18.25946988030222
+    }
+   }
+  },
+  "AKT_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 46034,
+    "unpriced": 33,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.35758626131586346,
+    "median_hold_s": 110.60838749999999,
+    "gross_bp": -10.138831765791645,
+    "net_bp": {
+     "vip0": -16.066054662346357,
+     "contract_fields": -13.599333227781791
+    }
+   },
+   "without_runup": {
+    "round_trips": 46034,
+    "unpriced": 33,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.35758626131586346,
+    "median_hold_s": 110.60838749999999,
+    "gross_bp": -10.138831765791645,
+    "net_bp": {
+     "vip0": -16.066054662346357,
+     "contract_fields": -13.599333227781791
+    }
+   }
+  },
+  "LUNA_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 13438,
+    "unpriced": 13,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.18011827654465243,
+    "median_hold_s": 0.3,
+    "gross_bp": -12.436527706171313,
+    "net_bp": {
+     "vip0": -18.896279570204243,
+     "contract_fields": -17.405682798469886
+    }
+   },
+   "without_runup": {
+    "round_trips": 13438,
+    "unpriced": 13,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.18011827654465243,
+    "median_hold_s": 0.3,
+    "gross_bp": -12.436527706171313,
+    "net_bp": {
+     "vip0": -18.896279570204243,
+     "contract_fields": -17.405682798469886
+    }
+   }
+  },
+  "BAT_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 35587,
+    "unpriced": 31,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.3438736756214664,
+    "median_hold_s": 238.763707,
+    "gross_bp": -12.413092177399907,
+    "net_bp": {
+     "vip0": -18.381903320914315,
+     "contract_fields": -15.99085701479777
+    }
+   },
+   "without_runup": {
+    "round_trips": 35587,
+    "unpriced": 31,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.3438736756214664,
+    "median_hold_s": 238.763707,
+    "gross_bp": -12.413092177399907,
+    "net_bp": {
+     "vip0": -18.381903320914315,
+     "contract_fields": -15.99085701479777
+    }
+   }
+  },
+  "PUFFER_USDT": {
+   "available_to": "2026-07-25",
+   "all": {
+    "round_trips": 36474,
+    "unpriced": 14,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.30108644104370913,
+    "median_hold_s": 19.4895105,
+    "gross_bp": -15.763533860475693,
+    "net_bp": {
+     "vip0": -21.86024843604875,
+     "contract_fields": -19.704309365158895
+    }
+   },
+   "without_runup": {
+    "round_trips": 36474,
+    "unpriced": 14,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.30108644104370913,
+    "median_hold_s": 19.4895105,
+    "gross_bp": -15.763533860475693,
+    "net_bp": {
+     "vip0": -21.86024843604875,
+     "contract_fields": -19.704309365158895
+    }
+   }
+  },
+  "RDAC_USDT": {
+   "available_to": "2025-07-08",
+   "all": {
+    "round_trips": 1549,
+    "unpriced": 0,
+    "days": 7,
+    "counted": true,
+    "passive_share": 0.34103702503788613,
+    "median_hold_s": 300.318971,
+    "gross_bp": -31.68367901544983,
+    "net_bp": {
+     "vip0": -37.66190647719603,
+     "contract_fields": -35.28737086209784
+    }
+   },
+   "without_runup": {
+    "round_trips": 0,
+    "unpriced": 0,
+    "days": 0,
+    "counted": false,
+    "passive_share": null,
+    "median_hold_s": null,
+    "gross_bp": null,
+    "net_bp": {
+     "vip0": null,
+     "contract_fields": null
+    }
+   }
+  },
+  "MELANIA_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 38975,
+    "unpriced": 13,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.32961833719631783,
+    "median_hold_s": 0.3,
+    "gross_bp": -11.268120126627847,
+    "net_bp": {
+     "vip0": -17.279240878821113,
+     "contract_fields": -14.966343613139475
+    }
+   },
+   "without_runup": {
+    "round_trips": 38975,
+    "unpriced": 13,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.32961833719631783,
+    "median_hold_s": 0.3,
+    "gross_bp": -11.268120126627847,
+    "net_bp": {
+     "vip0": -17.279240878821113,
+     "contract_fields": -14.966343613139475
+    }
+   }
+  },
+  "CGPT_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 48308,
+    "unpriced": 25,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.3247094929142797,
+    "median_hold_s": 174.03946150000002,
+    "gross_bp": -12.020218045367498,
+    "net_bp": {
+     "vip0": -18.045994245928778,
+     "contract_fields": -15.760075369887819
+    }
+   },
+   "without_runup": {
+    "round_trips": 48308,
+    "unpriced": 25,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.3247094929142797,
+    "median_hold_s": 174.03946150000002,
+    "gross_bp": -12.020218045367498,
+    "net_bp": {
+     "vip0": -18.045994245928778,
+     "contract_fields": -15.760075369887819
+    }
+   }
+  },
+  "MORPHO_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 72378,
+    "unpriced": 32,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.4223653800506804,
+    "median_hold_s": 98.5598275,
+    "gross_bp": -10.908690104995824,
+    "net_bp": {
+     "vip0": -16.64173096260006,
+     "contract_fields": -13.818819494411105
+    }
+   },
+   "without_runup": {
+    "round_trips": 72378,
+    "unpriced": 32,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.4223653800506804,
+    "median_hold_s": 98.5598275,
+    "gross_bp": -10.908690104995824,
+    "net_bp": {
+     "vip0": -16.64173096260006,
+     "contract_fields": -13.818819494411105
+    }
+   }
+  },
+  "BRETT_USDT": {
+   "available_to": "",
+   "all": {
+    "round_trips": 79457,
+    "unpriced": 31,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.38971095742936007,
+    "median_hold_s": 32.441618,
+    "gross_bp": -13.803086185478934,
+    "net_bp": {
+     "vip0": -19.63394505714808,
+     "contract_fields": -16.990533793518395
+    }
+   },
+   "without_runup": {
+    "round_trips": 79457,
+    "unpriced": 31,
+    "days": 123,
+    "counted": true,
+    "passive_share": 0.38971095742936007,
+    "median_hold_s": 32.441618,
+    "gross_bp": -13.803086185478934,
+    "net_bp": {
+     "vip0": -19.63394505714808,
+     "contract_fields": -16.990533793518395
+    }
+   }
+  }
+ },
+ "missing": [],
+ "screen": {
+  "all": {
+   "all": {
+    "contracts": 24,
+    "gross_bp": -12.859068434019061,
+    "passive_share": 0.294130096872497,
+    "median_hold_s": 95.39452275,
+    "net_vip0_bp": -18.896537206539847,
+    "net_contract_fields_bp": -16.729540069687893,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 0": {
+    "contracts": 6,
+    "gross_bp": -15.874538980854052,
+    "passive_share": 0.18002305448386752,
+    "median_hold_s": 300.3388815,
+    "net_vip0_bp": -21.60394134085179,
+    "net_contract_fields_bp": -18.774417780423178,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 1": {
+    "contracts": 6,
+    "gross_bp": -11.663253031175964,
+    "passive_share": 0.19715261820918153,
+    "median_hold_s": 26.335895,
+    "net_vip0_bp": -18.026007333317587,
+    "net_contract_fields_bp": -15.794788701400805,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 2": {
+    "contracts": 6,
+    "gross_bp": -12.94896178974685,
+    "passive_share": 0.3155237141613757,
+    "median_hold_s": 75.932489,
+    "net_vip0_bp": -19.131420826633178,
+    "net_contract_fields_bp": -16.93711457216364,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 3": {
+    "contracts": 6,
+    "gross_bp": -12.911652115423216,
+    "passive_share": 0.335327681117102,
+    "median_hold_s": 65.50072275,
+    "net_vip0_bp": -18.83996965153843,
+    "net_contract_fields_bp": -16.375304581703105,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   }
+  },
+  "without_runup": {
+   "all": {
+    "contracts": 23,
+    "gross_bp": -12.436527706171313,
+    "passive_share": 0.2871737527012849,
+    "median_hold_s": 92.229218,
+    "net_vip0_bp": -18.896279570204243,
+    "net_contract_fields_bp": -16.80852978949608,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 0": {
+    "contracts": 6,
+    "gross_bp": -16.10325948762161,
+    "passive_share": 0.1850616135350726,
+    "median_hold_s": 300.3390205,
+    "net_vip0_bp": -21.803278190540752,
+    "net_contract_fields_bp": -18.919641455727202,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 1": {
+    "contracts": 6,
+    "gross_bp": -11.933575189661296,
+    "passive_share": 0.19715261820918153,
+    "median_hold_s": 26.335895,
+    "net_vip0_bp": -18.454250938436118,
+    "net_contract_fields_bp": -16.230177954745884,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 2": {
+    "contracts": 6,
+    "gross_bp": -12.94896178974685,
+    "passive_share": 0.3155237141613757,
+    "median_hold_s": 75.932489,
+    "net_vip0_bp": -19.131420826633178,
+    "net_contract_fields_bp": -16.93711457216364,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 3": {
+    "contracts": 5,
+    "gross_bp": -12.020218045367498,
+    "passive_share": 0.32961833719631783,
+    "median_hold_s": 32.441618,
+    "net_vip0_bp": -18.045994245928778,
+    "net_contract_fields_bp": -15.760075369887819,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   }
+  }
+ }
+}
