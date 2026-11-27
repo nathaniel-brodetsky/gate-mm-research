@@ -1,0 +1,719 @@
+{
+ "period": [
+  "2025-07-01",
+  "2025-11-01"
+ ],
+ "measure": "fills",
+ "queue": "pessimistic",
+ "improve_ticks": 1,
+ "size_contracts": 1.0,
+ "scenarios": {
+  "vip0": [
+   0.0002,
+   0.0005
+  ],
+  "contract_fields": [
+   -0.0001,
+   0.00075
+  ]
+ },
+ "contracts": {
+  "PYR_USDT": {
+   "available_to": "2025-10-17",
+   "all": {
+    "fills": 4075,
+    "days": 108,
+    "counted": true,
+    "rs_60s_bp": 18.9948723935587,
+    "rs_300s_bp": 18.256893111134765,
+    "net_bp": {
+     "vip0": 16.256893111134765,
+     "contract_fields": 19.25689311113477
+    }
+   },
+   "without_runup": {
+    "fills": 3347,
+    "days": 94,
+    "counted": true,
+    "rs_60s_bp": 14.280704511757502,
+    "rs_300s_bp": 14.338849536583421,
+    "net_bp": {
+     "vip0": 12.33884953658342,
+     "contract_fields": 15.338849536583421
+    }
+   }
+  },
+  "PEIPEI_USDT": {
+   "available_to": "2025-07-31",
+   "all": {
+    "fills": 2499,
+    "days": 30,
+    "counted": true,
+    "rs_60s_bp": 4.951037939108607,
+    "rs_300s_bp": 2.753313329375353,
+    "net_bp": {
+     "vip0": 0.753313329375353,
+     "contract_fields": 3.753313329375353
+    }
+   },
+   "without_runup": {
+    "fills": 1138,
+    "days": 16,
+    "counted": true,
+    "rs_60s_bp": 11.768504142966767,
+    "rs_300s_bp": 9.376187221023109,
+    "net_bp": {
+     "vip0": 7.37618722102311,
+     "contract_fields": 10.37618722102311
+    }
+   }
+  },
+  "AMP_USDT": {
+   "available_to": "2025-09-27",
+   "all": {
+    "fills": 6818,
+    "days": 88,
+    "counted": true,
+    "rs_60s_bp": 7.933725110949203,
+    "rs_300s_bp": 7.108602370233254,
+    "net_bp": {
+     "vip0": 5.108602370233255,
+     "contract_fields": 8.108602370233255
+    }
+   },
+   "without_runup": {
+    "fills": 5970,
+    "days": 74,
+    "counted": true,
+    "rs_60s_bp": 7.240487293213744,
+    "rs_300s_bp": 6.39758346502485,
+    "net_bp": {
+     "vip0": 4.39758346502485,
+     "contract_fields": 7.39758346502485
+    }
+   }
+  },
+  "BTT_USDT": {
+   "available_to": "2025-09-12",
+   "all": {
+    "fills": 6186,
+    "days": 73,
+    "counted": true,
+    "rs_60s_bp": 8.744614965046367,
+    "rs_300s_bp": 7.503127484029196,
+    "net_bp": {
+     "vip0": 5.503127484029196,
+     "contract_fields": 8.503127484029196
+    }
+   },
+   "without_runup": {
+    "fills": 4310,
+    "days": 59,
+    "counted": true,
+    "rs_60s_bp": 14.051770937550039,
+    "rs_300s_bp": 12.73392148852932,
+    "net_bp": {
+     "vip0": 10.73392148852932,
+     "contract_fields": 13.73392148852932
+    }
+   }
+  },
+  "ALU_USDT": {
+   "available_to": "2025-10-17",
+   "all": {
+    "fills": 92661,
+    "days": 108,
+    "counted": true,
+    "rs_60s_bp": -9.604318346065666,
+    "rs_300s_bp": -10.422345663075577,
+    "net_bp": {
+     "vip0": -12.422345663075577,
+     "contract_fields": -9.422345663075577
+    }
+   },
+   "without_runup": {
+    "fills": 85408,
+    "days": 94,
+    "counted": true,
+    "rs_60s_bp": -9.90775667189946,
+    "rs_300s_bp": -10.460222426288563,
+    "net_bp": {
+     "vip0": -12.460222426288565,
+     "contract_fields": -9.460222426288563
+    }
+   }
+  },
+  "NAVX_USDT": {
+   "available_to": "2025-11-14",
+   "all": {
+    "fills": 22180,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": 11.492536648633937,
+    "rs_300s_bp": 8.245776220486537,
+    "net_bp": {
+     "vip0": 6.245776220486538,
+     "contract_fields": 9.245776220486539
+    }
+   },
+   "without_runup": {
+    "fills": 21827,
+    "days": 122,
+    "counted": true,
+    "rs_60s_bp": 11.70672646957266,
+    "rs_300s_bp": 8.460434124123832,
+    "net_bp": {
+     "vip0": 6.460434124123832,
+     "contract_fields": 9.460434124123832
+    }
+   }
+  },
+  "POWR_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 10855,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -9.470743372946428,
+    "rs_300s_bp": -9.54602520189571,
+    "net_bp": {
+     "vip0": -11.54602520189571,
+     "contract_fields": -8.54602520189571
+    }
+   },
+   "without_runup": {
+    "fills": 10855,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -9.470743372946428,
+    "rs_300s_bp": -9.54602520189571,
+    "net_bp": {
+     "vip0": -11.54602520189571,
+     "contract_fields": -8.54602520189571
+    }
+   }
+  },
+  "XNO_USDT": {
+   "available_to": "2026-11-18",
+   "all": {
+    "fills": 11842,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": 0.9963388088364193,
+    "rs_300s_bp": -1.4907070552360273,
+    "net_bp": {
+     "vip0": -3.4907070552360273,
+     "contract_fields": -0.4907070552360273
+    }
+   },
+   "without_runup": {
+    "fills": 11842,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": 0.9963388088364193,
+    "rs_300s_bp": -1.4907070552360273,
+    "net_bp": {
+     "vip0": -3.4907070552360273,
+     "contract_fields": -0.4907070552360273
+    }
+   }
+  },
+  "ASR_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 40621,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.073095965128623,
+    "rs_300s_bp": -7.939046603373223,
+    "net_bp": {
+     "vip0": -9.939046603373223,
+     "contract_fields": -6.939046603373222
+    }
+   },
+   "without_runup": {
+    "fills": 40621,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.073095965128623,
+    "rs_300s_bp": -7.939046603373223,
+    "net_bp": {
+     "vip0": -9.939046603373223,
+     "contract_fields": -6.939046603373222
+    }
+   }
+  },
+  "KAVA_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 23258,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -4.730540288571813,
+    "rs_300s_bp": -4.860243453361624,
+    "net_bp": {
+     "vip0": -6.860243453361624,
+     "contract_fields": -3.8602434533616243
+    }
+   },
+   "without_runup": {
+    "fills": 23258,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -4.730540288571813,
+    "rs_300s_bp": -4.860243453361624,
+    "net_bp": {
+     "vip0": -6.860243453361624,
+     "contract_fields": -3.8602434533616243
+    }
+   }
+  },
+  "REQ_USDT": {
+   "available_to": "2025-09-27",
+   "all": {
+    "fills": 7584,
+    "days": 88,
+    "counted": true,
+    "rs_60s_bp": 0.856405529022392,
+    "rs_300s_bp": 0.848819412805663,
+    "net_bp": {
+     "vip0": -1.151180587194337,
+     "contract_fields": 1.8488194128056632
+    }
+   },
+   "without_runup": {
+    "fills": 6751,
+    "days": 74,
+    "counted": true,
+    "rs_60s_bp": -0.7565933698823694,
+    "rs_300s_bp": -0.686907426684459,
+    "net_bp": {
+     "vip0": -2.686907426684459,
+     "contract_fields": 0.313092573315541
+    }
+   }
+  },
+  "ASTR_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 21018,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -7.145818596502203,
+    "rs_300s_bp": -6.86350116018888,
+    "net_bp": {
+     "vip0": -8.86350116018888,
+     "contract_fields": -5.86350116018888
+    }
+   },
+   "without_runup": {
+    "fills": 21018,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -7.145818596502203,
+    "rs_300s_bp": -6.86350116018888,
+    "net_bp": {
+     "vip0": -8.86350116018888,
+     "contract_fields": -5.86350116018888
+    }
+   }
+  },
+  "FLUX_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 21363,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -9.57560935090957,
+    "rs_300s_bp": -10.404203159047718,
+    "net_bp": {
+     "vip0": -12.404203159047718,
+     "contract_fields": -9.404203159047718
+    }
+   },
+   "without_runup": {
+    "fills": 21363,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -9.57560935090957,
+    "rs_300s_bp": -10.404203159047718,
+    "net_bp": {
+     "vip0": -12.404203159047718,
+     "contract_fields": -9.404203159047718
+    }
+   }
+  },
+  "MAV_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 75118,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -7.866865903700567,
+    "rs_300s_bp": -7.972334094456411,
+    "net_bp": {
+     "vip0": -9.972334094456413,
+     "contract_fields": -6.972334094456411
+    }
+   },
+   "without_runup": {
+    "fills": 75118,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -7.866865903700567,
+    "rs_300s_bp": -7.972334094456411,
+    "net_bp": {
+     "vip0": -9.972334094456413,
+     "contract_fields": -6.972334094456411
+    }
+   }
+  },
+  "HNT_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 34460,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.442002964676204,
+    "rs_300s_bp": -8.357715113132041,
+    "net_bp": {
+     "vip0": -10.357715113132043,
+     "contract_fields": -7.357715113132041
+    }
+   },
+   "without_runup": {
+    "fills": 34460,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.442002964676204,
+    "rs_300s_bp": -8.357715113132041,
+    "net_bp": {
+     "vip0": -10.357715113132043,
+     "contract_fields": -7.357715113132041
+    }
+   }
+  },
+  "AKT_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 45978,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -6.256723324314128,
+    "rs_300s_bp": -6.310285948619251,
+    "net_bp": {
+     "vip0": -8.310285948619251,
+     "contract_fields": -5.31028594861925
+    }
+   },
+   "without_runup": {
+    "fills": 45978,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -6.256723324314128,
+    "rs_300s_bp": -6.310285948619251,
+    "net_bp": {
+     "vip0": -8.310285948619251,
+     "contract_fields": -5.31028594861925
+    }
+   }
+  },
+  "LUNA_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 13394,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.099474035787061,
+    "rs_300s_bp": -8.020829408525424,
+    "net_bp": {
+     "vip0": -10.020829408525424,
+     "contract_fields": -7.020829408525424
+    }
+   },
+   "without_runup": {
+    "fills": 13394,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.099474035787061,
+    "rs_300s_bp": -8.020829408525424,
+    "net_bp": {
+     "vip0": -10.020829408525424,
+     "contract_fields": -7.020829408525424
+    }
+   }
+  },
+  "BAT_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 35552,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -5.9757998952047915,
+    "rs_300s_bp": -6.028493664798148,
+    "net_bp": {
+     "vip0": -8.028493664798148,
+     "contract_fields": -5.028493664798148
+    }
+   },
+   "without_runup": {
+    "fills": 35552,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -5.9757998952047915,
+    "rs_300s_bp": -6.028493664798148,
+    "net_bp": {
+     "vip0": -8.028493664798148,
+     "contract_fields": -5.028493664798148
+    }
+   }
+  },
+  "PUFFER_USDT": {
+   "available_to": "2026-07-25",
+   "all": {
+    "fills": 36439,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -10.126976216018871,
+    "rs_300s_bp": -10.01676215342603,
+    "net_bp": {
+     "vip0": -12.01676215342603,
+     "contract_fields": -9.016762153426027
+    }
+   },
+   "without_runup": {
+    "fills": 36439,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -10.126976216018871,
+    "rs_300s_bp": -10.01676215342603,
+    "net_bp": {
+     "vip0": -12.01676215342603,
+     "contract_fields": -9.016762153426027
+    }
+   }
+  },
+  "RDAC_USDT": {
+   "available_to": "2025-07-08",
+   "all": {
+    "fills": 1549,
+    "days": 7,
+    "counted": true,
+    "rs_60s_bp": 6.436615252447749,
+    "rs_300s_bp": 3.010034166638409,
+    "net_bp": {
+     "vip0": 1.010034166638409,
+     "contract_fields": 4.010034166638409
+    }
+   },
+   "without_runup": {
+    "fills": 0,
+    "days": 0,
+    "counted": false,
+    "rs_60s_bp": null,
+    "rs_300s_bp": null,
+    "net_bp": {
+     "vip0": null,
+     "contract_fields": null
+    }
+   }
+  },
+  "MELANIA_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 38926,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -7.316234881395447,
+    "rs_300s_bp": -7.5323815654401045,
+    "net_bp": {
+     "vip0": -9.532381565440105,
+     "contract_fields": -6.532381565440104
+    }
+   },
+   "without_runup": {
+    "fills": 38926,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -7.316234881395447,
+    "rs_300s_bp": -7.5323815654401045,
+    "net_bp": {
+     "vip0": -9.532381565440105,
+     "contract_fields": -6.532381565440104
+    }
+   }
+  },
+  "CGPT_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 48270,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -6.845162653505694,
+    "rs_300s_bp": -7.113318510857292,
+    "net_bp": {
+     "vip0": -9.113318510857292,
+     "contract_fields": -6.113318510857291
+    }
+   },
+   "without_runup": {
+    "fills": 48270,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -6.845162653505694,
+    "rs_300s_bp": -7.113318510857292,
+    "net_bp": {
+     "vip0": -9.113318510857292,
+     "contract_fields": -6.113318510857291
+    }
+   }
+  },
+  "MORPHO_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 72325,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -6.675148005629354,
+    "rs_300s_bp": -6.477958275333018,
+    "net_bp": {
+     "vip0": -8.477958275333018,
+     "contract_fields": -5.477958275333018
+    }
+   },
+   "without_runup": {
+    "fills": 72325,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -6.675148005629354,
+    "rs_300s_bp": -6.477958275333018,
+    "net_bp": {
+     "vip0": -8.477958275333018,
+     "contract_fields": -5.477958275333018
+    }
+   }
+  },
+  "BRETT_USDT": {
+   "available_to": "",
+   "all": {
+    "fills": 79382,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.942934261812178,
+    "rs_300s_bp": -8.985136117909567,
+    "net_bp": {
+     "vip0": -10.985136117909565,
+     "contract_fields": -7.9851361179095655
+    }
+   },
+   "without_runup": {
+    "fills": 79382,
+    "days": 123,
+    "counted": true,
+    "rs_60s_bp": -8.942934261812178,
+    "rs_300s_bp": -8.985136117909567,
+    "net_bp": {
+     "vip0": -10.985136117909565,
+     "contract_fields": -7.9851361179095655
+    }
+   }
+  }
+ },
+ "missing": [],
+ "screen": {
+  "all": {
+   "all": {
+    "contracts": 24,
+    "rs_60s_bp": -6.7601553295675245,
+    "rs_300s_bp": -6.670729717760949,
+    "net_vip0_bp": -8.670729717760949,
+    "net_contract_fields_bp": -5.670729717760949,
+    "positive_vip0": 6,
+    "positive_contract_fields": 7
+   },
+   "stratum 0": {
+    "contracts": 6,
+    "rs_60s_bp": 8.339170037997786,
+    "rs_300s_bp": 7.305864927131225,
+    "net_vip0_bp": 5.305864927131226,
+    "net_contract_fields_bp": 8.305864927131225,
+    "positive_vip0": 5,
+    "positive_contract_fields": 5
+   },
+   "stratum 1": {
+    "contracts": 6,
+    "rs_60s_bp": -5.938179442537008,
+    "rs_300s_bp": -5.861872306775252,
+    "net_vip0_bp": -7.861872306775252,
+    "net_contract_fields_bp": -4.861872306775252,
+    "positive_vip0": 0,
+    "positive_contract_fields": 1
+   },
+   "stratum 2": {
+    "contracts": 6,
+    "rs_60s_bp": -7.983169969743814,
+    "rs_300s_bp": -7.996581751490917,
+    "net_vip0_bp": -9.996581751490918,
+    "net_contract_fields_bp": -6.996581751490917,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 3": {
+    "contracts": 6,
+    "rs_60s_bp": -7.080698767450571,
+    "rs_300s_bp": -7.322850038148698,
+    "net_vip0_bp": -9.322850038148697,
+    "net_contract_fields_bp": -6.322850038148697,
+    "positive_vip0": 1,
+    "positive_contract_fields": 1
+   }
+  },
+  "without_runup": {
+   "all": {
+    "contracts": 23,
+    "rs_60s_bp": -6.845162653505694,
+    "rs_300s_bp": -6.86350116018888,
+    "net_vip0_bp": -8.86350116018888,
+    "net_contract_fields_bp": -5.86350116018888,
+    "positive_vip0": 5,
+    "positive_contract_fields": 6
+   },
+   "stratum 0": {
+    "contracts": 6,
+    "rs_60s_bp": 11.737615306269713,
+    "rs_300s_bp": 8.91831067257347,
+    "net_vip0_bp": 6.918310672573471,
+    "net_contract_fields_bp": 9.918310672573472,
+    "positive_vip0": 5,
+    "positive_contract_fields": 5
+   },
+   "stratum 1": {
+    "contracts": 6,
+    "rs_60s_bp": -5.938179442537008,
+    "rs_300s_bp": -5.861872306775252,
+    "net_vip0_bp": -7.861872306775252,
+    "net_contract_fields_bp": -4.861872306775252,
+    "positive_vip0": 0,
+    "positive_contract_fields": 1
+   },
+   "stratum 2": {
+    "contracts": 6,
+    "rs_60s_bp": -7.983169969743814,
+    "rs_300s_bp": -7.996581751490917,
+    "net_vip0_bp": -9.996581751490918,
+    "net_contract_fields_bp": -6.996581751490917,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   },
+   "stratum 3": {
+    "contracts": 5,
+    "rs_60s_bp": -7.316234881395447,
+    "rs_300s_bp": -7.5323815654401045,
+    "net_vip0_bp": -9.532381565440105,
+    "net_contract_fields_bp": -6.532381565440104,
+    "positive_vip0": 0,
+    "positive_contract_fields": 0
+   }
+  }
+ }
+}
