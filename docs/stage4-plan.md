@@ -104,7 +104,8 @@ microstructure (spreads, adverse selection, inventory risk).
        delisted inside it: D-003, Amendment 1). Measures in bp
        (markouts, realized spread) need no contract multiplier; order sizes in USDT do, and Gate gives
        it only for contracts still listed.
-   3b. *(this step)* `python -m mmlab.microstructure.perp_explore` on the research contracts over the
+   3b. *(done 2026-11-27, `results/perp_explore/markouts.json`)* `python -m
+       mmlab.microstructure.perp_explore` on the research contracts over the
        exploration period: per contract, realized spread at 10, 60 and 300 s (mid), at 60 s against the
        microprice and the far side (exit), the quoted half-spread, and theta under the two fee
        scenarios (maker 0.02%; the contract field's −0.01%); by bucket of quoted half-spread; all
@@ -114,7 +115,22 @@ microstructure (spreads, adverse selection, inventory risk).
        its median theta at maker 0.02% is positive over at least 8 counted contracts; the round trips
        of a new maker (step 3c) then check it before anything is registered. On spot the same median
        was −10.45 bp at a 0.1% fee (stage 3).
-   3c. *(this step)* `python -m mmlab.execution_simulator.perp_round_trip`: the stage 3 round trips
+       Findings (medians over contracts) [backtest]:
+       - All trades, 24 contracts: quoted half-spread 3.63 bp; RS at 10/60/300 s −0.97/−1.44/−2.36 bp;
+         exit at 60 s −9.52 bp; theta −3.44 bp at maker 0.02% (7 of 24 positive), −0.44 bp at −0.01%.
+         The average trade's realized spread sits where spot's did (+0.37 and −1.09 bp in H-001);
+         theta is closer to 0 only through the lower fee.
+       - Stratum 0 (6 contracts, 5 delisted inside the window): half-spread 20.05 bp, RS60 +12.69 bp,
+         theta +10.69 bp (5 of 6), exit −16.17 bp. Strata 1–3: theta −5.59 to −2.45 bp.
+       - By quoted half-spread (RS60 before fees; median share of volume): under 5 bp −4.45 (71.4%),
+         5–10 −0.16 (12.2%), 10–20 +4.46 (5.1%), 20–40 +13.64 (0.9%), 40–80 +44.04 (0.1%), 80 and more
+         +57.18 (0.1%, 20 contracts).
+       - Without the last 14 days before a delisting: within 0.3 bp overall.
+       - By the rule, the buckets from 10 bp are candidates (median theta at 0.02% positive over 20–24
+         contracts), about 6% of the volume; strata are not subsets under the rule. As on spot (H-003),
+         a positive markout at a wide spread is measured against a mid nobody trades at; step 3c decides.
+   3c. *(done 2026-11-27, `results/perp_explore/round_trips_{pessimistic,optimistic}.json`)*
+       `python -m mmlab.execution_simulator.perp_round_trip`: the stage 3 round trips
        of a new maker on the research contracts over the exploration period. Every 60 s an order of
        one contract (the smallest Gate accepts) on each side, one tick inside the spread, kept 60 s;
        each filled piece closed by a passive order one tick inside the other side, kept 300 s, then
@@ -125,6 +141,24 @@ microstructure (spreads, adverse selection, inventory risk).
        a new maker's quoting is a candidate for a registered batch only if the median net at VIP 0
        is positive over at least 8 counted contracts with the pessimistic queue; the optimistic queue
        is a bound, not a basis.
+       Findings (medians over contracts) [simulator]:
+       - Pessimistic queue, 24 contracts: gross −12.86 bp, net −18.90 bp at VIP 0 and −16.73 bp
+         under the contract fields; 0 of 24 positive under either; 29% of the size closed passively,
+         median holding 95 s. Every stratum is negative (gross −15.87 to −11.66 bp, net at VIP 0
+         −21.60 to −18.03 bp).
+       - Optimistic queue: within 0.1 bp of the pessimistic one. Without the run-up to delistings:
+         gross −12.44 bp, net −18.90 bp.
+       - By the rule there is no candidate. Gross is negative before any fee, so no fee tier changes the
+         sign. On spot the same round trips gave gross −26 to −29 bp and net −46 to −49 bp.
+       - Limitation: every filled piece is closed on its own. A maker that nets its buys against its
+         sells crosses the spread less; step 3c-2 measures that bound.
+   3c-2. *(this step)* `python -m mmlab.execution_simulator.perp_round_trip --measure fills`: the
+       markout of the same maker's own entry fills against the mid 60 and 300 s later, before any
+       exit: what a maker that nets its inventory would make per unit of fill value, before inventory
+       risk; net is the 300-s markout minus one maker fee. How it will be read, written before the run:
+       if the median contract's net at VIP 0 is not positive (pessimistic queue, at least 8 counted
+       contracts), passive market making on these perpetuals is closed at VIP 0 as it was on spot; the
+       contract-field fee is reported beside it.
    3d. A batch registered under D-002 before November–December 2025 is read, or the perpetuals track
        is closed like spot.
 4. If the window fails, the options are the owner's: a WebSocket recorder (forward data, months to

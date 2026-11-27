@@ -79,6 +79,9 @@ mmlab.execution_simulator.perp_round_trip data/processed/U002 --queue ...` (stag
 research contract, the round trips of a new maker quoting one contract one tick inside the spread, net
 bp under the two fee scenarios, with and without the last 14 days before a delisting.
 
+`perp_explore/own_fills_pessimistic.json` is the same command with `--measure fills` (stage 4, step
+3c-2): per contract, the markout of the maker's own entry fills at 60 and 300 s before any exit.
+
 `perp_universe/activity_2025-06.csv` is `python -m mmlab.data_ingestion.perp_activity` (stage 4,
 step 2b-2): per candidate with a June 2025 trades file, active days, trades, median daily trades and
 contract notional, and the median daily quote volume where Gate still gives the multiplier.
